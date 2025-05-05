@@ -1,0 +1,192 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: white;
+    color: #333;
+  }
+  
+  .encabezado {
+    background: url("imagenes/fondoo.jpg") center/cover no-repeat;
+    height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .encabezado::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  .encabezado .overlay {
+    position: relative;
+    z-index: 2;
+  }
+  
+  .overlay {
+    background-color: rgba(0, 0, 0, 0.35);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .overlay h1 {
+    color: white;
+    font-size: 3em;
+    font-weight: bold;
+  }
+  
+  .contenido {
+    padding: 50px 30px;
+    text-align: center;
+  }
+  
+  .contenido h2 {
+    color: #0b3954;
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .parrafo {
+    max-width: 800px;
+    margin: 0 auto 40px auto;
+    font-size: 1em;
+    color: #444;
+    line-height: 1.5;
+  }
+  
+  .profesores {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 35px; /* Aumenta ligeramente el espacio entre las cards */
+  }
+  
+  .profe {
+    width: 200px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .profe:hover {
+    transform: translateY(-3px); /* Efecto hover */
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+  }
+  
+  .profe img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .profe h3 {
+    font-size: 1.3em;
+    margin: 12px 0 6px 0;
+    color: #0b3954;
+  }
+  
+  .profe p {
+    font-size: 1em;
+    color: #555;
+    margin: 0;
+  }
+  
+  .beneficios, .frases {
+    padding: 50px 20px;
+    text-align: center;
+    background-color: #f9f9f9;
+    margin-top: 40px;
+  }
+  
+  .beneficios {
+    padding: 40px 20px;
+    text-align: center;
+    background-color: #f9f9f9; /* Fondo suave */
+    margin-top: 40px;
+  }
+  
+  .beneficios h2 {
+    font-size: 2em;
+    color: #0b3954;
+    margin-bottom: 30px;
+    font-weight: bold;
+  }
+  
+  .grid-beneficios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Reduce el tamaño mínimo de las tarjetas */
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .beneficio {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .beneficio:hover {
+    transform: translateY(-3px); /* Efecto hover más sutil */
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .beneficio .icono {
+    font-size: 2.5em;
+    color: #0b3954;
+    margin-bottom: 10px;
+  }
+  
+  .beneficio h3 {
+    font-size: 1.2em; 
+    color: #0b3954;
+    margin-bottom: 8px;
+  }
+  
+  .beneficio p {
+    font-size: 0.9em; 
+    color: #555;
+    line-height: 1.4;
+  }
+  
+  .beneficios ul {
+    list-style: none;
+    padding: 0;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  
+  .beneficios ul li {
+    font-size: 1em;
+    color: #333;
+    margin: 10px 0;
+    line-height: 1.6;
+  }
+  
+  
+  

@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: #647df9;
+}
+
+h1 {
+  font-size: 28px;
+  color: #fff;
+  margin-bottom: 30px;
+}
+
+.wrapper {
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.wrapper .table {
+  background: #fff;
+  width: calc(50% - 20px);
+  padding: 40px;
+  position: relative;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.table .price-section {
+  display: flex;
+  justify-content: center;
+}
+
+.table .price-area {
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff; /* Asegura un fondo uniforme */
+  overflow: hidden; /* Evita que la imagen sobresalga */
+}
+
+.price-area .inner-area {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  background-size: cover; /* Asegura que la imagen cubra el área */
+  background-position: center; /* Centra la imagen */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+}
+
+/* Asegúrate de que las imágenes de fondo sean correctas */
+.basic .price-area .inner-area {
+  background-image: url('profesor.webp'); /* Cambia a la ruta correcta */
+}
+
+.premium .price-area .inner-area {
+  background-image: url('estudiante.jpg'); /* Cambia a la ruta correcta */
+}
+
+ul.features {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+ul.features li {
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+ul.features li:last-child {
+  border-bottom: none;
+}
+
+.table .btn {
+  width: 100%;
+  display: flex;
+  margin-top: 35px;
+  justify-content: center;
+}
+
+.table .btn .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 50px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.basic .btn .button {
+  background: #ffd861;
+  border: 2px solid #ffd861;
+}
+
+.basic .btn .button:hover {
+  background: #fff;
+  color: #ffd861;
+}
+
+.premium .btn .button {
+  background: #a26bfa;
+}
+
+.premium .btn .button:hover {
+  background: #833af8;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .wrapper .table {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

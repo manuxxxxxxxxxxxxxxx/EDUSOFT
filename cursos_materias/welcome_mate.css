@@ -1,0 +1,100 @@
+/* General */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7fc; /* Fondo gris azulado claro */
+    color: #333; /* Texto gris oscuro */
+    line-height: 1.6;
+}
+
+/* Barra superior */
+.header-bar {
+    background: linear-gradient(90deg, #a3c9f7, #87bff5); /* Gradiente azul pastel */
+    color: white;
+    padding: 15px; /* Menos padding para reducir el tamaño */
+    text-align: center;
+    font-size: 2rem; /* Tamaño de fuente más pequeño */
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-bottom: 3px solid #87bff5; /* Detalle de borde */
+    letter-spacing: 1px; /* Espaciado entre letras */
+}
+
+/* Contenedor principal */
+.welcome-container {
+    display: flex;
+    flex-wrap: nowrap; /* Alineación horizontal */
+    margin: 50px auto;
+    max-width: 1000px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Sombra más suave */
+    overflow: hidden;
+}
+
+/* Descripción del curso */
+.course-description {
+    padding: 40px;
+    flex: 2; /* Ocupa más espacio que la imagen */
+    background-color: #fefefe; /* Fondo blanco */
+}
+
+.course-description h2 {
+    font-size: 2rem;
+    color: #1e3a8a; /* Azul oscuro */
+    margin-bottom: 20px;
+    border-bottom: 3px solid #87bff5; /* Línea decorativa */
+    display: inline-block;
+    padding-bottom: 5px;
+    text-transform: uppercase; /* Texto en mayúsculas */
+    letter-spacing: 1px; /* Espaciado entre letras */
+}
+
+.course-description p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-top: 15px;
+    line-height: 1.8;
+}
+
+.course-description strong {
+    color: #1e3a8a; /* Azul oscuro */
+}
+
+.course-description .btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 30px;
+    background: linear-gradient(90deg, #1e3a8a, #3b5998); /* Gradiente azul oscuro */
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.course-description .btn:hover {
+    background: linear-gradient(90deg, #162d6a, #2a4373); /* Gradiente más oscuro */
+    transform: translateY(-3px); /* Efecto de elevación */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Imagen del profesor */
+.course-professor {
+    flex: 1; /* Ocupa menos espacio que el texto */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #f5f5f5, #e9ecef); /* Fondo con gradiente gris claro */
+    padding: 20px;
+}
+
+.course-professor img {
+    max-width: 100%; /* Imagen más grande */
+    height: auto; /* Mantiene la proporción de la imagen */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}

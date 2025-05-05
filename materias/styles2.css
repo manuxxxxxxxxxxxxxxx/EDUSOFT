@@ -1,0 +1,338 @@
+body {
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+    padding: 0;
+    /* background: linear-gradient(to bottom, #f4f4f4, #e5e5e5); */
+        background-image: linear-gradient(to bottom, #ADD8E6, #C2E4F7);
+        background-size: 100% 100%;
+        background-attachment: fixed;
+    
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #fff;
+    border-bottom: 2px solid #333;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 24px;
+    color: #333;
+    text-decoration: none;
+}
+
+.fas {
+    font-size: 25px;
+    color: #333;
+    margin-right: 10px;
+}
+
+.fas:hover {
+    color: #666;
+}
+.icons span {
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+nav {
+    display: flex;
+    background-color: #333;
+    padding: 10px;
+    justify-content: space-around;
+}
+
+nav button {
+    padding: 10px;
+    border: none;
+    background: none;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #fff;
+    transition: background-color 0.5s ease;
+}
+
+nav button:hover {
+    background-color: #555;
+}
+
+nav button.active {
+    background-color: #555;
+}
+
+.banner {
+    /* background: url('https://wallpapers.com/images/hd/hd-math-illustration-444samncbkf2fi8e.jpg') no-repeat center center/cover; */
+    padding: 50px;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#banner1 {
+    background: url('https://wallpapers.com/images/hd/hd-math-illustration-444samncbkf2fi8e.jpg') no-repeat center center/cover; 
+    padding: 50px;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#banner2{
+    background: url('https://p4.wallpaperbetter.com/wallpaper/111/130/384/paper-literature-books-wallpaper-preview.jpg') no-repeat center center/cover; 
+    padding: 50px;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+#banner3{
+    background: url('https://metro.inter.edu/wp-content/uploads/2018/06/dep-ciencias-naturales-820x323.jpg') no-repeat center center/cover; 
+    padding: 50px;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+#banner4{
+    background: url('https://png.pngtree.com/thumb_back/fw800/background/20200114/pngtree-chemistry-abstract-molecular-structure-molecular-link-blue-image_327089.jpg') no-repeat center center/cover; 
+    padding: 50px;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+#banner5{
+    background: url('https://png.pngtree.com/thumb_back/fw800/background/20190223/ourmid/pngtree-create-a-civilized-city-social-welfare-background-civilizationcitysocial-welfare-backgroundblue-image_82218.jpg') no-repeat center center/cover; 
+    padding: 50px;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#banner6{
+    background: url('https://png.pngtree.com/thumb_back/fw800/background/20230302/pngtree-dna-education-biology-image_1739954.jpg') no-repeat center center/cover; 
+    padding: 50px;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.content {
+    display: flex;
+    padding: 20px;
+    background-color: #cbfcd2;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.profesor {
+    width: 25%;
+    text-align: center;
+} 
+.avatar {
+    font-size: 50px;
+    margin-bottom: 10px;
+    background: url('back.jpg') no-repeat center center/cover;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin: 20px auto;
+}
+.anuncio {
+    height: 80px;
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 15px;
+    border-left: 5px solid #D3D3D3;
+    transition: transform 0.6s ease, box-shadow 0.6s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+} 
+
+.anuncio h4 {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.anuncio p {
+    font-size: 14px;
+    color: #444;
+}
+
+.anuncio:hover {
+    transform: scale(1.03);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.anuncios {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+} 
+
+.seccion {
+    width: 90%;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.lista-tareas, .lista-alumnos {
+    list-style: none;
+    padding: 0;
+}
+
+.lista-tareas li, .lista-alumnos li {
+    background: #eefbff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border-left: 5px solid #D3D3D3;
+}
+
+  .tareas-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  .tarea {
+    background: linear-gradient(135deg, #e7f0ff, #d7ffe7, #f0e7ff, #fff0e0);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+    border: 0.5px solid black;
+  }
+
+  .tarea:hover {
+    transform: translateY(-5px);
+    background: linear-gradient(135deg, #d0e8ff, #c6ffd6, #e3d7ff, #ffe0cc);
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+  }
+
+  .modal-content {
+    background: linear-gradient(135deg, #cce7ff, #e0ffe0, #e7e0ff, #ffe0cc);
+    margin: auto;
+    padding: 20px;
+    border: 2px solid #ccc;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 15px;
+    animation: animatetop 0.5s;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  }
+
+  @keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+  }
+
+  .close {
+    color: #444;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .close:hover {
+    color: #000;
+  }
+
+  .modal-section {
+    margin-top: 20px;
+  }
+
+  input[type="file"], input[type="url"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+  }
+
+  #agregarEnlace {
+    background-color: #72c6a0;
+    color: white;
+    padding: 8px 16px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  #agregarEnlace:hover {
+    background-color: #5ba688;
+  }
+
+  ul {
+    list-style-type: disc;
+    margin-top: 10px;
+    margin-left: 20px;
+  }
+
+  ul li {
+    margin-top: 5px;
+    font-size: 14px;
+  }
+
+  .boton-estilo {
+    display: inline-block;
+    padding: 10px;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #2fb4cc;
+    border: 1px solid #2fb4cc;
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    transition: all 600ms ease;
+    margin-bottom: 5px;
+    font-size: 16px;
+  }
+  
+  .boton-estilo:hover {
+    background-color: #2fb4cc;
+    color: #ffffff;
+  }  
