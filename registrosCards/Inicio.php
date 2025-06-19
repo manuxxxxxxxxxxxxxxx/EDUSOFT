@@ -265,9 +265,7 @@
           </div>
         </div>
       </div>
-      <p>
-        VICTOR ME LA CHUPA 
-      </p>
+     
     </footer>
   </div>
 
