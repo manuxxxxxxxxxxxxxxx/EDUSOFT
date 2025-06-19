@@ -60,7 +60,7 @@
       <div class="welcome-section">
         <div class="welcome-content">
           <div class="title-container">
-            <h2>Bienvenido  <span class="highlight"> de nuevo</span></h2>
+            <h2>Bienvenido a nuestra <span class="highlight">plataforma educativa</span></h2>
             <div class="subtitle-animation">
               <p class="typing-text">Desarrollada por estudiantes, para estudiantes y profesores</p>
             </div>
@@ -76,9 +76,9 @@
         </div>
       </div>
 
-      <!-- Tarjetas de usuario con diseño asimétrico -->
+      <!-- Tarjetas de usuario con diseño de 3 columnas -->
       <div class="user-selection-area">
-        <div class="selection-grid">
+        <div class="selection-grid-three">
           <!-- Tarjeta de Profesor -->
           <div class="user-card professor-card" data-user="professor">
             <div class="card-header">
@@ -141,23 +141,13 @@
               </div>
             </div>
             
-            <button class="access-btn professor-btn" onclick="window.location.href='../registros/inicioProfes.php'">
-              <span class="btn-text">Iniciar  como Profesor</span>
+            <button class="access-btn professor-btn" onclick="window.location.href='../Registros/registroprofe.php'">
+              <span class="btn-text">Acceder como Profesor</span>
               <div class="btn-icon">
                 <i class="fas fa-arrow-right"></i>
               </div>
               <div class="btn-ripple"></div>
             </button>
-          </div>
-
-          <!-- Elemento conector central -->
-          <div class="central-connector">
-            <div class="connector-circle">
-              <div class="inner-circle">
-                <i class="fas fa-exchange-alt"></i>
-              </div>
-            </div>
-            <div class="connector-text">O</div>
           </div>
 
           <!-- Tarjeta de Estudiante -->
@@ -231,8 +221,99 @@
               </div>
             </div>
             
-            <button class="access-btn student-btn" onclick="window.location.href='../registros/inicio.php'">
-              <span class="btn-text"> Iniciar como Estudiante</span>
+            <button class="access-btn student-btn" onclick="redirectToLogin('student')">
+              <span class="btn-text">Acceder como Estudiante</span>
+              <div class="btn-icon">
+                <i class="fas fa-arrow-right"></i>
+              </div>
+              <div class="btn-ripple"></div>
+            </button>
+          </div>
+
+          <!-- NUEVA Tarjeta de Administrador -->
+          <div class="user-card admin-card" data-user="admin">
+            <div class="card-header">
+              <div class="card-number">03</div>
+              <div class="card-category">Administrador</div>
+            </div>
+            
+            <div class="card-illustration">
+              <svg class="custom-svg admin-svg" viewBox="0 0 200 200">
+                <!-- Monitor principal -->
+                <rect x="50" y="60" width="100" height="70" rx="5" fill="#2c3e50" stroke="#34495e" stroke-width="2"/>
+                <rect x="55" y="65" width="90" height="60" fill="#1a252f"/>
+                
+                <!-- Dashboard en pantalla -->
+                <rect x="65" y="75" width="25" height="15" fill="#3498db" opacity="0.8"/>
+                <rect x="95" y="75" width="25" height="15" fill="#e74c3c" opacity="0.8"/>
+                <rect x="125" y="75" width="15" height="15" fill="#2ecc71" opacity="0.8"/>
+                
+                <!-- Gráficos -->
+                <rect x="65" y="95" width="70" height="2" fill="#9fc7e8"/>
+                <rect x="65" y="100" width="50" height="2" fill="#9fc7e8"/>
+                <rect x="65" y="105" width="60" height="2" fill="#9fc7e8"/>
+                
+                <!-- Barras de progreso -->
+                <rect x="65" y="115" width="40" height="3" fill="#3498db"/>
+                <rect x="65" y="120" width="55" height="3" fill="#2ecc71"/>
+                
+                <!-- Base del monitor -->
+                <rect x="90" y="130" width="20" height="15" fill="#7f8c8d"/>
+                <rect x="80" y="145" width="40" height="5" fill="#95a5a6"/>
+                
+                <!-- Elementos de control -->
+                <circle cx="30" cy="80" r="12" fill="#f39c12" opacity="0.7"/>
+                <polygon points="25,80 35,75 35,85" fill="#fff"/>
+                
+                <circle cx="170" cy="80" r="12" fill="#9b59b6" opacity="0.7"/>
+                <rect x="166" y="76" width="8" height="8" fill="#fff"/>
+                
+                <!-- Documentos/reportes -->
+                <rect x="20" y="120" width="20" height="25" fill="#ecf0f1" stroke="#bdc3c7"/>
+                <line x1="25" y1="125" x2="35" y2="125" stroke="#7f8c8d" stroke-width="1"/>
+                <line x1="25" y1="130" x2="35" y2="130" stroke="#7f8c8d" stroke-width="1"/>
+                <line x1="25" y1="135" x2="30" y2="135" stroke="#7f8c8d" stroke-width="1"/>
+                
+                <!-- Configuraciones -->
+                <circle cx="170" cy="120" r="8" fill="none" stroke="#7f8c8d" stroke-width="2"/>
+                <circle cx="170" cy="120" r="3" fill="#7f8c8d"/>
+                <line x1="170" y1="105" x2="170" y2="110" stroke="#7f8c8d" stroke-width="2"/>
+                <line x1="170" y1="130" x2="170" y2="135" stroke="#7f8c8d" stroke-width="2"/>
+                <line x1="155" y1="120" x2="160" y2="120" stroke="#7f8c8d" stroke-width="2"/>
+                <line x1="180" y1="120" x2="185" y2="120" stroke="#7f8c8d" stroke-width="2"/>
+                
+                <!-- Elementos decorativos -->
+                <circle cx="100" cy="30" r="10" fill="rgba(231, 76, 60, 0.3)"/>
+                <polygon points="95,30 105,25 105,35" fill="#e74c3c"/>
+              </svg>
+            </div>
+            
+            <div class="card-content">
+              <h3>Soy Administrador</h3>
+              <p>Panel de control completo para gestionar usuarios, configurar el sistema y supervisar toda la plataforma</p>
+              
+              <div class="features-grid">
+                <div class="feature-item">
+                  <i class="fas fa-users-cog"></i>
+                  <span>Gestión de Usuarios</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-chart-pie"></i>
+                  <span>Reportes y Analytics</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-cogs"></i>
+                  <span>Configuración</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-shield-alt"></i>
+                  <span>Seguridad</span>
+                </div>
+              </div>
+            </div>
+            
+            <button class="access-btn admin-btn" onclick="redirectToLogin('admin')">
+              <span class="btn-text">Acceder como Administrador</span>
               <div class="btn-icon">
                 <i class="fas fa-arrow-right"></i>
               </div>
@@ -242,7 +323,40 @@
         </div>
       </div>
 
-    
+      <!-- Sección de información adicional con diseño innovador -->
+      <div class="additional-section">
+        <div class="section-title">
+          <h3>¿Por qué elegir nuestra plataforma?</h3>
+          <div class="title-underline"></div>
+        </div>
+        
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="card-icon">
+              <i class="fas fa-code"></i>
+            </div>
+            <h4>Desarrollado por Estudiantes</h4>
+            <p>Creado por estudiantes de bachillerato técnico que entienden las necesidades reales del aprendizaje moderno</p>
+          </div>
+          
+          <div class="info-card">
+            <div class="card-icon">
+              <i class="fas fa-rocket"></i>
+            </div>
+            <h4>Tecnología Moderna</h4>
+            <p>Utilizamos las últimas tecnologías web para ofrecer una experiencia rápida, segura y confiable</p>
+          </div>
+          
+          <div class="info-card">
+            <div class="card-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h4>Comunidad Activa</h4>
+            <p>Únete a una comunidad de aprendizaje donde estudiantes y profesores colaboran activamente</p>
+          </div>
+        </div>
+      </div>
+    </main>
 
     <!-- Footer con diseño único -->
     <footer class="selection-footer">
@@ -265,7 +379,6 @@
           </div>
         </div>
       </div>
-     
     </footer>
   </div>
 
