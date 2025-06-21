@@ -1,16 +1,6 @@
 <?php 
-$ServerName = "localhost";
-$UserName = "root";
-$PassWord = "";
-$DbName = "edusoft";
 
-$conn = new mysqli($ServerName, $UserName, $PassWord, $DbName);
-
-if($conn->connect_error)
-{
-    die("Conexion fallida" . $conn->connect_error);
-}
-
+require_once "../conexiones/conexion.php";
 
 $nombre = $_POST["Nombre"];
 $email = $_POST["Email"];
@@ -25,13 +15,10 @@ $stm->bind_param("sss", $nombre, $email, $pass_hash);
 
 if ($stm->execute()){
     echo"Usuario ingresado";
-    header ("Location: ../Registros/Inicio.php");
 } else {
     echo"ERROR" . $stm->error;
 }
 
 $stm->close();
 $conn->close();
-
-
-?>
+?> 

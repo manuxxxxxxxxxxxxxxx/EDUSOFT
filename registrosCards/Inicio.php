@@ -312,7 +312,7 @@
               </div>
             </div>
             
-            <button class="access-btn admin-btn" onclick="redirectToLogin('admin')">
+            <button class="access-btn admin-btn" onclick="window.location.href='../Registros/admin.php'">
               <span class="btn-text">Acceder como Administrador</span>
               <div class="btn-icon">
                 <i class="fas fa-arrow-right"></i>

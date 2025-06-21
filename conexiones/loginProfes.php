@@ -1,17 +1,7 @@
 <?php
 session_start();
 
-// Conexión a la base de datos
-$ServerName = "localhost";
-$UserName = "root";
-$PassWord = "";
-$DbName = "edusoft";
-
-$conn = new mysqli($ServerName, $UserName, $PassWord, $DbName);
-
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
-}
+require_once "../conexiones/conexion.php";
 
 // Validaciones básicas
 if (empty($_POST["Nombre"]) || empty($_POST["Pass"])) {
