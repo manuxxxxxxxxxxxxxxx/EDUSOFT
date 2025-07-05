@@ -39,7 +39,7 @@
                         </label>
                    </div>
                    
-                    <input type="submit" value="Registrarse">
+                    <input type="submit" value="Ingresar">
                     <div class="alerta-error">Todos los campos son obligatorios</div>
                     <div class="alerta-exito">Te registraste correctamente</div>
                 </form>

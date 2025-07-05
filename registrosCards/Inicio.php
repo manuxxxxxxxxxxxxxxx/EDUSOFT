@@ -141,7 +141,7 @@
               </div>
             </div>
             
-            <button class="access-btn professor-btn" onclick="window.location.href='../Registros/registroprofe.php'">
+            <button class="access-btn professor-btn" onclick="window.location.href='../Registros/inicioProfes.php'">
               <span class="btn-text">Acceder como Profesor</span>
               <div class="btn-icon">
                 <i class="fas fa-arrow-right"></i>
@@ -221,7 +221,7 @@
               </div>
             </div>
             
-            <button class="access-btn student-btn" onclick="redirectToLogin('student')">
+            <button class="access-btn student-btn" onclick="window.location.href='../Registros/inicio.php'">
               <span class="btn-text">Acceder como Estudiante</span>
               <div class="btn-icon">
                 <i class="fas fa-arrow-right"></i>

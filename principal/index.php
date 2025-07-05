@@ -23,7 +23,7 @@
                     <ul>
                         <li><a href="../registrosCards/Inicio.php">Inicia sesion </a></li>
                         <li><a href="../contactanos/contactanos.php">Contactanos </a></li>
-                        <li><a href="">Nosotros</a></li>
+                        <li><a href="../educadores/maestros.php">Nosotros</a></li>
                     </ul>
                 </div>
             </nav> 

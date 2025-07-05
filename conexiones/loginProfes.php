@@ -1,7 +1,17 @@
 <?php
 session_start();
 
-require_once "../conexiones/conexion.php";
+// Conexión a la base de datos
+$ServerName = "localhost";
+$UserName = "root";
+$PassWord = "";
+$DbName = "edusoft";
+
+$conn = new mysqli($ServerName, $UserName, $PassWord, $DbName);
+
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
 
 // Validaciones básicas
 if (empty($_POST["Nombre"]) || empty($_POST["Pass"])) {
@@ -26,6 +36,7 @@ if ($stmt->num_rows === 1) {
     if (password_verify($pass, $pass_hash)) {
         $_SESSION['nombre'] = $nombre;
             echo "Login exitoso. Bienvenido,  " . $nombre;
+             header ("Location: ../frontend_maestros/index.php");
             exit;
         } else {
             echo "Contraseña incorrecta.";

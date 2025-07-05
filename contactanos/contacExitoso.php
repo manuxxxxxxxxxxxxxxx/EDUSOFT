@@ -10,7 +10,7 @@
 <div class="mensaje-container">
     <h1>Mensaje enviado con éxito</h1>
     <p>Su mensaje será respondido lo más pronto posible.</p>
-    <a href="../index.php" class="button">Regresar a la página principal</a>
+    <a href="../principal/index.php" class="button">Regresar a la página principal</a>
 </div>
 
 </body>
