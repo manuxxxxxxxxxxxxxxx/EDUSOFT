@@ -9,6 +9,39 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
+    <?php
+    if (!isset($_SESSION['id_estudiante'])) {
+    echo "⚠️ Debes iniciar sesión como estudiante para acceder a esta materia.";
+    exit;
+}
+include '../conexiones/conexion.php';
+
+$id_estudiante = $_SESSION['id_estudiante'];
+$materia = 'biologia';
+session_start();
+
+
+
+
+// Obtener tareas que subió este estudiante en esta materia
+$sql = "SELECT nombre_archivo, ruta_archivo, fecha_subida FROM tareas WHERE id_estudiante = ? AND materia = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("is", $id_estudiante, $materia);
+$stmt->execute();
+$resultado = $stmt->get_result();
+
+if ($resultado->num_rows > 0) {
+    echo "<h3>📂 Tareas que has subido:</h3><ul>";
+    while ($fila = $resultado->fetch_assoc()) {
+        echo "<li><a href='" . $fila['ruta_archivo'] . "' target='_blank'>" . $fila['nombre_archivo'] . "</a> – " . $fila['fecha_subida'] . "</li>";
+    }
+    echo "</ul>";
+} else {
+    echo "<p>Aún no has subido ninguna tarea para esta materia.</p>";
+}
+?>
+
+
     <div class="sidebar">
         <div class="sidebar-logo">
             <i class="fas fa-dna"></i>
@@ -72,7 +105,16 @@
                         <span>Tarea de Biología Celular</span>
                         <p>Resolver los problemas de biología celular del capítulo 3.</p>
                         <small>Fecha límite: 10 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
+                        <h2>Sube tu tarea de Biología</h2>
+<form action="subir_tarea.php" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="materia" value="biologia">
+    <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>"> <!-- o como estés guardando la sesión -->
+    
+    <label for="archivo">Archivo (PDF, DOCX, JPG...):</label>
+    <input type="file" name="archivo" id="archivo" required><br><br>
+
+    <button type="submit">Subir tarea</button>
+</form>
                     </li>
                     <li>
                         <i class="fas fa-dna"></i>
