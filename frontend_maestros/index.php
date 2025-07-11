@@ -114,7 +114,7 @@
                         <b>Lectura de Lengua</b> - Entregas: 18/20 - <span style="color:blue;">Calificado</span>
                     </li>
                 </ul>
-                <button class="quick-action" disabled>Crear tarea</button>
+                <button class="quick-action" onclick="window.location.href='subir_tarea.php'">Crear tarea</button>
             </div>
         </div>
         <!-- MATERIALES -->
