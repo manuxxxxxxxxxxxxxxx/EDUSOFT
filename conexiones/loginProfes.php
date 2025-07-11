@@ -34,7 +34,9 @@ if ($stmt->num_rows === 1) {
     $stmt->fetch();
 
     if (password_verify($pass, $pass_hash)) {
-        $_SESSION['nombre'] = $nombre;
+       $_SESSION["id"] = $id;
+        $_SESSION["nombre"] = $nombre;
+        $_SESSION["rol"] = "profesor"; // Aquí se define el rol
             echo "Login exitoso. Bienvenido,  " . $nombre;
              header ("Location: ../frontend_maestros/index.php");
             exit;

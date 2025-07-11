@@ -20,13 +20,13 @@ $stmt->execute();
 $stmt->store_result();
 
 if ($stmt->num_rows === 1) {
-    $stmt->bind_result($id, $nombreDB, $pass_hash);
+    $stmt->bind_result($id, $nombre, $pass_hash);
     $stmt->fetch();
 
     if (password_verify($pass, $pass_hash)) {
-        $_SESSION['id_estudiante'] = $id;
-        $_SESSION['nombre'] = $nombreDB;
-
+        $_SESSION["id"] = $id;
+        $_SESSION["nombre"] = $nombre;
+        $_SESSION["rol"] = "estudiante"; // Aquí se define el rol
         header("Location: ../cursos.php");
         exit;
     } else {
