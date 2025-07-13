@@ -20,7 +20,7 @@
     <!-- Navbar Vertical -->
     <nav class="sidebar collapsed">
       <div class="sidebar-header">
-        <img src="/placeholder.svg?height=60&width=60" alt="Logo Colegio Balbuena" class="logo">
+        <img src="../img/ELEFANTE.png" alt="Logo Colegio Balbuena" class="logo">
         <h2>EDUSOFT</h2>
         <button id="collapse-toggle" class="collapse-toggle">
           <i class="fas fa-chevron-left"></i>

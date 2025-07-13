@@ -27,7 +27,7 @@
       <div class="header-content">
         <div class="logo-section">
           <div class="logo-container">
-            <img src="/placeholder.svg?height=60&width=60" alt="Logo Colegio Balbuena" class="logo">
+            <img src="../img/ELEFANTE.PNG" alt="Logo Colegio Balbuena" class="logo">
             <div class="logo-pulse"></div>
           </div>
           <div class="logo-text">

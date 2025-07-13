@@ -27,7 +27,7 @@
       <div class="header-content">
         <div class="logo-section">
           <div class="logo-container">
-            <img src="/placeholder.svg?height=60&width=60" alt="Logo Colegio Balbuena" class="logo">
+            <img src="../img/ELEFANTE.png" alt="Logo Colegio Balbuena" class="logo">
             <div class="logo-pulse"></div>
           </div>
           <div class="logo-text">
@@ -60,7 +60,7 @@
       <div class="welcome-section">
         <div class="welcome-content">
           <div class="title-container">
-            <h2>Bienvenido a nuestra <span class="highlight">plataforma educativa</span></h2>
+            <h2>Bienvenido de nuevo a <span class="highlight"> nuestra plataforma educativa</span></h2>
             <div class="subtitle-animation">
               <p class="typing-text">Desarrollada por estudiantes, para estudiantes y profesores</p>
             </div>
