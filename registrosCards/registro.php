@@ -33,7 +33,7 @@
           <div class="logo-text">
             <h1>EDUSOFT</h1>
             <p>Innovación Educativa Digital</p>
-            <div class="code-snippet">&lt;/educación&gt;</div>
+            
           </div>
         </div>
         

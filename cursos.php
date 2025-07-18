@@ -1,9 +1,9 @@
 <?php 
     session_start();
-        if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "estudiante") {
+      if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "estudiante") {
         header("Location: ../loginAlumno.php");
         exit;
-        }
+      }
  ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -110,7 +110,7 @@
       </ul>
       
       <div class="sidebar-footer">
-        <a href="#" class="sidebar-link" title="Cerrar sesion">
+        <a href="../conexiones/logout.php" class="sidebar-link" title="Cerrar sesión">
           <i class="fas fa-sign-in-alt"></i>
           <span>Cerrar sesion</span>
         </a>
@@ -124,7 +124,7 @@
           <i class="fas fa-bars"></i>
         </button>
         <div class="user-info">
-          <span>Bienvenido</span>
+          <span>Bienvenido <?= isset($_SESSION['nombre']) ? htmlspecialchars($_SESSION['nombre']) : 'estudiante'; ?></span>
           <a href="#" class="user-link">
             <i class="fas fa-user-circle"></i>
           </a>
@@ -142,6 +142,7 @@
             <img src="../img/biologia.jpg" class="card-img" alt="Biología">
           </div>
           <div class="card-content">
+            <h2>1</h2>
             <p class="card-title">Biología</p>
             <a href="../materias/biologia.php" class="btn">Más información</a>
           </div>

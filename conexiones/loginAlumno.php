@@ -13,18 +13,18 @@ $pass = $_POST["Pass"];
 $pass_hash = password_hash($pass, PASSWORD_DEFAULT);
 
 // Consulta por nombre
-$sql = "SELECT id, Nombre, Pass FROM estudiantes WHERE Nombre = ?";
+$sql = "SELECT id_estudiante, Nombre, Pass FROM estudiantes WHERE Nombre = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $nombre);
 $stmt->execute();
 $stmt->store_result();
 
 if ($stmt->num_rows === 1) {
-    $stmt->bind_result($id, $nombre, $pass_hash);
+    $stmt->bind_result($id_estudiante, $nombre, $pass_hash);
     $stmt->fetch();
 
     if (password_verify($pass, $pass_hash)) {
-        $_SESSION["id"] = $id;
+        $_SESSION["id_estudiante"] = $id;
         $_SESSION["nombre"] = $nombre;
         $_SESSION["rol"] = "estudiante"; // Aquí se define el rol
         header("Location: ../cursos.php");

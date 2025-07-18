@@ -11,7 +11,7 @@
 <div class="container-form register">
         <div class="information">
             <div class="info-childs">
-                <h2>Bienvenido denuevo estudiante</h2>
+                <h2>Bienvenido de nuevo estudiante</h2>
                 <br>
                 <img src="../img/2.png" alt="" height="200px" weight="220px">
             </div>
