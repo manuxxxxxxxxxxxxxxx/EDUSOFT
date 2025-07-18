@@ -1,10 +1,14 @@
 <?php 
+require_once "../conexiones/conexion.php"; 
+
     session_start();
         if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "profesor") {
               die("Acceso denegado. No eres profesor.");
         header("Location: ../loginProfes.php");
         exit;
         }
+$profesor_id = $_SESSION['id'];
+$nombre = $_SESSION['nombre'];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -21,7 +25,7 @@
     </button>
     <div class="sidebar">
         <img id="profile-img" src="https://ui-avatars.com/api/?name=Maestro+Ejemplo" alt="Foto de perfil del Maestro Ejemplo">
-        <h2 id="profile-name">Maestro Ejemplo</h2>
+        <h2 id="profile-name">Docente <?php echo htmlspecialchars($nombre); ?></h2>
         <nav>
             <a href="#" class="active"><i class="fas fa-home"></i>Inicio</a>
             <a href="#"><i class="fas fa-book"></i>Cursos <span class="badge">3</span></a>
@@ -58,7 +62,7 @@
                 </div>
             </div>
             <div class="section">
-                <h2>Bienvenido, <span id="welcome-name">Maestro Ejemplo</span></h2>
+                <h2>Bienvenido, <span id="welcome-name">Docente  <?php echo htmlspecialchars($nombre); ?> </span></h2>
                 <p>Desde este panel puedes gestionar tus cursos, tareas, materiales, avisos y comunicarte con tus alumnos.</p>
             </div>
             <div class="section">
@@ -71,15 +75,33 @@
             </div>
         </div>
         <!-- CURSOS -->
+        <?php
+        // Consulta para traer las clases de este profesor
+        $sql = "SELECT id, nombre_clase, materia FROM clases WHERE profesor_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $profesor_id);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $clases = $resultado->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        ?>
         <div id="seccion-cursos" class="seccion-panel" style="display:none;">
             <div class="section">
                 <h3>Mis cursos</h3>
                 <input type="button" value="Crear curso" class="quick-action" onclick="window.location.href='../frontend_maestros/crear_curso.php'">
-                <ul id="cursos-lista">
-                    <li>Matemáticas 2°A <span class="badge">23 alumnos</span></li>
-                    <li>Historia 1°B <span class="badge">18 alumnos</span></li>
-                    <li>Lengua 3°C <span class="badge">20 alumnos</span></li>
-                </ul>
+                    <ul id="cursos-lista">
+                        <ul id="cursos-lista">
+                                <?php if (count($clases) > 0): ?>
+                                <?php foreach ($clases as $clase): ?>
+                            <li>
+                                <a href="../materias<?php echo $clase['materia']; ?>.php?id_clase=<?php echo $clase['id']; ?>">
+                                <?php echo htmlspecialchars($clase['nombre_clase']); ?> – <?php echo ucfirst($clase['materia']); ?>
+                            </li>
+                                <?php endforeach; ?>
+                                <?php else: ?>
+                            <li>No has creado ninguna clase aún.</li>
+                                 <?php endif; ?>
+                    </ul>
             </div>
         </div>
         <!-- ALUMNOS -->
