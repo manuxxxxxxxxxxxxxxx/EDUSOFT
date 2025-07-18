@@ -29,6 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($stmt->execute()) {
             $mensaje = "Clase creada con éxito.";
+            header("Location: ../frontend_maestros/index.php");
+            exit;
         } else {
             $mensaje = "Error al crear clase: " . $stmt->error;
         }

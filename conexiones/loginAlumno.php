@@ -27,8 +27,8 @@ if ($stmt->num_rows === 1) {
         $_SESSION["id"] = $id;
         $_SESSION["nombre"] = $nombre;
         $_SESSION["rol"] = "estudiante"; // Aquí se define el rol
-        header("Location: ../cursos.php");
-        exit;
+        eader("Location: ../cursos.php");
+        exit;h
     } else {
         echo "❌ Contraseña incorrecta.";
     }
