@@ -74,6 +74,7 @@
         <div id="seccion-cursos" class="seccion-panel" style="display:none;">
             <div class="section">
                 <h3>Mis cursos</h3>
+                <input type="button" value="Crear curso" class="quick-action" onclick="window.location.href='../frontend_maestros/crear_curso.php'">
                 <ul id="cursos-lista">
                     <li>Matemáticas 2°A <span class="badge">23 alumnos</span></li>
                     <li>Historia 1°B <span class="badge">18 alumnos</span></li>

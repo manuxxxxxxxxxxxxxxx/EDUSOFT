@@ -23,14 +23,14 @@ $pass = $_POST["Pass"];
 $pass_hash = password_hash($pass, PASSWORD_DEFAULT);
 
 // Consulta por nombre
-$sql = "SELECT Nombre, Pass FROM profesores WHERE Nombre = ?";
+$sql = "SELECT id, Nombre, Pass FROM profesores WHERE Nombre = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $nombre);
 $stmt->execute();
 $stmt->store_result();
 
 if ($stmt->num_rows === 1) {
-    $stmt->bind_result($nombre, $pass_hash);
+    $stmt->bind_result($id, $nombre, $pass_hash);
     $stmt->fetch();
 
     if (password_verify($pass, $pass_hash)) {

@@ -37,6 +37,14 @@
 </html>
 
 -->
+<?php 
+    session_start();
+        if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "profesor") {
+              die("Acceso denegado. No eres profesor.");
+        header("Location: ../loginProfes.php");
+        exit;
+        }
+?>s
 <!DOCTYPE html>
 <html lang="es">
 <head>
