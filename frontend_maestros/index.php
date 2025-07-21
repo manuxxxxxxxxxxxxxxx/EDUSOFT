@@ -94,7 +94,7 @@ $nombre = $_SESSION['nombre'];
                                 <?php if (count($clases) > 0): ?>
                                 <?php foreach ($clases as $clase): ?>
                             <li>
-                                <a href="../materias<?php echo $clase['materia']; ?>.php?id_clase=<?php echo $clase['id']; ?>">
+                                <a href="../materias/<?php echo $clase['materia']; ?>.php?id_clase=<?php echo $clase['id']; ?>">
                                 <?php echo htmlspecialchars($clase['nombre_clase']); ?> – <?php echo ucfirst($clase['materia']); ?>
                             </li>
                                 <?php endforeach; ?>

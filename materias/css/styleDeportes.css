@@ -1,0 +1,753 @@
+/* materias/css/styleGeneral.css */
+
+/* Fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@700&display=swap');
+
+/* General Body and Main Content */
+body {
+    font-family: "Montserrat", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(120deg, #e3f0ff 0%, #d6e6ff 100%); /* Fondo general pastel */
+    min-height: 100vh;
+    display: flex;
+}
+
+/* Sidebar AZUL PASTEL */
+.sidebar {
+    width: 240px;
+    background: #e3f0ff; /* Fondo del sidebar pastel */
+    min-height: 100vh;
+    box-shadow: 2px 0 16px rgba(100,150,255,0.07);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 32px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
+}
+.sidebar-logo {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #6ea8fe; /* Color del logo pastel */
+    margin-bottom: 36px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: 1px;
+}
+/* El color del icono del logo del sidebar se establecerá directamente en el HTML de cada página */
+.sidebar-logo i {
+    font-size: 1.2em;
+}
+
+.sidebar nav {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.sidebar nav button {
+    background: none;
+    border: none;
+    color: #234567; /* Color de texto normal en sidebar */
+    font-size: 1.08em;
+    font-weight: 600;
+    padding: 16px 32px;
+    text-align: left;
+    width: 100%;
+    border-radius: 0 24px 24px 0;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    outline: none;
+}
+.sidebar nav button.active, .sidebar nav button:hover {
+    background: linear-gradient(90deg, #b6e0fe 60%, #6ea8fe 100%); /* Color de hover/activo del sidebar */
+    color: #fff;
+}
+
+/* Main Content Area */
+.main-content {
+    margin-left: 240px; /* Offset para el sidebar */
+    width: 100%;
+    min-height: 100vh;
+    background: transparent; /* Permite ver el fondo degradado del body */
+    display: flex; /* Añadido para que header y main se apilen correctamente */
+    flex-direction: column; /* Añadido para que header y main se apilen correctamente */
+    overflow: auto; /* Permite scroll si el contenido es muy largo */
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 40px 18px 40px;
+    background: transparent; /* Header transparente para ver el fondo del body */
+    border-bottom: none;
+    box-shadow: none;
+}
+.logo.modern-back {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.25em;
+    color: #234567; /* Color del texto del logo */
+    transition: color 0.2s;
+}
+.logo.modern-back:hover {
+    color: #6ea8fe; /* Color de hover del logo */
+}
+.back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #b6e0fe 60%, #6ea8fe 100%); /* Color del botón de atrás pastel */
+    color: #fff;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    font-size: 1.25em;
+    box-shadow: 0 2px 8px #b6e0fe33;
+    margin-right: 6px;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+.logo.modern-back:hover .back-btn {
+    background: linear-gradient(135deg, #6ea8fe 60%, #b6e0fe 100%); /* Color de hover del botón de atrás pastel */
+    box-shadow: 0 4px 16px #6ea8fe44;
+    transform: scale(1.08);
+}
+.header-title {
+    letter-spacing: 1px;
+    font-size: 1.08em;
+    color: #234567; /* Color del título del header */
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.header-materia {
+    background: linear-gradient(90deg, #b6e0fe 60%, #6ea8fe 100%); /* Color de la materia en el header pastel */
+    color: #fff;
+    border-radius: 8px;
+    padding: 2px 12px;
+    margin-left: 10px;
+    font-size: 0.95em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    box-shadow: 0 1px 6px #b6e0fe33;
+    transition: background 0.2s;
+}
+.icons span {
+    margin-left: 18px;
+    cursor: pointer;
+    font-size: 1.5em;
+    color: #234567; /* Color de los iconos del header */
+    transition: color 0.2s;
+}
+.icons span:hover {
+    color: #6ea8fe; /* Color de hover de los iconos del header */
+}
+
+/* Main content area for sections (Tablón, Tareas, Alumnos, Avisos) */
+main {
+    max-width: 1100px;
+    margin: 32px auto;
+    padding: 0 16px;
+    flex-grow: 1; /* Permite que main ocupe el espacio restante */
+}
+
+/* Secciones (Tablón, Tareas, Alumnos, Avisos) */
+.seccion {
+    background: #f6faff; /* Fondo de las secciones pastel */
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(100,150,255,0.08);
+    padding: 32px;
+    margin-bottom: 32px;
+    animation: fadeInUp 0.7s;
+    opacity: 1;
+    transition: opacity 0.18s;
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+.seccion h2 {
+    color: #234567;
+    margin-bottom: 25px;
+    font-size: 2em;
+    border-bottom: 2px solid #e3f0ff; /* Borde inferior pastel */
+    padding-bottom: 15px;
+}
+
+/* Content (Profesor y Tareas/Anuncios) */
+.content {
+    display: flex;
+    gap: 32px;
+    background: #f6faff; /* Fondo del content pastel */
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(100,150,255,0.08);
+    padding: 32px;
+    align-items: flex-start;
+}
+.profesor {
+    width: 220px;
+    text-align: center;
+    padding: 16px 0;
+}
+.avatar-modern {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 12px auto;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #b6e0fe 40%, #6ea8fe 100%); /* Fondo del avatar pastel */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5em;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(100,150,255,0.10);
+    /* Las imágenes de avatar se establecerán directamente en el HTML */
+    background-size: cover;
+    background-position: center;
+}
+.profesor p {
+    margin: 0;
+    color: #444;
+    line-height: 1.4;
+}
+.profesor strong {
+    color: #234567;
+    font-size: 1.1em;
+}
+
+.anuncios, .tareas-container {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+}
+
+/* Tarjetas de Tarea */
+.tarea {
+    background: rgba(255,255,255,0.7); /* Fondo de tarea transparente pastel */
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(100,150,255,0.07);
+    padding: 24px 18px;
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
+    border: 1.5px solid #e3f0ff; /* Borde de tarea pastel */
+    position: relative;
+    backdrop-filter: blur(2px);
+    animation: fadeInUp 0.6s;
+}
+.tarea:hover {
+    box-shadow: 0 8px 32px rgba(100,150,255,0.13);
+    transform: translateY(-6px) scale(1.03);
+    border-color: #6ea8fe; /* Borde de hover de tarea pastel */
+    background: #e3f0ff; /* Fondo de hover de tarea pastel */
+}
+.tarea h4 {
+    margin: 0 0 10px 0;
+    color: #6ea8fe; /* Color de título de tarea pastel */
+    font-size: 1.1em;
+    font-weight: bold;
+}
+.tarea p {
+    margin: 0;
+    color: #234567; /* Color de texto de tarea */
+    font-size: 0.98em;
+}
+
+/* List Styles (Tareas, Alumnos, Avisos) */
+.lista-tareas, .lista-alumnos, .lista-avisos {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.lista-tareas li, .lista-alumnos li, .lista-avisos li {
+    background: rgba(255,255,255,0.7); /* Fondo de lista transparente pastel */
+    border-radius: 12px;
+    box-shadow: 0 1px 6px rgba(100,150,255,0.07);
+    padding: 22px 18px;
+    margin-bottom: 18px;
+    border-left: 5px solid #6ea8fe; /* Borde de lista pastel */
+    position: relative;
+    transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
+    backdrop-filter: blur(1.5px);
+    animation: fadeInUp 0.7s;
+    display: flex; /* Añadido para mejor control del layout */
+    align-items: center; /* Centra verticalmente los elementos */
+    gap: 12px; /* Espacio entre elementos */
+}
+.lista-tareas li:hover, .lista-alumnos li:hover, .lista-avisos li:hover {
+    box-shadow: 0 4px 16px rgba(100,150,255,0.13);
+    border-color: #b6e0fe; /* Borde de hover de lista pastel */
+    background: #e3f0ff; /* Fondo de hover de lista pastel */
+}
+.lista-tareas li i, .lista-alumnos li i, .lista-avisos li i {
+    color: #6ea8fe; /* Color de icono de lista pastel */
+    font-size: 1.3em;
+    vertical-align: middle;
+}
+.lista-tareas li span, .lista-alumnos li span, .lista-avisos li span {
+    font-weight: bold;
+    color: #234567;
+    font-size: 1.08em;
+    flex-grow: 1; /* Permite que el span ocupe el espacio */
+}
+.lista-tareas li p, .lista-alumnos li p, .lista-avisos li p {
+    margin: 0; /* Ajustado para que no haya margen superior/inferior excesivo */
+    color: #444;
+    font-size: 0.97em;
+    flex-grow: 2; /* Permite que el párrafo ocupe más espacio */
+}
+.lista-tareas li small, .lista-alumnos li small, .lista-avisos li small {
+    color: #888;
+    font-size: 0.93em;
+    white-space: nowrap; /* Evita que la fecha se rompa en varias líneas */
+}
+
+/* Boton de "Añadir tarea" */
+.boton-estilo {
+    display: inline-block;
+    padding: 10px 22px;
+    margin-top: 12px;
+    text-decoration: none;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #b6e0fe 60%, #6ea8fe 100%); /* Color de botón pastel */
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(100,150,255,0.09);
+    transition: background 0.3s, transform 0.2s;
+    white-space: nowrap; /* Evita que el texto del botón se rompa */
+}
+.boton-estilo:hover {
+    background: linear-gradient(90deg, #6ea8fe 60%, #b6e0fe 100%); /* Color de hover de botón pastel */
+    transform: scale(1.04);
+}
+
+/* MODAL AZUL PASTEL */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(100,150,255,0.10); /* Fondo de modal semitransparente pastel */
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px); /* Desenfoque de fondo para el modal */
+}
+/* Forcibly apply display: flex if the style attribute is set to flex */
+.modal[style*="display: flex"] {
+    display: flex !important;
+}
+.modal-content {
+    background: #f6faff; /* Fondo del contenido del modal pastel */
+    margin: auto;
+    padding: 32px 28px;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(100,150,255,0.18);
+    width: 95%;
+    max-width: 500px;
+    animation: animatetop 0.5s;
+    position: relative;
+    display: block;
+}
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+.close {
+    color: #888;
+    position: absolute;
+    top: 18px; right: 24px;
+    font-size: 2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.close:hover {
+    color: #6ea8fe; /* Color de hover de cerrar modal pastel */
+}
+.modal-content h2 {
+    color: #234567;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    border-bottom: 2px solid #e3f0ff; /* Borde inferior de título modal pastel */
+    padding-bottom: 10px;
+}
+.modal-content p {
+    color: #555;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+.modal-section {
+    margin-top: 22px;
+}
+.modal-section label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #444;
+}
+input[type="file"], input[type="url"] {
+    width: calc(100% - 20px); /* Ajustado para padding */
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    font-size: 1em;
+    color: #555;
+    box-sizing: border-box; /* Incluir padding y borde en el ancho */
+}
+#agregarEnlace {
+    background: linear-gradient(90deg, #b6e0fe 60%, #6ea8fe 100%); /* Color de botón de agregar enlace pastel */
+    color: white;
+    padding: 8px 18px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(100,150,255,0.09); /* Sombra para el botón */
+    transition: background 0.3s, transform 0.2s;
+}
+#agregarEnlace:hover {
+    background: linear-gradient(90deg, #6ea8fe 60%, #b6e0fe 100%); /* Color de hover de botón de agregar enlace pastel */
+    transform: scale(1.04);
+}
+.modal-section ul {
+    list-style: none; /* Cambiado a none para un estilo más limpio */
+    padding: 0;
+    margin-top: 10px;
+}
+.modal-section ul li {
+    background-color: #eef7ff; /* Fondo de elemento de lista en modal pastel */
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    color: #555;
+    border: 1px solid #d6e6ff; /* Borde suave para los ítems */
+}
+.modal-section ul li a {
+    color: #6ea8fe; /* Color de enlaces en modal pastel */
+    text-decoration: none;
+}
+.modal-section ul li a:hover {
+    text-decoration: underline;
+}
+
+/* -------------------------------------------------------------------------------------- */
+/* --- ESTILOS ESPECÍFICOS PARA LOS BANNERS DE CADA MATERIA (SOLO AFECTAN AL BANNER) --- */
+/* -------------------------------------------------------------------------------------- */
+
+/* BANNER BASE (Para el que me pasaste de Mate) */
+/* Todos los banners tendrán estas propiedades base. Los demás sobrescribirán el `background` y `box-shadow` */
+.banner {
+    background: linear-gradient(120deg, #ffb6b9 0%, #fa7e7e 100%); /* Rojizo pastel */
+    position: relative;
+    overflow: hidden;
+    padding: 70px 0 50px 0;
+    text-align: center;
+    color: #234567;
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(250,126,126,0.13), 0 2px 24px #ffb6b955;
+    margin-bottom: 32px;
+    letter-spacing: 2px;
+    text-shadow: none;
+    backdrop-filter: blur(2px);
+    isolation: isolate;
+}
+.banner::before { /* Círculo grande flotante */
+    content: '';
+    position: absolute;
+    top: -60px; left: -80px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, #fff7 50%, transparent 80%);
+    border-radius: 50%;
+    z-index: 2;
+    animation: float1 7s infinite alternate;
+    filter: blur(2px);
+}
+.banner::after { /* SVG de fondo animado */
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* El SVG específico se definirá por cada clase de banner-MATERIA */
+    opacity: 0.55;
+    z-index: 1;
+    pointer-events: none;
+    animation: float2 12s infinite alternate;
+}
+.banner .abstract-shape { /* Forma adicional flotante */
+    position: absolute;
+    right: 10%; top: 10%;
+    width: 90px; height: 90px;
+    /* El background-gradient se definirá por cada clase de banner-MATERIA */
+    border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
+    filter: blur(2px);
+    opacity: 0.7;
+    z-index: 3;
+    animation: morph 8s infinite alternate;
+}
+
+/* Animaciones (son las mismas para todos los banners) */
+@keyframes float1 {
+    to { transform: translateY(40px) scale(1.08);}
+}
+@keyframes float2 {
+    to { background-position: 60px 20px; }
+}
+@keyframes morph {
+    0% {
+        border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
+        transform: scale(1) rotate(0deg);
+    }
+    100% {
+        border-radius: 60% 40% 40% 60% / 40% 60% 40% 60%;
+        transform: scale(1.08) rotate(12deg);
+    }
+}
+.banner h1 {
+    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 3em;
+    letter-spacing: 0.06em;
+    /* El color y el border-bottom se definirán por cada clase de banner-MATERIA */
+    text-transform: uppercase;
+    margin: 0 auto;
+    padding-bottom: 0.25em;
+    line-height: 1.08;
+    display: inline-block;
+    background: none;
+    box-shadow: none;
+    animation: fadeInModern 0.7s cubic-bezier(.4,1.4,.6,1) both;
+    position: relative; /* Asegura que esté por encima de ::after y .abstract-shape */
+    z-index: 4; /* Mayor que los elementos de fondo */
+}
+@keyframes fadeInModern {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+#particles-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* Asegura que esté en la capa más baja del banner */
+    pointer-events: none;
+    display: block;
+}
+
+/* --------------------------- BANNERS ESPECÍFICOS POR MATERIA --------------------------- */
+
+/* BANNER MATEMÁTICAS (Tu diseño original) */
+.banner.banner-matematicas {
+    background: linear-gradient(120deg, #ffb6b9 0%, #fa7e7e 100%); /* Rojizo pastel */
+    box-shadow: 0 8px 32px rgba(250,126,126,0.13), 0 2px 24px #ffb6b955;
+}
+.banner.banner-matematicas::after {
+    background: url('data:image/svg+xml;utf8,<svg width="700" height="220" xmlns="http://www.w3.org/2000/svg"><circle cx="120" cy="110" r="70" fill="%23fff2"/><circle cx="350" cy="70" r="50" fill="%23ffb6b955"/><circle cx="600" cy="140" r="90" fill="%23fa7e7e55"/><ellipse cx="500" cy="60" rx="30" ry="12" fill="%23ffb6b9aa"/><ellipse cx="200" cy="180" rx="40" ry="15" fill="%23fa7e7eaa"/></svg>') no-repeat center/cover;
+}
+.banner.banner-matematicas .abstract-shape {
+    background: linear-gradient(135deg, #fff8 60%, #fa7e7ecc 100%);
+}
+.banner.banner-matematicas h1 {
+    color: #234567; /* Color del texto del banner de Matemáticas */
+    border-bottom: 3px solid #fa7e7e; /* Borde del texto del banner de Matemáticas */
+}
+
+
+/* BANNER CIENCIA (Verdoso pastel) */
+.banner.banner-ciencia {
+    background: linear-gradient(120deg, #A5D6A7 0%, #E8F5E9 100%); /* Tonos de verde pastel */
+    box-shadow: 0 8px 32px rgba(76,175,80,0.10), 0 2px 24px #A5D6A755;
+}
+.banner.banner-ciencia::after {
+    background: url('data:image/svg+xml;utf8,<svg width="700" height="220" xmlns="http://www.w3.org/2000/svg"><circle cx="120" cy="110" r="70" fill="%23fff2"/><circle cx="350" cy="70" r="50" fill="%23A5D6A755"/><circle cx="600" cy="140" r="90" fill="%23E8F5E955"/><path d="M50 100 Q150 50 250 100 T450 100 T650 100" fill="none" stroke="%23A5D6A7aa" stroke-width="2"/><ellipse cx="500" cy="60" rx="30" ry="12" fill="%23A5D6A7aa"/><ellipse cx="200" cy="180" rx="40" ry="15" fill="%23E8F5E9aa"/></svg>') no-repeat center/cover;
+}
+.banner.banner-ciencia .abstract-shape {
+    background: linear-gradient(135deg, #fff8 60%, #4CAF50cc 100%);
+}
+.banner.banner-ciencia h1 {
+    color: #388E3C; /* Color del texto del banner de Ciencia */
+    border-bottom: 3px solid #4CAF50; /* Borde del texto del banner de Ciencia */
+}
+
+
+/* BANNER INGLÉS (Azul celeste pastel) */
+.banner.banner-ingles {
+    background: linear-gradient(120deg, #b2ebf2 0%, #e0f7fa 100%); /* Tonos de azul celeste pastel */
+    box-shadow: 0 8px 32px rgba(0,188,212,0.10), 0 2px 24px #b2ebf255; /* Sombra acorde */
+}
+.banner.banner-ingles::after { 
+    background: url('data:image/svg+xml;utf8,<svg width="700" height="220" xmlns="http://www.w3.org/2000/svg"><circle cx="120" cy="110" r="70" fill="%23fff2"/><circle cx="350" cy="70" r="50" fill="%23b2ebf255"/><circle cx="600" cy="140" r="90" fill="%23e0f7fa55"/><ellipse cx="500" cy="60" rx="30" ry="12" fill="%23b2ebf2aa"/><ellipse cx="200" cy="180" rx="40" ry="15" fill="%23e0f7faaa"/></svg>') no-repeat center/cover;
+}
+.banner.banner-ingles .abstract-shape {
+    background: linear-gradient(135deg, #fff8 60%, #00bcd4cc 100%);
+}
+.banner.banner-ingles h1 {
+    color: #00838f; /* Azul verdoso oscuro */
+    border-bottom: 3px solid #00bcd4; /* Cian */
+}
+
+
+/* BANNER ARTE (Naranja pastel) */
+.banner.banner-arte {
+    background: linear-gradient(120deg, #ffe0b2 0%, #fff3e0 100%); /* Tonos de naranja pastel */
+    box-shadow: 0 8px 32px rgba(255,160,0,0.10), 0 2px 24px #ffe0b255;
+}
+.banner.banner-arte::after {
+    background: url('data:image/svg+xml;utf8,<svg width="700" height="220" xmlns="http://www.w3.org/2000/svg"><path d="M100 50 Q150 10 200 50 T300 50 T400 50 T500 50 T600 50" fill="none" stroke="%23fff2" stroke-width="2"/><circle cx="120" cy="110" r="70" fill="%23fff2"/><circle cx="350" cy="70" r="50" fill="%23ffe0b255"/><circle cx="600" cy="140" r="90" fill="%23fff3e055"/><path d="M500 60 C530 40 570 80 600 60 S670 100 700 80" fill="%23ffe0b2aa"/><path d="M200 180 C230 160 270 200 300 180 S370 220 400 200" fill="%23fff3e0aa"/></svg>') no-repeat center/cover;
+}
+.banner.banner-arte .abstract-shape {
+    background: linear-gradient(135deg, #fff8 60%, #ff9800cc 100%);
+}
+.banner.banner-arte h1 {
+    color: #ef6c00; /* Naranja oscuro */
+    border-bottom: 3px solid #ffa726; /* Naranja */
+}
+
+
+/* BANNER DEPORTES (Verde pastel) */
+.banner.banner-deportes {
+    background: linear-gradient(120deg, #c8e6c9 0%, #e8f5e9 100%); /* Tonos de verde claro pastel */
+    box-shadow: 0 8px 32px rgba(76,175,80,0.10), 0 2px 24px #c8e6c955;
+}
+.banner.banner-deportes::after {
+    background: url('data:image/svg+xml;utf8,<svg width="700" height="220" xmlns="http://www.w3.org/2000/svg"><circle cx="120" cy="110" r="70" fill="%23fff2"/><circle cx="350" cy="70" r="50" fill="%23c8e6c955"/><circle cx="600" cy="140" r="90" fill="%23e8f5e955"/><path d="M500 60 L550 80 L500 100 L450 80 Z" fill="%23c8e6c9aa"/><path d="M200 180 L250 200 L200 220 L150 200 Z" fill="%23e8f5e9aa"/></svg>') no-repeat center/cover;
+}
+.banner.banner-deportes .abstract-shape {
+    background: linear-gradient(135deg, #fff8 60%, #8bc34acc 100%);
+}
+.banner.banner-deportes h1 {
+    color: #388e3c; /* Verde oscuro */
+    border-bottom: 3px solid #66bb6a; /* Verde */
+}
+
+
+/* -------------------------------------------------------------------------------------- */
+/* ------------------------------------ MEDIA QUERIES ----------------------------------- */
+/* -------------------------------------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+    .main-content {
+        margin-left: 0;
+    }
+    .sidebar {
+        position: relative;
+        width: 100vw;
+        min-height: unset;
+        flex-direction: row;
+        padding-top: 0;
+        box-shadow: none;
+        border-bottom: 2px solid #e3f0ff;
+        justify-content: center; /* Centra los elementos horizontalmente en móvil */
+        flex-wrap: wrap; /* Permite que los elementos se envuelvan si no hay espacio */
+    }
+    .sidebar-logo {
+        margin-bottom: 0;
+        margin-right: 32px;
+        flex-shrink: 0; /* Evita que el logo se encoja */
+    }
+    .sidebar nav {
+        flex-direction: row;
+        gap: 0;
+        flex-grow: 1; /* Permite que la navegación ocupe el espacio restante */
+        justify-content: center;
+    }
+    .sidebar nav button {
+        border-radius: 0;
+        padding: 16px 18px;
+        font-size: 1em;
+        flex-grow: 1; /* Distribuye el espacio equitativamente entre los botones */
+        justify-content: center; /* Centra el texto y el icono en el botón */
+        gap: 8px; /* Reduce la separación en botones pequeños */
+    }
+    .main-content {
+        margin-left: 0;
+    }
+    header {
+        padding: 16px 20px; /* Ajusta el padding del header */
+    }
+    .header-title {
+        font-size: 0.95em; /* Reduce el tamaño de fuente */
+    }
+    .header-materia {
+        padding: 1px 8px; /* Ajusta el padding de la materia en el header */
+        font-size: 0.85em;
+    }
+    .icons span {
+        margin-left: 10px; /* Reduce el margen entre iconos */
+        font-size: 1.2em; /* Reduce el tamaño de los iconos */
+    }
+}
+
+@media (max-width: 900px) {
+    .content {
+        flex-direction: column;
+        gap: 18px;
+        padding: 18px;
+    }
+    .profesor {
+        width: 100%;
+        margin-bottom: 18px;
+    }
+    .anuncios, .tareas-container {
+        grid-template-columns: 1fr;
+    }
+    main {
+        padding: 0 4px;
+    }
+    .seccion {
+        padding: 18px;
+    }
+    .modal-content {
+        padding: 18px 8px;
+    }
+    .sidebar {
+        flex-direction: column; /* Apila los elementos en pantallas más pequeñas */
+        align-items: flex-start; /* Alinea los elementos a la izquierda */
+        padding: 10px; /* Ajusta el padding */
+    }
+    .sidebar-logo {
+        margin-right: 0;
+        margin-bottom: 15px; /* Vuelve a añadir margen inferior al logo */
+        width: 100%; /* Ocupa todo el ancho */
+        justify-content: center; /* Centra el logo */
+    }
+    .sidebar nav {
+        flex-direction: column; /* Vuelve a apilar los botones */
+        width: 100%;
+    }
+    .sidebar nav button {
+        border-radius: 8px; /* Vuelve a redondear los botones */
+        padding: 12px 18px; /* Ajusta padding */
+        justify-content: flex-start; /* Alinea el texto a la izquierda */
+    }
+}

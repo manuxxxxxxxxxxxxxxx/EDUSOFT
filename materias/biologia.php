@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once "../conexiones/conexion.php";
 
 if (!isset($_SESSION['id_estudiante'])) {
     echo "⚠️ Debes iniciar sesión como estudiante para acceder a esta materia.";
@@ -18,7 +19,35 @@ $stmt->bind_param("is", $id_estudiante, $materia);
 $stmt->execute();
 $resultado = $stmt->get_result();
 ?>
+<?php
 
+
+if (!isset($_SESSION['id']) || $_SESSION['rol'] !== 'profesor') {
+    die("Acceso denegado");
+}
+
+$profesor_id = $_SESSION['id'];
+
+if (!isset($_GET['id_clase'])) {
+    die("Clase no especificada.");
+}
+
+$id_clase = intval($_GET['id_clase']);
+
+// Verificar que la clase pertenezca al profesor
+$sql = "SELECT * FROM clases WHERE id = ? AND profesor_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ii", $id_clase, $profesor_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    die("No tienes acceso a esta clase.");
+}
+
+$clase = $result->fetch_assoc();
+
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
