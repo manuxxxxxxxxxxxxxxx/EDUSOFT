@@ -1,4 +1,23 @@
+<?php
+session_start();
 
+if (!isset($_SESSION['id_estudiante'])) {
+    echo "⚠️ Debes iniciar sesión como estudiante para acceder a esta materia.";
+    exit;
+}
+
+include '../conexiones/conexion.php';
+
+$id_estudiante = $_SESSION['id_estudiante'];
+$materia = 'biologia';
+
+// Obtener tareas que subió este estudiante en esta materia
+$sql = "SELECT nombre_archivo, ruta_archivo, fecha_subida FROM tareas WHERE id_estudiante = ? AND materia = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("is", $id_estudiante, $materia);
+$stmt->execute();
+$resultado = $stmt->get_result();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>

@@ -42,7 +42,7 @@
             <i class="fas fa-chevron-down arrow"></i>
           </a>
           <ul class="submenu">
-            <li><a href="#">Preescolar</a></li>
+            <li><a href="#">Actividades extrarriculares</a></li>
             <li><a href="#">Primaria</a></li>
             <li><a href="#">Secundaria</a></li>
             <li><a href="#">Bachillerato</a></li>
