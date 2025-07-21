@@ -66,7 +66,7 @@
         </li>
         
         <li class="sidebar-item">
-          <a href="#" class="sidebar-link" title="Calendario">
+          <a href="../calendario/calendario.php" class="sidebar-link" title="Calendario">
             <i class="fas fa-calendar-alt"></i>
             <span>Calendario</span>
           </a>
