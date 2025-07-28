@@ -13,11 +13,11 @@ $stm->bind_param("sss", $nombre, $email, $pass_hash);
 
 
 
-if ($stm->execute()){
-    echo"Usuario ingresado";
-    echo "<br><br><a href='../Registros/Inicio.php'><button> Continuar al Inicio de Sesión</button></a>";
+if ($stm->execute()) {
+    header("Location: ../Registros/Inicio.php");
+    exit;
 } else {
-    echo"ERROR" . $stm->error;
+    echo " ERROR EN EL USUARIO: " . $stm->error;
 }
 
 $stm->close();

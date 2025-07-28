@@ -159,3 +159,33 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+
+document.getElementById("formSubirTarea").addEventListener("submit", function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const mensaje = document.getElementById("mensajeSubida");
+
+    fetch('subir_tarea_ajax.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        mensaje.innerHTML = data.mensaje;
+
+        if (data.success) {
+            // Agregar a la lista de tareas
+            const li = document.createElement("li");
+            li.innerHTML = `<a href="${data.archivo.ruta}" target="_blank">${data.archivo.nombre}</a>
+                            <small>(${data.archivo.fecha})</small>`;
+            document.getElementById("listaTareas").appendChild(li);
+
+            // Limpiar el input
+            document.getElementById("archivo").value = '';
+        }
+    })
+    .catch(err => {
+        mensaje.innerHTML = "❌ Error en la conexión.";
+    });
+});

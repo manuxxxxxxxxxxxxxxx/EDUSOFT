@@ -67,10 +67,9 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../materias/css/styleBiologia.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="../js/subir_tarea.js"></script>
 </head>
 <body>
-
-
 
     <div class="sidebar">
         <div class="sidebar-logo">
@@ -133,17 +132,40 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
                         <span>Tarea de Biología Celular</span>
                         <p>Resolver los problemas de biología celular del capítulo 3.</p>
                         <small>Fecha límite: 10 de abril</small>
-                        <h2>Sube tu tarea de Biología</h2>
-<form action="subir_tarea.php" method="POST" enctype="multipart/form-data">
+                       
+<h2>Sube tu tarea de Biología</h2>
+<form id="formSubirTarea" action="subir_tarea_ajax.php" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="materia" value="biologia">
-    <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>"> <!-- o como estés guardando la sesión -->
+    <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>">
     
     <label for="archivo">Archivo (PDF, DOCX, JPG...):</label>
     <input type="file" name="archivo" id="archivo" required><br><br>
 
     <button type="submit">Subir tarea</button>
 </form>
-                    </li>
+
+<div id="mensajeSubida"></div>
+
+<!-- ✅ Lista de tareas subidas -->
+<h3>Tareas subidas</h3>
+<<ul id="listaTareas" style="list-style-type: none; padding-left: 0;">
+<?php if (isset($resultado_tareas)) {
+    while ($fila = $resultado_tareas->fetch_assoc()) {
+        $id = $fila['id'] ?? null;
+        $nombre = htmlspecialchars($fila['nombre_archivo']);
+        $ruta = htmlspecialchars($fila['ruta_archivo']);
+        $fecha = htmlspecialchars($fila['fecha_subida']);
+
+        echo "<li id='tarea_$id'>
+                <a href='$ruta' target='_blank'>$nombre</a> <small>($fecha)</small>
+                <button onclick='eliminarTarea($id)'>❌ Eliminar</button>
+              </li>";
+    }
+} ?>
+</ul>
+
+
+                    
                     <li>
                         <i class="fas fa-dna"></i>
                         <span>Proyecto de Biología Molecular</span>
