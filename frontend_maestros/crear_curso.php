@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Crear Clase</title>
+    <link rel="stylesheet" href="/frontend_maestros/crearClase.css">
 </head>
 <body>
 
