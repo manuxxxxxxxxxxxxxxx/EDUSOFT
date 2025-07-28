@@ -1,3 +1,49 @@
+<?php
+session_start();
+require_once "../conexiones/conexion.php";
+
+// Verificar si el usuario está logueado como profesor o como estudiante
+if (!isset($_SESSION['id']) && !isset($_SESSION['id_estudiante'])) {
+    die("⚠️ Debes iniciar sesión como profesor o estudiante para acceder a esta materia.");
+}
+
+// Lógica para estudiantes
+if (isset($_SESSION['id_estudiante'])) {
+    $id_estudiante = $_SESSION['id_estudiante'];
+    $materia = 'biologia'; // Puedes cambiar esto dinámicamente si lo deseas
+
+    // Obtener tareas que subió este estudiante en esta materia
+    $sql = "SELECT nombre_archivo, ruta_archivo, fecha_subida FROM tareas WHERE id_estudiante = ? AND materia = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("is", $id_estudiante, $materia);
+    $stmt->execute();
+    $resultado_tareas = $stmt->get_result();
+}
+
+// Lógica para profesores
+if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
+    $profesor_id = $_SESSION['id'];
+
+    if (!isset($_GET['id_clase'])) {
+        die("Clase no especificada.");
+    }
+
+    $id_clase = intval($_GET['id_clase']);
+
+    // Verificar que la clase pertenezca al profesor
+    $sql = "SELECT * FROM clases WHERE id = ? AND profesor_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $id_clase, $profesor_id);
+    $stmt->execute();
+    $result_clase = $stmt->get_result();
+
+    if ($result_clase->num_rows === 0) {
+        die("No tienes acceso a esta clase.");
+    }
+
+    $clase = $result_clase->fetch_assoc();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>

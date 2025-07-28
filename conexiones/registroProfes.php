@@ -37,6 +37,8 @@ $stm->bind_param("sssss", $nombre, $email, $pass_hash, $tel, $dui);
 
 if ($stm->execute()){
     echo"Usuario ingresado";
+    header ("Location: ../Registros/inicioProfes.php");
+
 } else {
     echo"ERROR" . $stm->error;
 }
