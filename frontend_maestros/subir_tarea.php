@@ -37,14 +37,30 @@
 </html>
 
 -->
-<?php 
-    session_start();
-        if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "profesor") {
-              die("Acceso denegado. No eres profesor.");
-        header("Location: ../loginProfes.php");
-        exit;
-        }
-?>s
+<?php
+session_start();
+require_once "../conexiones/conexion.php";
+
+// Validar sesión del profesor
+if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "profesor") {
+    header("Location: ../conexiones/loginProfes.php");
+    exit;
+}
+
+$profesor_id = $_SESSION["id"]; // Asegúrate que este ID esté bien en la sesión
+
+// Consulta: Obtener clases creadas por este profesor
+$sql = "SELECT id, nombre_clase, materia FROM clases WHERE profesor_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $profesor_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+
+$clases = [];
+while ($fila = $resultado->fetch_assoc()) {
+    $clases[] = $fila;
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -59,7 +75,17 @@
       <button class="task-close" onclick="cerrarModal()">✕</button>
     </div>
     <form class="task-form" action="procesar_tarea.php" method="POST" enctype="multipart/form-data">
-      <div class="task-row">
+<div class="task-row">
+  <label for="id_clase">Selecciona una clase:</label>
+  <select name="id_clase" id="id_clase" required>
+    <option value="">-- Selecciona una clase --</option>
+    <?php foreach ($clases as $clase): ?>
+      <option value="<?php echo $clase['id']; ?>">
+        <?php echo htmlspecialchars($clase['nombre_clase']) . " – " . ucfirst($clase['materia']); ?>
+      </option>
+    <?php endforeach; ?>
+  </select>
+</div>      <div class="task-row">
         <label for="titulo">Título</label>
         <input type="text" id="titulo" name="titulo" placeholder="#001 Exponentes" required>
       </div>

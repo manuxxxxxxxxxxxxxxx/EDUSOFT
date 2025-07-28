@@ -30,6 +30,9 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
 
     $id_clase = intval($_GET['id_clase']);
 
+    $profesor_id = $_SESSION['id'];
+    
+    $nombre = $_SESSION['nombre'];
     // Verificar que la clase pertenezca al profesor
     $sql = "SELECT * FROM clases WHERE id = ? AND profesor_id = ?";
     $stmt = $conn->prepare($sql);
@@ -43,27 +46,15 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
 
     $clase = $result_clase->fetch_assoc();
 }
+// Obtener tareas subidas por el profesor para esta clase
+    $sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
+    $stmt_tareas = $conn->prepare($sql_tareas);
+    $stmt_tareas->bind_param("i", $id_clase);
+    $stmt_tareas->execute();
+    $resultado_tareas_profesor = $stmt_tareas->get_result();
+
 ?>
-<?php
-session_start();
 
-if (!isset($_SESSION['id_estudiante'])) {
-    echo "⚠️ Debes iniciar sesión como estudiante para acceder a esta materia.";
-    exit;
-}
-
-include '../conexiones/conexion.php';
-
-$id_estudiante = $_SESSION['id_estudiante'];
-$materia = 'biologia';
-
-// Obtener tareas que subió este estudiante en esta materia
-$sql = "SELECT nombre_archivo, ruta_archivo, fecha_subida FROM tareas WHERE id_estudiante = ? AND materia = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("is", $id_estudiante, $materia);
-$stmt->execute();
-$resultado = $stmt->get_result();
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -109,25 +100,24 @@ $resultado = $stmt->get_result();
                 <div class="content">
                     <div class="profesor">
                         <div class="avatar-modern"></div>
-                        <p>Profesor<br><strong>Cristofer Alfaro</strong></p>
+                        <p>Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
                     </div>
                     <div class="tareas-container">
-                        <div class="tarea" data-titulo="Tarea de Física" data-descripcion="Resolver los problemas de física del capítulo 3. Entregar antes del próximo lunes.">
-                            <h4>Tarea de Física</h4>
-                            <p>Resolver los problemas de física del capítulo 3. Entregar antes del próximo lunes.</p>
-                        </div>
-                        <div class="tarea" data-titulo="Proyecto de Astronomía" data-descripcion="Crear un proyecto sobre el sistema solar. Entregar en clase el próximo miércoles.">
-                            <h4>Proyecto de Astronomía</h4>
-                            <p>Crear un proyecto sobre el sistema solar. Entregar en clase el próximo miércoles.</p>
-                        </div>
-                        <div class="tarea" data-titulo="Examen de Geología" data-descripcion="Estudiar para el examen de geología que se realizará el próximo viernes. Revisar los apuntes y resolver los ejercicios del capítulo 2.">
-                            <h4>Examen de Geología</h4>
-                            <p>Estudiar para el examen de geología que se realizará el próximo viernes. Revisar los apuntes y resolver los ejercicios del capítulo 2.</p>
-                        </div>
-                        <div class="tarea" data-titulo="Tarea de Ciencia Ambiental" data-descripcion="Escribir un ensayo sobre la importancia de la conservación del medio ambiente. Entregar antes del próximo jueves.">
-                            <h4>Tarea de Ciencia Ambiental</h4>
-                            <p>Escribir un ensayo sobre la importancia de la conservación del medio ambiente. Entregar antes del próximo jueves.</p>
-                        </div>
+                            <?php if (isset($resultado_tareas_profesor) && $resultado_tareas_profesor->num_rows > 0): ?>
+                            <?php while ($tarea = $resultado_tareas_profesor->fetch_assoc()): ?>
+                            <div class="tarea">
+                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                                <small>Fecha límite: <?php echo $tarea['fecha_entrega']; ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
+                
+                                <?php if (!empty($tarea['ruta_archivo'])): ?>
+                                <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
+                                <?php endif; ?>
+                            </div>
+                                <?php endwhile; ?>
+                                <?php else: ?>
+                                <p>No se han asignado tareas aún.</p>
+                                <?php endif; ?>
                     </div>
                 </div>
             </section>

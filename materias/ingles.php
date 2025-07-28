@@ -30,6 +30,9 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
 
     $id_clase = intval($_GET['id_clase']);
 
+    $profesor_id = $_SESSION['id'];
+    
+    $nombre = $_SESSION['nombre'];
     // Verificar que la clase pertenezca al profesor
     $sql = "SELECT * FROM clases WHERE id = ? AND profesor_id = ?";
     $stmt = $conn->prepare($sql);
@@ -43,7 +46,15 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
 
     $clase = $result_clase->fetch_assoc();
 }
+// Obtener tareas subidas por el profesor para esta clase
+    $sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
+    $stmt_tareas = $conn->prepare($sql_tareas);
+    $stmt_tareas->bind_param("i", $id_clase);
+    $stmt_tareas->execute();
+    $resultado_tareas_profesor = $stmt_tareas->get_result();
+
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -88,25 +99,24 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
                 <div class="content">
                     <div class="profesor">
                         <div class="avatar-modern" style="background-image: url('https://ui-avatars.com/api/?name=Laura+Smith&background=80deea&color=006064');"></div>
-                        <p>Profesor<br><strong>Laura Smith</strong></p>
+                        <p>Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
                     </div>
                     <div class="tareas-container">
-                        <div class="tarea" data-titulo="Reading Comprehension" data-descripcion="Read the article 'The Future of AI' and answer the comprehension questions. Due next Friday.">
-                            <h4>Reading Comprehension</h4>
-                            <p>Read the article 'The Future of AI' and answer the comprehension questions. Due next Friday.</p>
-                        </div>
-                        <div class="tarea" data-titulo="Grammar Practice" data-descripcion="Complete exercises on Present Perfect vs. Simple Past. Check your answers online.">
-                            <h4>Grammar Practice</h4>
-                            <p>Complete exercises on Present Perfect vs. Simple Past. Check your answers online.</p>
-                        </div>
-                        <div class="tarea" data-titulo="Vocabulary Quiz" data-descripcion="Prepare for a quiz on Unit 4 vocabulary next Tuesday.">
-                            <h4>Vocabulary Quiz</h4>
-                            <p>Prepare for a quiz on Unit 4 vocabulary next Tuesday.</p>
-                        </div>
-                        <div class="tarea" data-titulo="Speaking Assignment" data-descripcion="Record a 2-minute video introducing yourself and your hobbies. Upload to the platform.">
-                            <h4>Speaking Assignment</h4>
-                            <p>Record a 2-minute video introducing yourself and your hobbies. Upload to the platform.</p>
-                        </div>
+                            <?php if (isset($resultado_tareas_profesor) && $resultado_tareas_profesor->num_rows > 0): ?>
+                            <?php while ($tarea = $resultado_tareas_profesor->fetch_assoc()): ?>
+                            <div class="tarea">
+                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                                <small>Fecha límite: <?php echo $tarea['fecha_entrega']; ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
+                
+                                <?php if (!empty($tarea['ruta_archivo'])): ?>
+                                <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
+                                <?php endif; ?>
+                            </div>
+                                <?php endwhile; ?>
+                                <?php else: ?>
+                                <p>No se han asignado tareas aún.</p>
+                                <?php endif; ?>
                     </div>
                 </div>
             </section>

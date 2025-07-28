@@ -30,6 +30,9 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
 
     $id_clase = intval($_GET['id_clase']);
 
+    $profesor_id = $_SESSION['id'];
+    
+    $nombre = $_SESSION['nombre'];
     // Verificar que la clase pertenezca al profesor
     $sql = "SELECT * FROM clases WHERE id = ? AND profesor_id = ?";
     $stmt = $conn->prepare($sql);
@@ -43,7 +46,15 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
 
     $clase = $result_clase->fetch_assoc();
 }
+// Obtener tareas subidas por el profesor para esta clase
+    $sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
+    $stmt_tareas = $conn->prepare($sql_tareas);
+    $stmt_tareas->bind_param("i", $id_clase);
+    $stmt_tareas->execute();
+    $resultado_tareas_profesor = $stmt_tareas->get_result();
+
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -88,25 +99,24 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
                 <div class="content">
                     <div class="profesor">
                         <div class="avatar-modern"></div>
-                        <p>Profesor<br><strong>Cristofer Alfaro</strong></p>
+                        <p>Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
                     </div>
-                    <div class="anuncios">
-                        <div class="tarea" data-titulo="Tarea de Álgebra" data-descripcion="Resolver los ejercicios del 1 al 10 del capítulo 3 de álgebra. Entregar antes del próximo lunes.">
-                            <h4>Tarea de Álgebra</h4>
-                            <p>Resolver los ejercicios del 1 al 10 del capítulo 3 de álgebra. Entregar antes del próximo lunes.</p>
+                    <div class="tareas-container">
+                        <?php if (isset($resultado_tareas_profesor) && $resultado_tareas_profesor->num_rows > 0): ?>
+                         <?php while ($tarea = $resultado_tareas_profesor->fetch_assoc()): ?>
+                        <div class="tarea">
+                            <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                            <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                            <small>Fecha límite: <?php echo $tarea['fecha_entrega']; ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
+                
+                            <?php if (!empty($tarea['ruta_archivo'])): ?>
+                             <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
+                            <?php endif; ?>
                         </div>
-                        <div class="tarea" data-titulo="Proyecto de Geometría" data-descripcion="Crear un modelo de un edificio utilizando conceptos de geometría. Entregar en clase el próximo miércoles.">
-                            <h4>Proyecto de Geometría</h4>
-                            <p>Crear un modelo de un edificio utilizando conceptos de geometría. Entregar en clase el próximo miércoles.</p>
-                        </div>
-                        <div class="tarea" data-titulo="Examen de Estadística" data-descripcion="Estudiar para el examen de estadística que se realizará el próximo viernes. Revisar los apuntes y resolver los ejercicios del capítulo 2.">
-                            <h4>Examen de Estadística</h4>
-                            <p>Estudiar para el examen de estadística que se realizará el próximo viernes. Revisar los apuntes y resolver los ejercicios del capítulo 2.</p>
-                        </div>
-                        <div class="tarea" data-titulo="Tarea de Cálculo" data-descripcion="Resolver los problemas del 1 al 5 del capítulo 5 de cálculo. Entregar antes del próximo jueves.">
-                            <h4>Tarea de Cálculo</h4>
-                            <p>Resolver los problemas del 1 al 5 del capítulo 5 de cálculo. Entregar antes del próximo jueves.</p>
-                        </div>
+                            <?php endwhile; ?>
+                            <?php else: ?>
+                            <p>No se han asignado tareas aún.</p>
+                            <?php endif; ?>
                     </div>
                 </div>
             </section>

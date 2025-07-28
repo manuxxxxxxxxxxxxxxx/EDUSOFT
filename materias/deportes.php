@@ -30,6 +30,9 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
 
     $id_clase = intval($_GET['id_clase']);
 
+    $profesor_id = $_SESSION['id'];
+    
+    $nombre = $_SESSION['nombre'];
     // Verificar que la clase pertenezca al profesor
     $sql = "SELECT * FROM clases WHERE id = ? AND profesor_id = ?";
     $stmt = $conn->prepare($sql);
@@ -43,7 +46,15 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
 
     $clase = $result_clase->fetch_assoc();
 }
+// Obtener tareas subidas por el profesor para esta clase
+    $sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
+    $stmt_tareas = $conn->prepare($sql_tareas);
+    $stmt_tareas->bind_param("i", $id_clase);
+    $stmt_tareas->execute();
+    $resultado_tareas_profesor = $stmt_tareas->get_result();
+
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -88,25 +99,24 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
                 <div class="content">
                     <div class="profesor">
                         <div class="avatar-modern" style="background-image: url('https://ui-avatars.com/api/?name=Javier+Solis&background=a5d6a7&color=1b5e20');"></div>
-                        <p>Profesor<br><strong>Javier Solís</strong></p>
+                        <p>Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
                     </div>
                     <div class="tareas-container">
-                        <div class="tarea" data-titulo="Rutina de Calentamiento" data-descripcion="Practicar la rutina de calentamiento antes de cada actividad física.">
-                            <h4>Rutina de Calentamiento</h4>
-                            <p>Practicar la rutina de calentamiento antes de cada actividad física.</p>
-                        </div>
-                        <div class="tarea" data-titulo="Reglas del Fútbol" data-descripcion="Estudiar las reglas básicas del fútbol para el próximo partido.">
-                            <h4>Reglas del Fútbol</h4>
-                            <p>Estudiar las reglas básicas del fútbol para el próximo partido.</p>
-                        </div>
-                        <div class="tarea" data-titulo="Nutrición Deportiva" data-descripcion="Investigar sobre la importancia de la hidratación en el deporte.">
-                            <h4>Nutrición Deportiva</h4>
-                            <p>Investigar sobre la importancia de la hidratación en el deporte.</p>
-                        </div>
-                        <div class="tarea" data-titulo="Entrenamiento de Resistencia" data-descripcion="Realizar 30 minutos de cardio 3 veces por semana. Registrar el progreso.">
-                            <h4>Entrenamiento de Resistencia</h4>
-                            <p>Realizar 30 minutos de cardio 3 veces por semana. Registrar el progreso.</p>
-                        </div>
+                            <?php if (isset($resultado_tareas_profesor) && $resultado_tareas_profesor->num_rows > 0): ?>
+                             <?php while ($tarea = $resultado_tareas_profesor->fetch_assoc()): ?>
+                            <div class="tarea">
+                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                                <small>Fecha límite: <?php echo $tarea['fecha_entrega']; ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
+                
+                                <?php if (!empty($tarea['ruta_archivo'])): ?>
+                                <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
+                                <?php endif; ?>
+                            </div>
+                                <?php endwhile; ?>
+                                <?php else: ?>
+                                <p>No se han asignado tareas aún.</p>
+                                <?php endif; ?>
                     </div>
                 </div>
             </section>
