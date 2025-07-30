@@ -57,6 +57,11 @@
                     </a>
                 </div>
 
+                <select id="langSelector" style="margin:10px;">
+               <option value="es">Español</option>
+                <option value="en">English</option>
+                </select>
+
                 <!-- Botón hamburguesa para móvil -->
                 <button class="nav-toggle" id="navToggle">
                     <span class="hamburger-line"></span>
@@ -68,11 +73,11 @@
 
         <!-- Contenido estático (títulos y botón) -->
         <div class="contenido-estatico">
-            <h1>EDUSOFT</h1>
-            <h2>Bienvenido a nuestra plataforma global de aprendizaje.
+            <h1 data-i18n="Welcome">EDUSOFT</h1>
+            <h2 data-i18n="subtitle">Bienvenido a nuestra plataforma global de aprendizaje.
                 Accede a material de estudio desde cualquier lugar y alcanza tus metas académicas.
                 ¡Empieza hoy!</h2>
-            <a href="../registrosCards/registro.php">Únete Ahora</a>
+            <a href="../registrosCards/registro.php" data-i18n="join_now">Únete Ahora</a>
         </div>
 
         <!-- Contenedor del slider que contiene solo las imágenes de fondo -->
@@ -98,18 +103,18 @@
             <div class="card grande">
                 <img src="../img/imageen1.jpg" alt="Iniciativas">
                 <div class="card-texto">
-                    <h2>Iniciativas</h2>
-                    <p>Párrafo. Haz clic aquí para agregar tu propio texto y editar. Es fácil.</p>
-                    <a href="#">Leer más</a>
+                    <h2 data-i18n="iniciativas">Iniciativas</h2>
+                    <p data-i18n="parrafo_i">Párrafo. Haz clic aquí para agregar tu propio texto y editar. Es fácil.</p>
+                    <a href="#" data-i18n="leer_mas">Leer más</a>
                 </div>
             </div>
             <div class="card chica">
                 <img src="../img/imagen2.jpg" alt="Misión">
                 <div class="card-texto">
-                    <h2>Misión</h2>
-                    <p>Ayudar a todos los estudiantes que no cuentan con la tecnología ni servicios a integrarse
+                    <h2 data-i18n="mision">Misión</h2>
+                    <p data-i18n="parrafo_m">Ayudar a todos los estudiantes que no cuentan con la tecnología ni servicios a integrarse
                         a una mejor Educación mucho más avanzada.</p>
-                    <a href="#">Leer más</a>
+                    <a href="#" data-i18n="leer_mas">Leer más</a>
                 </div>
             </div>
         </div>
@@ -117,42 +122,42 @@
             <div class="card chica">
                 <img src="./img/imagen3.webp" alt="Noticias">
                 <div class="card-texto">
-                    <h2>Noticias</h2>
-                    <p>Párrafo. Haz clic aquí para agregar tu propio texto y editar. Es fácil.</p>
-                    <a href="#">Leer más</a>
+                    <h2 data-i18n="noticias">Noticias</h2>
+                    <p data-i18n="parrafo_n">Párrafo. Haz clic aquí para agregar tu propio texto y editar. Es fácil.</p>
+                    <a href="#" data-i18n="leer_mas">Leer más</a>
                 </div>
             </div>
             <div class="card grande">
                 <img src="../img/imagen4.jpg" alt="Participa">
                 <div class="card-texto">
-                    <h2>Participa</h2>
-                    <p>Párrafo. Haz clic aquí para agregar tu propio texto y editar. Es fácil.</p>
-                    <a href="#">Leer más</a>
+                    <h2 data-i18n="participa">Participa</h2>
+                    <p data-i18n="parrafo_p">Párrafo. Haz clic aquí para agregar tu propio texto y editar. Es fácil.</p>
+                    <a href="#" data-i18n="leer_mas">Leer más</a>
                 </div>
             </div>
         </div>
     </section>
 
     <div class="h1bajo">
-        <h1>2025 en números</h1>
+        <h1 data-i18n="abajo">2025 en números</h1>
     </div>
 
     <div class="stats">
         <div class="stat">
             <div class="stat-number">
-                <span class="big">4</span><span class="small">mil</span>
+                <span class="big">4</span><span class="small" data-i18n="mil">mil</span>
             </div>
             <div class="line"></div>
-            <div class="stat-text">
+            <div class="stat-text" data-i18n="dolares">
                 Dólares<br>recaudados
             </div>
         </div>
         <div class="stat">
             <div class="stat-number">
-                <span class="big">8</span><span class="small">mil</span>
+                <span class="big">8</span><span class="small" data-i18n="mil">mil</span>
             </div>
             <div class="line"></div>
-            <div class="stat-text">
+            <div class="stat-text" data-i18n="alumnos">
                 Alumnos<br>graduados
             </div>
         </div>
@@ -161,7 +166,7 @@
                 <span class="big">120</span>
             </div>
             <div class="line"></div>
-            <div class="stat-text">
+            <div class="stat-text" data-i18n="centros">
                 Centros<br>tecnológicos
             </div>
         </div>
@@ -176,38 +181,40 @@
             </div>
             <div class="footer-links">
                 <div class="footer-column">
-                    <h4>Plataforma</h4>
+                    <h4 data-i18n="h4">Plataforma</h4>
                     <ul>
-                        <li><a href="#">Inicio</a></li>
-                        <li><a href="#">Cursos</a></li>
-                        <li><a href="#">Nosotros</a></li>
-                        <li><a href="#">Contacto</a></li>
+                        <li><a href="#" data-i18n="inicio">Inicio</a></li>
+                        <li><a href="#" data-i18n="cursos">Cursos</a></li>
+                        <li><a href="#" data-i18n="nosotros">Nosotros</a></li>
+                        <li><a href="#" data-i18n="contacto">Contacto</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h4>Recursos</h4>
                     <ul>
-                        <li><a href="#">Biblioteca Digital</a></li>
-                        <li><a href="#">Tutoriales</a></li>
-                        <li><a href="#">Preguntas Frecuentes</a></li>
-                        <li><a href="#">Soporte Técnico</a></li>
+                        <li><a href="#" data-i18n="biblioteca">Biblioteca Digital</a></li>
+                        <li><a href="#" data-i18n="tutoriales">Tutoriales</a></li>
+                        <li><a href="#" data-i18n="preguntas_frecuentes">Preguntas Frecuentes</a></li>
+                        <li><a href="#" data-i18n="soporte">Soporte Técnico</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
-                    <h4>Legal</h4>
+                    <h4 data-i18n="legal">Legal</h4>
                     <ul>
-                        <li><a href="#">Términos de Uso</a></li>
-                        <li><a href="#">Política de Privacidad</a></li>
-                        <li><a href="#">Cookies</a></li>
+                        <li data-i18n="terminos"><a href="#">Términos de Uso</a></li>
+                        <li data-i18n="politica"><a href="#">Política de Privacidad</a></li>
+                        <li data-i18n="cookies"><a href="#">Cookies</a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 EDUSOFT - Plataforma Educativa. Desarrollado por estudiantes de Bachillerato Técnico.</p>
+            <p data-i18n="copy">&copy; 2024 EDUSOFT - Plataforma Educativa. Desarrollado por estudiantes de Bachillerato Técnico.</p>
         </div>
     </footer>
 
     <script src="main.js"></script>
+    <script src="lang.js"></script>
+    <script src="idioma.js"></script>
 </body>
 </html>
