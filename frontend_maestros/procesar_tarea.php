@@ -32,8 +32,8 @@ if ($resultado->num_rows === 0) {
 $clase = $resultado->fetch_assoc();
 $materia = $clase['materia']; // Ej: biologia, matematicas, etc.
 
-// Procesar el primer archivo (puedes expandir a múltiples si quieres más adelante)
-$ruta_guardada = null;
+// Procesar el primer archivo
+$archivo_adjunto = null;
 if (isset($_FILES['material']['name'][0]) && $_FILES['material']['error'][0] == 0) {
     $archivo_nombre = $_FILES['material']['name'][0];
     $archivo_tmp = $_FILES['material']['tmp_name'][0];
@@ -43,15 +43,15 @@ if (isset($_FILES['material']['name'][0]) && $_FILES['material']['error'][0] == 
         mkdir($carpeta_destino, 0777, true);
     }
 
-    $ruta_guardada = $carpeta_destino . time() . "_" . basename($archivo_nombre);
-    move_uploaded_file($archivo_tmp, $ruta_guardada);
+    $archivo_adjunto = $carpeta_destino . time() . "_" . basename($archivo_nombre);
+    move_uploaded_file($archivo_tmp, $archivo_adjunto);
 }
 
 // Insertar la tarea en la base de datos
-$sql_insert = "INSERT INTO tareas_profesor (id_clase, titulo, descripcion, puntos, fecha_entrega, tema, ruta_archivo)
+$sql_insert = "INSERT INTO tareas_profesor (id_clase, titulo, descripcion, puntos, fecha_entrega, tema, archivo_adjunto)
                VALUES (?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($sql_insert);
-$stmt->bind_param("ississs", $id_clase, $titulo, $descripcion, $puntos, $fecha_entrega, $tema, $ruta_guardada);
+$stmt->bind_param("ississs", $id_clase, $titulo, $descripcion, $puntos, $fecha_entrega, $tema, $archivo_adjunto);
 $stmt->execute();
 
 // Redireccionar dinámicamente a la materia

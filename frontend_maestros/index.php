@@ -125,19 +125,38 @@ $nombre = $_SESSION['nombre'];
         <!-- TAREAS -->
         <div id="seccion-tareas" class="seccion-panel" style="display:none;">
             <div class="section">
-                <h3>Tareas recientes</h3>
+                <h3>Tareas</h3>
                 <ul id="tareas-lista">
-                    <li>
-                        <b>Ensayo de Historia</b> - Entregas: 15/18 - <span style="color:green;">Pendiente de calificar</span>
-                    </li>
-                    <li>
-                        <b>Problemas de Matemáticas</b> - Entregas: 20/23 - <span style="color:orange;">En revisión</span>
-                    </li>
-                    <li>
-                        <b>Lectura de Lengua</b> - Entregas: 18/20 - <span style="color:blue;">Calificado</span>
-                    </li>
+                    <?php
+                    $sqlTareas = "SELECT t.id, t.titulo, t.fecha_entrega, c.materia 
+                                  FROM tareas_profesor t
+                                  INNER JOIN clases c ON t.id_clase = c.id
+                                  WHERE c.profesor_id = ?
+                                  ORDER BY t.fecha_entrega DESC";
+                    $stmtTareas = $conn->prepare($sqlTareas);
+                    $stmtTareas->bind_param("i", $profesor_id);
+                    $stmtTareas->execute();
+                    $resultadoTareas = $stmtTareas->get_result();
+
+                    if ($resultadoTareas->num_rows > 0):
+                        while ($tarea = $resultadoTareas->fetch_assoc()): ?>
+                            <li>
+                                <b><?php echo htmlspecialchars($tarea['titulo']); ?></b> 
+                                – <?php echo ucfirst(htmlspecialchars($tarea['materia'])); ?> 
+                                – Fecha entrega: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?>
+                                <form action="../frontend_maestros/eliminar_tarea.php" method="POST" style="display:inline;">
+                                    <input type="hidden" name="id_tarea" value="<?php echo $tarea['id']; ?>">
+                                    <button type="submit" class="quick-action" style="margin-left:10px;color:red;">Eliminar</button>
+                                </form>
+                            </li>
+                        <?php endwhile;
+                    else: ?>
+                        <li>No hay tareas registradas aún.</li>
+                    <?php endif;
+                    $stmtTareas->close();
+                    ?>
                 </ul>
-                <button class="quick-action" onclick="window.location.href='subir_tarea.php'">Crear tarea</button>
+                <button class="quick-action" onclick="window.location.href='../frontend_maestros/subir_tarea.php'">Crear tarea</button>
             </div>
         </div>
         <!-- MATERIALES -->
