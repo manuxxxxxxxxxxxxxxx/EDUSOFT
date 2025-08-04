@@ -16,8 +16,20 @@ function setLanguage(lang) {
           el.value = translation;
         }
       } else {
-        // Si es cualquier otro elemento (p, h2, div, etc.), se traduce el innerHTML
-        el.innerHTML = translation;
+        // Si es cualquier otro elemento (p, h2, div, etc.), se traduce solo el nodo de texto
+        let textNodeFound = false;
+
+        el.childNodes.forEach(function(node) {
+          if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== "") {
+            node.textContent = translation;
+            textNodeFound = true;
+          }
+        });
+
+        // Si no hay nodo de texto (por ejemplo, solo hay íconos), se añade uno
+        if (!textNodeFound) {
+          el.appendChild(document.createTextNode(" " + translation));
+        }
       }
     }
   });

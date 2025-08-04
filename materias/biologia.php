@@ -79,10 +79,10 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
         <span>EduSoft</span>
     </div>
     <nav>
-        <button data-i18n="tablon" id="tablon-btn" class="active"><i class="fas fa-th-large"></i> Tablón</button>
-        <button data-i18n="tareas" id="tareas-btn"><i class="fas fa-tasks"></i> Tareas</button>
-        <button data-i18n="alumnos" id="alumnos-btn"><i class="fas fa-users"></i> Alumnos</button>
-        <button data-i18n="avisos" id="avisos-btn"><i class="fas fa-bell"></i> Avisos</button>
+        <button data-i18n="tablon" id="tablon-btn" class="active"><i class="fas fa-th-large"></i> Plank</button>
+        <button data-i18n="tareas" id="tareas-btn"><i class="fas fa-tasks"></i> Homeworks</button>
+         <button data-i18n="alumnos"  id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
+        <button data-i18n="avisos" id="avisos-btn"><i class="fas fa-bell"></i> notices</button>
     </nav>
 </div>
 
@@ -106,27 +106,39 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                 <h1>BIOLOGÍA</h1>
             </div>
             <div class="content">
-                <div class="profesor">
-                    <div class="avatar-modern"></div>
-                    <p data-i18n="profesor">Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
-                </div>
-                <div class="tareas-container">
-                    <?php if (isset($resultado_tareas_profesor) && $resultado_tareas_profesor->num_rows > 0): ?>
-                        <?php while ($tarea = $resultado_tareas_profesor->fetch_assoc()): ?>
-                            <div class="tarea">
-                                <h4 data-i18n="titulo"><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
-                                <p data-i18n="descripcion"><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
-                                <small data-i18n="fechal">Fecha límite: <?php echo $tarea['fecha_entrega']; ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
-                                <?php if (!empty($tarea['ruta_archivo'])): ?>
-                                    <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank" data-i18n="archivo">📎 Ver archivo adjunto</a>
-                                <?php endif; ?>
-                            </div>
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <p data-i18n="notareas">No se han asignado tareas aún.</p>
-                    <?php endif; ?>
-                </div>
-            </div>
+          <div class="profesor">
+  <div class="avatar-modern"></div>
+  <p>
+    <span data-i18n="profesor">Profesor</span><br>
+    <strong><?php echo htmlspecialchars($nombre); ?></strong>
+  </p>
+</div>
+
+<div class="tareas-container">
+  <?php if (isset($resultado_tareas_profesor) && $resultado_tareas_profesor->num_rows > 0): ?>
+    <?php while ($tarea = $resultado_tareas_profesor->fetch_assoc()): ?>
+      <div class="tarea">
+        <!-- Solo el texto traducible va con data-i18n -->
+        <h4 data-i18n="titulo"><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+        <p data-i18n="descripcion"><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+        
+        <!-- Fecha límite y puntos combinados, se recomienda dividir para traducir -->
+        <small>
+          <span data-i18n="fechal">Fecha límite</span>: <?php echo $tarea['fecha_entrega']; ?>
+          | 
+          <span data-i18n="puntos">Puntos</span>: <?php echo $tarea['puntos']; ?>
+        </small>
+
+        <?php if (!empty($tarea['ruta_archivo'])): ?>
+          <br>
+          <a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank" data-i18n="archivo">📎 Ver archivo adjunto</a>
+        <?php endif; ?>
+      </div>
+    <?php endwhile; ?>
+  <?php else: ?>
+    <p data-i18n="notareas">No se han asignado tareas aún.</p>
+  <?php endif; ?>
+</div>
         </section>
 
         <section id="tareas" class="seccion" style="display: none;">
@@ -142,12 +154,12 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                     <form id="formSubirTarea" action="subir_tarea_ajax.php" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="materia" value="biologia">
                         <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>">
-                        <label for="archivo">Archivo (PDF, DOCX, JPG...):</label>
+                        <label for="archivo" data-i18n="archivo">Archivo (PDF, DOCX, JPG...):</label>
                         <input type="file" name="archivo" id="archivo" required><br><br>
                         <button type="submit" data-i18n="subir">Subir tarea</button>
                     </form>
 
-                    <div id="mensajeSubida"></div>
+                    <div id="mensajeSubida"></div
 
                     <h3 data-i18n="subidas">Tareas subidas</h3>
                     <ul id="listaTareas" style="list-style-type: none; padding-left: 0;">
@@ -229,5 +241,7 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
 </div>
 
 <script src="../materias/js/scriptBiologia.js"></script>
+      <script src="../principal/lang.js"></script>
+      <script src="../principal/idioma.js"></script>
 </body>
 </html>

@@ -87,7 +87,7 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
         <header>
             <a href="../cursos.php" class="logo modern-back">
                 <span class="back-btn"><i class="fas fa-arrow-left"></i></span>
-                <span class="header-title">Segundo año B <span class="header-materia">Ciencia</span></span>
+                <span data-i18n="segundo"class="header-title">Segundo año B <span class="header-materia" data-i18n="ciencia">Ciencia</span></span>
             </a>
             <div class="icons">
                 <span class="settings"><i class="fas fa-cog"></i></span>
@@ -104,62 +104,69 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                 <div class="content">
                     <div class="profesor">
                         <div class="avatar-modern"></div>
-                        <p>Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
+                        <p data-i18n="profesor">Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
                     </div>
                     <div class="tareas-container">
                             <?php if (isset($resultado_tareas_profesor) && $resultado_tareas_profesor->num_rows > 0): ?>
                             <?php while ($tarea = $resultado_tareas_profesor->fetch_assoc()): ?>
-                            <div class="tarea">
-                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
-                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
-                                <small>Fecha límite: <?php echo $tarea['fecha_entrega']; ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
-                
-                                <?php if (!empty($tarea['ruta_archivo'])): ?>
-                                <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
-                                <?php endif; ?>
-                            </div>
-                                <?php endwhile; ?>
-                                <?php else: ?>
-                                <p>No se han asignado tareas aún.</p>
-                                <?php endif; ?>
-                    </div>
-                </div>
+                                  <div class="tarea">
+    
+              <h4 data-i18n="titulo"><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+             <p data-i18n="descripcion"><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+        
+ 
+             <small>
+              <span data-i18n="fechal">Fecha límite</span>: <?php echo $tarea['fecha_entrega']; ?>
+           | 
+            <span data-i18n="puntos">Puntos</span>: <?php echo $tarea['puntos']; ?>
+           </small>
+
+                 <?php if (!empty($tarea['ruta_archivo'])): ?>
+                <br>
+              <a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank" data-i18n="archivo">📎 Ver archivo adjunto</a>
+             <?php endif; ?>
+            </div>
+             <?php endwhile; ?>
+         <?php else: ?>
+          <p data-i18n="notareas">No se han asignado tareas aún.</p>
+        <?php endif; ?>
+       </div>
             </section>
             <section id="tareas" class="seccion" style="display: none;">
                 <h2>Tareas</h2>
                 <ul class="lista-tareas">
                     <li>
                         <i class="fas fa-atom"></i>
-                        <span>Tarea de Física</span>
-                        <p>Resolver los problemas de física del capítulo 3.</p>
-                        <small>Fecha límite: 10 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
+                        <span data-i18n="tareaC">Tarea de Física</span>
+                        <p data-i18n="cp1">Resolver los problemas de física del capítulo 3.</p>
+                        <small data-i18n="fecha">Fecha límite: 10 de abril</small>
+                        <button data-i18n="añadir" class="boton-estilo">Añadir tarea</button>
                     </li>
                     <li>
                         <i class="fas fa-globe"></i>
-                        <span>Proyecto de Astronomía</span>
-                        <p>Crear un proyecto sobre el sistema solar.</p>
-                        <small>Fecha límite: 12 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
+                        <span data-i18n="astronomia">Proyecto de Astronomía</span>
+                        <p data-i18n="cp2">Crear un proyecto sobre el sistema solar.</p>
+                        <small data-i18n="fecha">Fecha límite: 12 de abril</small>
+                        <button data-i18n="añadir" class="boton-estilo">Añadir tarea</button>
                     </li>
                     <li>
                         <i class="fas fa-mountain"></i>
-                        <span>Examen de Geología</span>
-                        <p>Estudiar para el examen de geología que se realizará el próximo viernes.</p>
-                        <small>Fecha límite: 15 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
+                        <span data-i18n="geologia">Examen de Geología</span>
+                        <p data-i18n="cp3">Estudiar para el examen de geología que se realizará el próximo viernes.</p>
+                        <small data-i18n="fecha">Fecha límite: 15 de abril</small>
+                        <button data-i18n="añadir" class="boton-estilo">Añadir tarea</button>
                     </li>
                     <li>
                         <i class="fas fa-recycle"></i>
-                        <span>Tarea de Ciencia Ambiental</span>
-                        <p>Escribir un ensayo sobre la importancia de la conservación del medio ambiente.</p>
-                        <small>Fecha límite: 17 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
+                        <span data-i18n="ambiental">Tarea de Ciencia Ambiental</span>
+                        <p data-i18n="cp4">Escribir un ensayo sobre la importancia de la conservación del medio ambiente.</p>
+                        <small data-i18n="fecha">Fecha límite: 17 de abril</small>
+                        <button data-i18n="añadir" class="boton-estilo">Añadir tarea</button>
                     </li>
                 </ul>
             </section>
             <section id="alumnos" class="seccion" style="display: none;">
-                <h2>Lista de Alumnos</h2>
+                <h2 data-i18n="lista">Lista de Alumnos</h2>
                 <ul class="lista-alumnos">
                     <li>
                         <i class="fas fa-user"></i>
@@ -200,7 +207,7 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                 </ul>
             </section>
             <section id="avisos" class="seccion" style="display: none;">
-                <h2>Avisos</h2>
+                <h2 data-i18n="avisos">Avisos</h2>
                 <ul class="lista-avisos">
                     <li>
                         <i class="fas fa-bell"></i>
