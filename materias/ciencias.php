@@ -2,6 +2,9 @@
 session_start();
 require_once "../conexiones/conexion.php";
 
+// Valor por defecto para evitar error si no se define $nombre
+$nombre = "Nombre no disponible";
+
 // Verificar si el usuario está logueado como profesor o como estudiante
 if (!isset($_SESSION['id']) && !isset($_SESSION['id_estudiante'])) {
     die("⚠️ Debes iniciar sesión como profesor o estudiante para acceder a esta materia.");
@@ -30,9 +33,11 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
 
     $id_clase = intval($_GET['id_clase']);
 
-    $profesor_id = $_SESSION['id'];
-    
-    $nombre = $_SESSION['nombre'];
+    // Obtener nombre si está definido en sesión
+    if (isset($_SESSION['nombre'])) {
+        $nombre = $_SESSION['nombre'];
+    }
+
     // Verificar que la clase pertenezca al profesor
     $sql = "SELECT * FROM clases WHERE id = ? AND profesor_id = ?";
     $stmt = $conn->prepare($sql);
@@ -46,15 +51,14 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
 
     $clase = $result_clase->fetch_assoc();
 }
+
 // Obtener tareas subidas por el profesor para esta clase
-    $sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
-    $stmt_tareas = $conn->prepare($sql_tareas);
-    $stmt_tareas->bind_param("i", $id_clase);
-    $stmt_tareas->execute();
-    $resultado_tareas_profesor = $stmt_tareas->get_result();
-
+$sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
+$stmt_tareas = $conn->prepare($sql_tareas);
+$stmt_tareas->bind_param("i", $id_clase);
+$stmt_tareas->execute();
+$resultado_tareas_profesor = $stmt_tareas->get_result();
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>

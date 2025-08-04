@@ -31,51 +31,51 @@
         <li class="sidebar-item active">
           <a href="#" class="sidebar-link" title="Inicio">
             <i class="fas fa-home"></i>
-            <span>Inicio</span>
+            <span data-i18n="inicioN">Inicio</span>
           </a>
         </li>
         
         <li class="sidebar-item has-submenu">
           <a href="#" class="sidebar-link" title="Programas Académicos">
             <i class="fas fa-book"></i>
-            <span>Programas Académicos</span>
+            <span data-i18n="ProgramasN">Programas Académicos</span>
             <i class="fas fa-chevron-down arrow"></i>
           </a>
           <ul class="submenu">
-            <li><a href="#">Actividades extrarriculares</a></li>
-            <li><a href="#">Primaria</a></li>
-            <li><a href="#">Secundaria</a></li>
-            <li><a href="#">Bachillerato</a></li>
+            <li><a href="#" data-i18n="ActividadesN">Actividades extrarriculares</a></li>
+            <li><a href="#" data-i18n="Primaria">Primaria</a></li>
+            <li><a href="#" data-i18n="secundaria">Secundaria</a></li>
+            <li><a href="#" data-i18n="bachillerato">Bachillerato</a></li>
           </ul>
         </li>
         
         <li class="sidebar-item has-submenu">
           <a href="#" class="sidebar-link" title="Cursos">
             <i class="fas fa-graduation-cap"></i>
-            <span>Cursos</span>
+            <span data-i18n="cursosN">Cursos</span>
             <i class="fas fa-chevron-down arrow"></i>
           </a>
           <ul class="submenu">
-            <li><a href="#">Biología</a></li>
-            <li><a href="#">Lenguaje</a></li>
-            <li><a href="#">Ciencia</a></li>
-            <li><a href="#">Matemática</a></li>
-            <li><a href="#">Química</a></li>
-            <li><a href="#">Ciencias Sociales</a></li>
+            <li><a href="#" data-i18n="biologiaN">Biología</a></li>
+            <li><a href="#" data-i18n="lenguajeN">Lenguaje</a></li>
+            <li><a href="#" data-i18n="cienciasN">Ciencia</a></li>
+            <li><a href="#" data-i18n="matematicasN">Matemática</a></li>
+            <li><a href="#" data-i18n="quimicaN">Química</a></li>
+            <li><a href="#" data-i18n="Ciencias_socialesN">Ciencias Sociales</a></li>
           </ul>
         </li>
         
         <li class="sidebar-item">
           <a href="../calendario/calendario.php" class="sidebar-link" title="Calendario">
             <i class="fas fa-calendar-alt"></i>
-            <span>Calendario</span>
+            <span data-i18n="calendario">Calendario</span>
           </a>
         </li>
 
         <li class="sidebar-item active">
           <a href="../nosotros/nosotros.php" class="sidebar-link" title="Nosotros">
             <i class="fas fa-users"></i>
-            <span>Nosotros</span>
+            <span data-i18n="nosotros">Nosotros</span>
           </a>
         </li>
         
@@ -83,28 +83,28 @@
         <li class="sidebar-item has-submenu">
           <a href="#" class="sidebar-link" title="Comunidad">
             <i class="fas fa-users"></i>
-            <span>Comunidad</span>
+            <span data-i18n="comunidadN">Comunidad</span>
             <i class="fas fa-chevron-down arrow"></i>
           </a>
           <ul class="submenu">
-            <li><a href="#">Profesores</a></li>
-            <li><a href="#">Alumnos</a></li>
-            <li><a href="#">Padres</a></li>
-            <li><a href="#">Ex-alumnos</a></li>
+            <li><a href="#" data-i18n="profesoresN">Profesores</a></li>
+            <li><a href="#" data-i18n="alumnosN">Alumnos</a></li>
+            <li><a href="#" data-i18n="padresN">Padres</a></li>
+            <li><a href="#" data-i18n="exalumnosN">Ex-alumnos</a></li>
           </ul>
         </li>
         
         <li class="sidebar-item">
           <a href="#" class="sidebar-link" title="Noticias">
             <i class="fas fa-newspaper"></i>
-            <span>Noticias</span>
+            <span data-i18n="noticiasN">Noticias</span>
           </a>
         </li>
         
         <li class="sidebar-item">
           <a href="#" class="sidebar-link" title="Contacto">
             <i class="fas fa-envelope"></i>
-            <span>Contacto</span>
+            <span data-i18n="contactoN">Contacto</span>
           </a>
         </li>
       </ul>
@@ -112,7 +112,7 @@
       <div class="sidebar-footer">
         <a href="../conexiones/logout.php" class="sidebar-link" title="Cerrar sesión">
           <i class="fas fa-sign-in-alt"></i>
-          <span>Cerrar sesion</span>
+          <span data-i18n="cerrarN">Cerrar sesion</span>
         </a>
       </div>
     </nav>
@@ -124,7 +124,8 @@
           <i class="fas fa-bars"></i>
         </button>
         <div class="user-info">
-          <span>Bienvenido <?= isset($_SESSION['nombre']) ? htmlspecialchars($_SESSION['nombre']) : 'estudiante'; ?></span>
+       <span data-i18n="bienvenido">Bienvenido</span>
+       <span><?= isset($_SESSION['nombre']) ? htmlspecialchars($_SESSION['nombre']) : 'estudiante'; ?></span>
           <a href="#" class="user-link">
             <i class="fas fa-user-circle"></i>
           </a>
@@ -133,7 +134,7 @@
       
       <!-- Imagen principal -->
       <div class="hero">
-        <h1>Nuestros cursos</h1>
+        <h1 data-i18n="cursos">Nuestros cursos</h1>
       </div>
 
       <div class="container">
@@ -143,8 +144,8 @@
           </div>
           <div class="card-content">
             <h2>1</h2>
-            <p class="card-title">Biología</p>
-            <a href="../materias/biologia.php" class="btn">Más información</a>
+            <p class="card-title" data-i18n="biologia">Biología</p>
+            <a href="../materias/biologia.php" class="btn" data-i18n="mas_informacion">Más información</a>
           </div>
         </div>
         
@@ -154,8 +155,8 @@
           </div>
           <div class="card-content">
             <h2>2</h2>
-            <p class="card-title">Lenguaje</p>
-            <a href="../materias/lenguaje.php" class="btn">Más información</a>
+            <p class="card-title" data-i18n="lenguaje">Lenguaje</p>
+            <a href="../materias/lenguaje.php" class="btn" data-i18n="mas_informacion">Más información</a>
           </div>
         </div>
         
@@ -165,8 +166,8 @@
           </div>
           <div class="card-content">
             <h2>3</h2>
-            <p class="card-title">Ciencia</p>
-            <a href="../materias/ciencias.php" class="btn">Más información</a>
+            <p class="card-title" data-i18n="ciencias">Ciencia</p>
+            <a href="../materias/ciencias.php" class="btn" data-i18n="mas_informacion">Más información</a>
           </div>
         </div>
         
@@ -176,8 +177,8 @@
           </div>
           <div class="card-content">
             <h2>4</h2>
-            <p class="card-title">Matemática</p>
-            <a href="../materias/matematica.php" class="btn">Más información</a>
+            <p class="card-title" data-i18n="matematicas">Matemática</p>
+            <a href="../materias/matematica.php" class="btn" data-i18n="mas_informacion">Más información</a>
           </div>
         </div>
         
@@ -186,6 +187,51 @@
     </main>
   </div>
 
+   <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="/placeholder.svg?height=60&width=60" alt="Logo EDUSOFT" class="logo">
+                <h3>EDUSOFT</h3>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4 data-i18n="h4">Plataforma</h4>
+                    <ul>
+                        <li><a href="#" data-i18n="inicio">Inicio</a></li>
+                        <li><a href="#" data-i18n="cursos">Cursos</a></li>
+                        <li><a href="#" data-i18n="nosotros">Nosotros</a></li>
+                        <li><a href="#" data-i18n="contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="#" data-i18n="biblioteca">Biblioteca Digital</a></li>
+                        <li><a href="#" data-i18n="tutoriales">Tutoriales</a></li>
+                        <li><a href="#" data-i18n="preguntas_frecuentes">Preguntas Frecuentes</a></li>
+                        <li><a href="#" data-i18n="soporte">Soporte Técnico</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 data-i18n="legal">Legal</h4>
+                    <ul>
+                        <li data-i18n="terminos"><a href="#">Términos de Uso</a></li>
+                        <li data-i18n="politica"><a href="#">Política de Privacidad</a></li>
+                        <li data-i18n="cookies"><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p data-i18n="copy">&copy; 2024 EDUSOFT - Plataforma Educativa. Desarrollado por estudiantes de Bachillerato Técnico.</p>
+        </div>
+    </footer>
+
+
+
   <script src="../nosotros/cursos.js"></script>
+    <script src="../principal/lang.js"></script>
+  <script src="../principal/idioma.js"></script>
 </body>
 </html>

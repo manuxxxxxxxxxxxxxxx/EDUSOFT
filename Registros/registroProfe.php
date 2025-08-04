@@ -11,52 +11,54 @@
 <div class="container-form register">
         <div class="information">
             <div class="info-childs">
-                <h2>Bienvenido Docente</h2>
+                <h2 data-i18n="bienvenidaD">Bienvenido Docente</h2>
                 <br>
                 <img src="../img/3.png" alt="" height="200px" weight="220px">
             </div>
         </div>
         <div class="form-information">
             <div class="form-information-childs">
-                <h2>Crear una Cuenta</h2>
+                <h2 data-i18n="cuentaD">Crear una Cuenta</h2>
                 <form class="form form-register" action="../conexiones/registroProfes.php" method="post">
                     <div>
                         <label>
                             <i class='bx bxs-user'></i>
-                            <input type="text"  Name="Nombre" placeholder="Nombre Usuario"  >
+                            <input data-i18n="nombre_usuario" type="text"  Name="Nombre" placeholder="Nombre Usuario"  >
                         </label>
                     </div>
                     <div>
                         <label >
                             <i class='bx bxs-envelope' ></i>
-                            <input type="email" Name="Email" placeholder="Correo Electronico"  >
+                            <input data-i18n="correo" type="email" Name="Email" placeholder="Correo Electronico"  >
                         </label>
                     </div>
                    <div>
                         <label>
                             <i class='bx bxs-lock-alt' ></i>
-                            <input type="password" Name="Pass" placeholder="Contraseña" >
+                            <input data-i18n="contraseña" type="password" Name="Pass" placeholder="Contraseña" >
                         </label>
                    </div>
                    <div>
                         <label>
                             <i class='bx bxs-lock-alt' ></i>
-                            <input type="text" Name="Tel" placeholder="Telefono" >
+                            <input data-i18n="telefono" type="text" Name="Tel" placeholder="Telefono" >
                         </label>
                    </div>
                    <div>
                         <label>
                             <i class='bx bxs-lock-alt' ></i>
-                            <input type="text" Name="DUI" placeholder="DUI" >
+                            <input data-i18n="Dui" type="text" Name="DUI" placeholder="DUI" >
                         </label>
                    </div>
                    
-                    <input type="submit" value="Registrarse">
-                    <div class="alerta-error">Todos los campos son obligatorios</div>
-                    <div class="alerta-exito">Te registraste correctamente</div>
+                    <input data-i18n="registrar" type="submit" value="Registrarse">
+                    <div class="alerta-error" data-i18n="campos">Todos los campos son obligatorios</div>
+                    <div class="alerta-exito" data-i18n="correcion">Te registraste correctamente</div>
                 </form>
             </div>
         </div>
     </div>
+      <script src="../principal/lang.js"></script>
+      <script src="../principal/idioma.js"></script>
 </body>
 </html>
