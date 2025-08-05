@@ -47,35 +47,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Crear Clase</title>
-    <link rel="stylesheet" href="/frontend_maestros/crearClase.css">
+    <link rel="stylesheet" href="crearCurso.css">
 </head>
 <body>
+    <div class="panel-bg">
+        <div class="form-card">
 
-    <h2>Bienvenido, Profesor <?php echo htmlspecialchars($nombre); ?></h2>
-    <h3>Crear una nueva clase</h3>
+            <h2>Bienvenido, Profesor <?php echo htmlspecialchars($nombre); ?></h2>
+            <h3>Crear una nueva clase</h3>
+            <?php if ($mensaje): ?>
+                <p><strong><?php echo $mensaje; ?></strong></p>
+            <?php endif; ?>
+            <form method="POST">
+                <label>Nombre de la clase:</label>
+                <input type="text" name="nombre_clase" required>
 
-    <?php if ($mensaje): ?>
-        <p><strong><?php echo $mensaje; ?></strong></p>
-    <?php endif; ?>
-
-    <form method="POST">
-        <label>Nombre de la clase:</label><br>
-        <input type="text" name="nombre_clase" required><br><br>
-
-        <label>Materia:</label><br>
-        <select name="materia" required>
+                <div class="form-row">
+    <label for="materia">
+        <i class="fa-solid fa-book-open"></i> Materia:
+    </label>
+    <div class="select-wrapper">
+        <select name="materia" id="materia" required>
             <option value="">-- Selecciona una materia --</option>
             <option value="matematica">Matemática</option>
             <option value="biologia">Biología</option>
             <option value="sociales">Sociales</option>
             <option value="lenguaje">Lenguaje</option>
-        </select><br><br>
+        </select>
+        <span class="select-icon"><i class="fa-solid fa-book-open"></i></span>
+    </div>
+</div>
 
-        <label>Descripción:</label><br>
-        <textarea name="descripcion"></textarea><br><br>
+                <label>Descripción:</label>
+                <textarea name="descripcion" placeholder="Describe brevemente la clase..."></textarea>
 
-        <button type="submit">Crear clase</button>
-    </form>
-
+                <input type="submit" value="Crear clase">
+            </form>
+        </div>
+    </div>
 </body>
 </html>
