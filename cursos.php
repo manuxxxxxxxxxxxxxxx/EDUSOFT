@@ -1,7 +1,7 @@
 <?php 
     session_start();
       if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "estudiante") {
-        header("Location: ../loginAlumno.php");
+        echo "<script>alert('Debes iniciar sesión como estudiante.'); window.location.href='loginAlumno.php';</script>";
         exit;
       }
  ?>
@@ -138,6 +138,76 @@
       </div>
 
       <div class="container">
+        <div class="unirse-clase">
+          <h3>Unirse a una clase</h3>
+          <form method="POST" action="unirse_clase.php">
+              <input type="text" name="codigo_clase" placeholder="Código de la clase" required>
+              <button type="submit">Unirse</button>
+          </form>
+        </div>
+        <?php
+              require_once 'conexiones/conexion.php';  // Asegúrate que esta ruta es correcta
+
+              $id_estudiante = $_SESSION['id'];  // Asegúrate de tener esto guardado en la sesión
+
+              $query = "SELECT c.nombre_clase, c.materia, p.nombre AS nombre_profesor 
+                        FROM clases_estudiantes ce
+                        JOIN clases c ON ce.id_clase = c.id
+                        JOIN profesores p ON c.profesor_id = p.id
+                        WHERE ce.id_estudiante = ?";
+              $stmt = $conn->prepare($query);
+              $stmt->bind_param("i", $id_estudiante);
+              $stmt->execute();
+              $resultado = $stmt->get_result();
+
+
+              // Dentro de un ciclo o de forma individual
+              while ($clases = $resultado->fetch_assoc()) {
+                  // Mostrar tarjeta (ya corregida como arriba)
+              }
+          ?>
+
+          <?php if (empty($clases_estudiantes)): ?>
+            <p>No estás inscrito en ninguna clase. Usa el código para unirte.</p>
+          <?php else: ?>
+
+            <?php foreach ($clases_estudiantes as $clases): 
+              // Determinar imagen basada en la materia
+              $materia = strtolower($clases['materia']);
+              $imagenes = [
+                  'lenguaje' => '../img/lenguaje_cursos.jpg',
+                  'matemática' => '../img/mate_cursos.webp',
+                  'matematica' => '../img/mate_cursos.webp',
+                  'ciencia' => '../img/ciencias_cursos.png',
+                  'biología' => '../img/biologia.jpg',
+                  'biologia' => '../img/biologia.jpg',
+                  'química' => '../img/quimica.jpg',
+                  'quimica' => '../img/quimica.jpg',
+              ];
+              $img = $imagenes[$materia] ?? '../img/default.jpg';
+            ?>
+                <div class="card bg-green">
+                    <div class="card-image-container">
+                        <img src="<?= $img ?>" class="card-img" alt="<?= htmlspecialchars($clases['materia']) ?>">
+                    </div>
+                    <?php if (isset($clases) && is_array($clases)) : ?>
+                      <div class="card-content">
+                        <h2><?= htmlspecialchars($clases['nombre_clase'] ?? 'Sin nombre') ?></h2>
+                        <p class="card-title">
+                            <?= htmlspecialchars($clases['materia'] ?? 'Materia desconocida') ?>
+                            - Prof. <?= htmlspecialchars($clases['nombre'] ?? 'Desconocido') ?>
+                        </p>
+                        <a href="../materias/<?= htmlspecialchars($clases['materia'] ?? 'materia') ?>.php" class="btn" data-i18n="mas_informacion">Más información</a>
+                      </div>
+                    <?php else : ?>
+                      <p class="text-danger">No se pudo cargar la clase correctamente.</p>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+          <?php endif; ?>
+
+
+          
         <div class="card bg-blue">
           <div class="card-image-container">
             <img src="../img/biologia.jpg" class="card-img" alt="Biología">

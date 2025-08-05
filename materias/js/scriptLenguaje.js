@@ -159,3 +159,23 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+
+document.getElementById("formSubirTarea").addEventListener("submit", function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const mensaje = document.getElementById("mensajeSubida");
+
+    fetch('subir_tarea_ajax.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        mensaje.innerHTML = data.mensaje;
+
+    })
+    .catch(err => {
+        mensaje.innerHTML = "❌ Error en la conexión.";
+    });
+});

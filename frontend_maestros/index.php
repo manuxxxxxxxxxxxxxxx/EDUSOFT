@@ -77,7 +77,7 @@ $nombre = $_SESSION['nombre'];
         <!-- CURSOS -->
         <?php
         // Consulta para traer las clases de este profesor
-        $sql = "SELECT id, nombre_clase, materia FROM clases WHERE profesor_id = ?";
+        $sql = "SELECT id, nombre_clase, materia, codigo_clase FROM clases WHERE profesor_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $profesor_id);
         $stmt->execute();
@@ -95,7 +95,8 @@ $nombre = $_SESSION['nombre'];
                             <li>
                                 <a href="../materias/<?php echo $clase['materia']; ?>.php?id_clase=<?php echo $clase['id']; ?>">
                                 <?php echo htmlspecialchars($clase['nombre_clase']); ?> – <?php echo ucfirst($clase['materia']); ?>
-                                </a>
+                                </a><br>
+                                <small><strong>Código de clase:</strong> <?php echo htmlspecialchars($clase['codigo_clase']); ?></small>
                             </li>
                                 <?php endforeach; ?>
                                 <?php else: ?>
