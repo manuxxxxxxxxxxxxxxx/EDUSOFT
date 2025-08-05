@@ -77,10 +77,10 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
             <span>EduSoft</span>
         </div>
         <nav>
-            <button id="tablon-btn" class="active"><i class="fas fa-th-large"></i>Tablón</button>
-            <button id="tareas-btn"><i class="fas fa-tasks"></i>Tareas</button>
-            <button id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
-            <button id="avisos-btn"><i class="fas fa-bell"></i>Avisos</button>
+            <button data-i18n="tablon" id="tablon-btn" class="active"><i class="fas fa-th-large"></i>Tablón</button>
+            <button  data-i18n="tareas" id="tareas-btn"><i class="fas fa-tasks"></i>Tareas</button>
+            <button  data-i18n="alumnos" id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
+            <button   data-i18n="avisos" id="avisos-btn"><i class="fas fa-bell"></i>Avisos</button>
         </nav>
     </div>
     <div class="main-content">
@@ -99,7 +99,7 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                 <div class="banner banner-ciencia" id="banner3">
                     <canvas id="particles-bg"></canvas>
                     <div class="abstract-shape"></div>
-                    <h1>CIENCIA</h1>
+                    <h1 data-i18n="ciencia">CIENCIA</h1>
                 </div>
                 <div class="content">
                     <div class="profesor">
@@ -241,21 +241,23 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
     <div id="modalTarea" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2 id="modalTitulo">Título de la tarea</h2>
-            <p id="modalDescripcion">Descripción de la tarea</p>
+            <h2 id="modalTitulo" data-i18n="titulo">Título de la tarea</h2>
+            <p id="modalDescripcion" data-i18n="descripcion">Descripción de la tarea</p>
             <div class="modal-section">
-                <label for="archivoSubir">Subir archivos:</label>
+                <label for="archivoSubir" data-i18n="archivos">Subir archivos:</label>
                 <input type="file" id="archivoSubir" multiple>
                 <ul id="listaArchivos"></ul>
             </div>
             <div class="modal-section">
-                <label for="enlaceInput">Añadir enlace:</label>
+                <label for="enlaceInput" data-i18n="enlace">Añadir enlace:</label>
                 <input type="url" id="enlaceInput" placeholder="https://">
-                <button id="agregarEnlace">Agregar enlace</button>
+                <button id="agregarEnlace" data-i18n="agregarE">Agregar enlace</button>
                 <ul id="listaEnlaces"></ul>
             </div>
         </div>
     </div>
     <script src="../materias/js/scriptCiencias.js"></script>
+    <script src="../principal/lang.js"></script>
+    <script src="../principal/idioma.js"></script>
 </body>
 </html>

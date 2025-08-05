@@ -78,8 +78,10 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
         <nav>
             <button id="tablon-btn" class="active"><i class="fas fa-th-large"></i>Tablón</button>
             <button id="tareas-btn"><i class="fas fa-tasks"></i>Tareas</button>
+             <button id="material-btn"><i class="fas fa-folder-open"></i>Material</button> 
             <button id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
             <button id="avisos-btn"><i class="fas fa-bell"></i>Avisos</button>
+            
         </nav>
     </div>
     <div class="main-content">
@@ -212,6 +214,30 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                         <span>Información Importante</span>
                         <p>Recuerda que la escuela estará cerrada el próximo martes por motivo de una reunión de padres y maestros. Asegúrate de planificar tus actividades adecuadamente.</p>
                         <small>Fecha: 13 de abril</small>
+                    </li>
+                </ul>
+            </section>
+
+             <section id="material" class="seccion" style="display: none;">
+                <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
+                <ul class="lista-material">
+                    <li>
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Guía de ejercicios</span>
+                        <a href="materiales/guia_ejercicios.pdf" target="_blank">Descargar PDF</a>
+                        <small>Subido: 01 de agosto</small>
+                    </li>
+                    <li>
+                        <i class="fas fa-link"></i>
+                        <span>Video explicativo</span>
+                        <a href="https://www.youtube.com/watch?v=xxxxxx" target="_blank">Ver video</a>
+                        <small>Enlace externo</small>
+                    </li>
+                    <li>
+                        <i class="fas fa-file-word"></i>
+                        <span>Resumen teórico</span>
+                        <a href="materiales/resumen.docx" target="_blank">Descargar Word</a>
+                        <small>Subido: 28 de julio</small>
                     </li>
                 </ul>
             </section>

@@ -78,17 +78,17 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
             <span>EduSoft</span>
         </div>
         <nav>
-            <button id="tablon-btn" class="active"><i class="fas fa-th-large"></i>Tablón</button>
-            <button id="tareas-btn"><i class="fas fa-tasks"></i>Tareas</button>
-            <button id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
-            <button id="avisos-btn"><i class="fas fa-bell"></i>Avisos</button>
+            <button data-i18n="tablon" id="tablon-btn" class="active"><i class="fas fa-th-large"></i>Tablón</button>
+            <button data-i18n="tareas" id="tareas-btn"><i class="fas fa-tasks"></i>Tareas</button>
+            <button data-i18n="alumnos"    id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
+            <button data-i18n="avisos"  id="avisos-btn"><i class="fas fa-bell"></i>Avisos</button>
         </nav>
     </div>
     <div class="main-content">
         <header>
             <a href="../cursos.php" class="logo modern-back">
                 <span class="back-btn"><i class="fas fa-arrow-left"></i></span>
-                <span class="header-title">Segundo año B <span class="header-materia">Lenguaje y Literatura</span></span>
+                <span class="header-title" data-i18n="segundo">Segundo año B <span class="header-materia" data-i18n="lenguajeM">Lenguaje y Literatura</span></span>
             </a>
             <div class="icons">
                 <span class="settings"><i class="fas fa-cog"></i></span>
@@ -100,67 +100,73 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                 <div class="banner banner-lenguaje" id="banner2">
                     <canvas id="particles-bg"></canvas>
                     <div class="abstract-shape"></div>
-                    <h1>LENGUAJE Y LITERATURA</h1>
+                    <h1 data-i18n="lenguaje">LENGUAJE Y LITERATURA</h1>
                 </div>
                 <div class="content">
                     <div class="profesor">
                         <div class="avatar-modern"></div>
-                        <p>Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
+                        <p data-i18n="profesor">Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
                     </div>
                     <div class="tareas-container">
                             <?php if (isset($resultado_tareas_profesor) && $resultado_tareas_profesor->num_rows > 0): ?>
                             <?php while ($tarea = $resultado_tareas_profesor->fetch_assoc()): ?>
-                            <div class="tarea">
-                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
-                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
-                                <small>Fecha límite: <?php echo $tarea['fecha_entrega']; ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
-                
-                                <?php if (!empty($tarea['ruta_archivo'])): ?>
-                                <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
-                                <?php endif; ?>
-                            </div>
-                                <?php endwhile; ?>
-                                <?php else: ?>
-                                <p>No se han asignado tareas aún.</p>
-                                <?php endif; ?>
-                        </div>
-                </div>
+                           <div class="tarea">
+        <h4 data-i18n="titulo"><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+        <p data-i18n="descripcion"><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+        
+ 
+        <small>
+          <span data-i18n="fechal">Fecha límite</span>: <?php echo $tarea['fecha_entrega']; ?>
+          | 
+          <span data-i18n="puntos">Puntos</span>: <?php echo $tarea['puntos']; ?>
+        </small>
+
+        <?php if (!empty($tarea['ruta_archivo'])): ?>
+          <br>
+          <a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank" data-i18n="archivo">📎 Ver archivo adjunto</a>
+        <?php endif; ?>
+      </div>
+    <?php endwhile; ?>
+  <?php else: ?>
+    <p data-i18n="notareas">No se han asignado tareas aún.</p>
+  <?php endif; ?>
+</div>
             </section>
             <section id="tareas" class="seccion" style="display: none;">
-                <h2>Tareas</h2>
+                <h2 data-i18n="tareas">Tareas</h2>
                 <ul class="lista-tareas">
                     <li>
                         <i class="fas fa-pen"></i>
-                        <span>Tarea de Análisis de Texto</span>
-                        <p>Analizar el texto "La casa de los espíritus" de Isabel Allende.</p>
-                        <small>Fecha límite: 10 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
+                        <span data-i18n="analisisM">Tarea de Análisis de Texto</span>
+                        <p data-i18n="lp">Analizar el texto "La casa de los espíritus" de Isabel Allende.</p>
+                        <small data-i18n="fecha">Fecha límite: 10 de abril</small>
+                        <button data-i18n="añadir" class="boton-estilo">Añadir tarea</button>
                     </li>
                     <li>
                         <i class="fas fa-bookmark"></i>
-                        <span>Proyecto de Literatura</span>
-                        <p>Crear un proyecto sobre la vida y obra de un autor literario.</p>
-                        <small>Fecha límite: 12 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
+                        <span data-i18n="proyectol">Proyecto de Literatura</span>
+                        <p data-i18n="lp1">Crear un proyecto sobre la vida y obra de un autor literario.</p>
+                        <small data-i18n="fecha">Fecha límite: 12 de abril</small>
+                        <button data-i18n="añadir" class="boton-estilo">Añadir tarea</button>
                     </li>
                     <li>
                         <i class="fas fa-language"></i>
-                        <span>Examen de Gramática</span>
-                        <p>Estudiar para el examen de gramática que se realizará el próximo viernes.</p>
-                        <small>Fecha límite: 15 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
+                        <span data-i18n="examenñ">Examen de Gramática</span>
+                        <p data-i18n="lp2">Estudiar para el examen de gramática que se realizará el próximo viernes.</p>
+                        <small data-i18n="fecha">Fecha límite: 15 de abril</small>
+                        <button data-i18n="añadir" class="boton-estilo">Añadir tarea</button>
                     </li>
                     <li>
                         <i class="fas fa-edit"></i>
-                        <span>Tarea de Composición</span>
-                        <p>Escribir un ensayo sobre un tema de actualidad.</p>
-                        <small>Fecha límite: 17 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
+                        <span data-i18n="composicionl">Tarea de Composición</span>
+                        <p data-i18n="lp3">Escribir un ensayo sobre un tema de actualidad.</p>
+                        <small data-i18n="fecha">Fecha límite: 17 de abril</small>
+                        <button data-i18n="añadir" class="boton-estilo">Añadir tarea</button>
                     </li>
                 </ul>
             </section>
             <section id="alumnos" class="seccion" style="display: none;">
-                <h2>Lista de Alumnos</h2>
+                <h2 data-i18n="lista">Lista de Alumnos</h2>
                 <ul class="lista-alumnos">
                     <li>
                         <i class="fas fa-user"></i>
@@ -201,7 +207,7 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                 </ul>
             </section>
             <section id="avisos" class="seccion" style="display: none;">
-                <h2>Avisos</h2>
+                <h data-i18n="avisos">Avisos</h2>
                 <ul class="lista-avisos">
                     <li>
                         <i class="fas fa-bell"></i>

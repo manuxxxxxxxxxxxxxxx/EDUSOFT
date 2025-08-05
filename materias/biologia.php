@@ -103,7 +103,7 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
             <div class="banner" id="banner6">
                 <canvas id="particles-bg"></canvas>
                 <div class="abstract-shape"></div>
-                <h1>BIOLOGÍA</h1>
+                <h1 data-i18n="biologiaM">BIOLOGÍA</h1>
             </div>
             <div class="content">
           <div class="profesor">
@@ -154,7 +154,7 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                     <form id="formSubirTarea" action="subir_tarea_ajax.php" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="materia" value="biologia">
                         <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>">
-                        <label for="archivo" data-i18n="archivo">Archivo (PDF, DOCX, JPG...):</label>
+                        <label for="archivo" data-i18n="archivo2">Archivo (PDF, DOCX, JPG...):</label>
                         <input type="file" name="archivo" id="archivo" required><br><br>
                         <button type="submit" data-i18n="subir">Subir tarea</button>
                     </form>
@@ -196,7 +196,7 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                 </li>
                 <li>
                     <i class="fas fa-pen"></i>
-                    <span data-i18n="tarea">Tarea de Biología Ambiental</span>
+                    <span data-i18n="tarea2">Tarea de Biología Ambiental</span>
                     <p data-i18n="escribir">Escribir un ensayo sobre la importancia de la biología ambiental en la conservación del medio ambiente.</p>
                     <small data-i18n="limete">Fecha límite: 17 de abril</small>
                     <button data-i18n="añadir" class="boton-estilo">Añadir tarea</button>
@@ -225,7 +225,7 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2 id="modalTitulo" data-i18n="titulo">Título de la tarea</h2>
-        <p id="modalDescripcion" data-i18n="descripcion">Descripción de la tarea</p>
+        <p id="modalDescripcion" data-i18n="descripcionB">Descripción de la tarea</p>
         <div class="modal-section">
             <label for="archivoSubir" data-i18n="archivos">Subir archivos:</label>
             <input type="file" id="archivoSubir" multiple>
