@@ -24,6 +24,7 @@ if (isset($_SESSION['id_estudiante'])) {
 }
 
 // Lógica para profesores
+
 if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
     $profesor_id = $_SESSION['id'];
 
@@ -53,11 +54,21 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
 }
 
 // Obtener tareas subidas por el profesor para esta clase
-$sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
-$stmt_tareas = $conn->prepare($sql_tareas);
-$stmt_tareas->bind_param("i", $id_clase);
-$stmt_tareas->execute();
-$resultado_tareas_profesor = $stmt_tareas->get_result();
+$tareas_profesor = []; // para almacenar las tareas del profesor
+
+if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase)) {
+    // Ya validaste arriba que la clase pertenece al profesor
+
+    $sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
+    $stmt_tareas = $conn->prepare($sql_tareas);
+    $stmt_tareas->bind_param("i", $id_clase);
+    $stmt_tareas->execute();
+    $resultado_tareas_profesor = $stmt_tareas->get_result();
+
+    while ($fila = $resultado_tareas_profesor->fetch_assoc()) {
+        $tareas_profesor[] = $fila;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -107,57 +118,43 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                         <div class="avatar-modern"></div>
                         <p>Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
                     </div>
-                    <div class="tareas-container">
-                        <?php if (isset($resultado_tareas_profesor) && $resultado_tareas_profesor->num_rows > 0): ?>
-                         <?php while ($tarea = $resultado_tareas_profesor->fetch_assoc()): ?>
-                        <div class="tarea">
-                            <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
-                            <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
-                            <small>Fecha límite: <?php echo $tarea['fecha_entrega']; ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
-                
-                            <?php if (!empty($tarea['ruta_archivo'])): ?>
-                             <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
-                            <?php endif; ?>
+                        <div class="tareas-container">
+                            <?php if (!empty($tareas_profesor)): ?>
+                                <?php foreach ($tareas_profesor as $tarea): ?>
+                            <div class="tarea">
+                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                                <small>Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
+                                <?php if (!empty($tarea['ruta_archivo'])): ?>
+                                    <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
+                                <?php endif; ?>
+                            </div>
+                                <?php endforeach; ?>
+                                <?php else: ?>
+                                <p>No se han asignado tareas aún.</p>
+                                <?php endif; ?>
                         </div>
-                            <?php endwhile; ?>
-                            <?php else: ?>
-                            <p>No se han asignado tareas aún.</p>
-                            <?php endif; ?>
                     </div>
-                </div>
             </section>
             <section id="tareas" class="seccion" style="display: none;">
-                <h2>Tareas</h2>
-                <ul class="lista-tareas">
-                    <li>
-                        <i class="fas fa-book"></i>
-                        <span>Tarea de Álgebra</span>
-                        <p>Resolver los ejercicios del 1 al 10 del capítulo 3 de álgebra.</p>
-                        <small>Fecha límite: 10 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
-                    </li>
-                    <li>
-                        <i class="fas fa-building"></i>
-                        <span>Proyecto de Geometría</span>
-                        <p>Crear un modelo de un edificio utilizando conceptos de geometría.</p>
-                        <small>Fecha límite: 12 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
-                    </li>
-                    <li>
-                        <i class="fas fa-chart-line"></i>
-                        <span>Examen de Estadística</span>
-                        <p>Estudiar para el examen de estadística que se realizará el próximo viernes.</p>
-                        <small>Fecha límite: 15 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
-                    </li>
-                    <li>
-                        <i class="fas fa-calculator"></i>
-                        <span>Tarea de Cálculo</span>
-                        <p>Resolver los problemas del 1 al 5 del capítulo 5 de cálculo.</p>
-                        <small>Fecha límite: 17 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
-                    </li>
-                </ul>
+            <h2>Tareas</h2>
+                <div class="tareas-container">
+                    <?php if (!empty($tareas_profesor)): ?>
+                        <?php foreach ($tareas_profesor as $tarea): ?>
+                            <div class="tarea">
+                                <i class="fas fa-book"></i>
+                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                                <small>Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
+                                <?php if (!empty($tarea['ruta_archivo'])): ?>
+                                    <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
+                                <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>No se han asignado tareas aún.</p>
+                    <?php endif; ?>
+                </div>
             </section>
             <section id="alumnos" class="seccion" style="display: none;">
                 <h2>Lista de Alumnos</h2>
