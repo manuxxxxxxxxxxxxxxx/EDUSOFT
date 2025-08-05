@@ -100,9 +100,9 @@
             <span data-i18n="noticiasN">Noticias</span>
           </a>
         </li>
-        
+       
         <li class="sidebar-item">
-          <a href="#" class="sidebar-link" title="Contacto">
+          <a href="../contactanos/contactanos.php" class="sidebar-link" title="Contacto">
             <i class="fas fa-envelope"></i>
             <span data-i18n="contactoN">Contacto</span>
           </a>

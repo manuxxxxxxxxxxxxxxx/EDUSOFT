@@ -16,7 +16,7 @@ if (isset($_SESSION['id_estudiante'])) {
     $materia = 'biologia'; // Puedes cambiar esto dinámicamente si lo deseas
 
     // Obtener tareas que subió este estudiante en esta materia
-    $sql = "SELECT nombre_archivo, ruta_archivo, fecha_subida FROM tareas WHERE id_estudiante = ? AND materia = ?";
+    $sql = "SELECT id, nombre_archivo, ruta_archivo, fecha_subida FROM tareas WHERE id_estudiante = ? AND materia = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("is", $id_estudiante, $materia);
     $stmt->execute();
@@ -69,7 +69,7 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../materias/css/styleBiologia.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <script src="../js/subir_tarea.js"></script>
+    <script src="../materias/js/subir_tarea.js"></script>
 </head>
 <body>
 
@@ -241,7 +241,34 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
 </div>
 
 <script src="../materias/js/scriptBiologia.js"></script>
+ HEAD
       <script src="../principal/lang.js"></script>
       <script src="../principal/idioma.js"></script>
+
+
+<script>
+function eliminarTarea(id) {
+    if (!confirm("¿Estás seguro de que quieres eliminar esta tarea?")) return;
+
+    fetch("eliminar_tarea.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `id=${id}`
+    })
+    .then(response => response.text())
+    .then(res => {
+        if (res === "OK") {
+            const tareaLi = document.getElementById(`tarea_${id}`);
+            if (tareaLi) tareaLi.remove();
+        } else {
+            alert("No se pudo eliminar la tarea");
+        }
+    })
+    .catch(err => {
+        console.error("Error eliminando tarea:", err);
+    });
+}
+</script>
+ bd33d54 (arooooooooon)
 </body>
 </html>
