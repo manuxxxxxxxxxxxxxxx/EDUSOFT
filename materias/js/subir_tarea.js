@@ -21,9 +21,7 @@ document.getElementById("formSubirTarea").addEventListener("submit", function (e
             nuevaTarea.innerHTML = `
                 <a href="${data.archivo.ruta}" target="_blank">${data.archivo.nombre}</a>
                 <small>(${data.archivo.fecha})</small>
-                <button onclick="eliminarTarea(${data.archivo.id})" style="margin-left: 10px; color: red; background: none; border: none; cursor: pointer;">
-                    ❌ Eliminar
-                </button>
+                <button onclick="eliminarTarea(${data.archivo.id})"> ❌ Eliminar </button>
             `;
 
             const lista = document.getElementById("listaTareas");

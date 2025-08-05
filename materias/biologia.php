@@ -69,7 +69,8 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../materias/css/styleBiologia.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <script src="../materias/js/subir_tarea.js"></script>
+    <script src="../materias/js/subir_tarea.js" defer></script>
+    
 </head>
 <body>
 
@@ -241,9 +242,9 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
 </div>
 
 <script src="../materias/js/scriptBiologia.js"></script>
- HEAD
       <script src="../principal/lang.js"></script>
       <script src="../principal/idioma.js"></script>
+     
 
 
 <script>
@@ -269,6 +270,5 @@ function eliminarTarea(id) {
     });
 }
 </script>
- bd33d54 (arooooooooon)
 </body>
 </html>
