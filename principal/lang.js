@@ -193,7 +193,17 @@ const translations = {
     cp3:"Estudiar para el examen de geología que se realizará el próximo viernes.",
     ambiental:"Tarea de Ciencia Ambiental",
     cp4:"Escribir un ensayo sobre la importancia de la conservación del medio ambiente.",
+    lenguajeM:"Lenguaje y literatura",
+    analasisM:"Tarea de Análisis de Texto",
+    lp:"Analizar el texto La casa de los espíritus de Isabel Allende",
+    proyectol:"Proyecto de Literatura",
+    lp1:"Crear un proyecto sobre la vida y obra de un autor literario.",
+    examenl:"Examen de Gramática",
+    lp2:"Estudiar para el examen de gramática que se realizará el próximo viernes.",
+    composicionl:"Tarea de Composición",
+    lp3:"Escribir un ensayo sobre un tema de actualidad.",
     
+
     
 
   
@@ -402,6 +412,16 @@ const translations = {
     cp3:"Study for the geology exam next Friday.",
     ambiental:"Environmental Science Homework",
     cp4:"Write an essay on the importance of environmental conservation.",
+    lenguajeM:"lenguage",
+    analasisM:"Text Analysis Task",
+    lp:"Analyze the text The House of the Spirits by Isabel Allende",
+    proyectol:"Literature Project",
+    lp1:"Create a project about the life and work of a literary author.",
+    examenl:"Grammar Test",
+    lp2:"Study for the grammar test next Friday.",
+    composicionl:"Composition Task",
+    lp3:"Write an essay on a current topic.",
+    
 
     
 

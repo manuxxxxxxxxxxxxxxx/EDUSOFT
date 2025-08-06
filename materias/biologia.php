@@ -82,6 +82,7 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
     <nav>
         <button data-i18n="tablon" id="tablon-btn" class="active"><i class="fas fa-th-large"></i> Plank</button>
         <button data-i18n="tareas" id="tareas-btn"><i class="fas fa-tasks"></i> Homeworks</button>
+        <button id="material-btn"><i class="fas fa-folder-open"></i>Material</button> 
          <button data-i18n="alumnos"  id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
         <button data-i18n="avisos" id="avisos-btn"><i class="fas fa-bell"></i> notices</button>
     </nav>
@@ -219,6 +220,37 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                 <!-- Lista estática de avisos -->
             </ul>
         </section>
+                  <section id="material" class="seccion" style="display: none;">
+                <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
+                <ul class="lista-material">
+                    <li>
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Guía de ejercicios</span>
+                        <a href="materiales/guia_ejercicios.pdf" target="_blank">Descargar PDF</a>
+                        <small>Subido: 01 de agosto</small>
+                    </li>
+                    <li>
+                        <i class="fas fa-link"></i>
+                        <span>Video explicativo</span>
+                        <a href="https://www.youtube.com/watch?v=xxxxxx" target="_blank">Ver video</a>
+                        <small>Enlace externo</small>
+                    </li>
+                    <li>
+                        <i class="fas fa-file-word"></i>
+                        <span>Resumen teórico</span>
+                        <a href="materiales/resumen.docx" target="_blank">Descargar Word</a>
+                        <small>Subido: 28 de julio</small>
+                    </li>
+                </ul>
+            </section>
+
+
+
+
+
+
+
+
     </main>
 </div>
 

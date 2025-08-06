@@ -87,11 +87,11 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
             <span>EduSoft</span>
         </div>
         <nav>
-            <button id="tablon-btn" class="active"><i class="fas fa-th-large"></i>Tablón</button>
-            <button id="tareas-btn"><i class="fas fa-tasks"></i>Tareas</button>
-             <button id="material-btn"><i class="fas fa-folder-open"></i>Material</button> 
-            <button id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
-            <button id="avisos-btn"><i class="fas fa-bell"></i>Avisos</button>
+            <button data-i18n="tablon" id="tablon-btn" class="active"><i class="fas fa-th-large"></i>Tablón</button>
+            <button data-i18n="tareas"    id="tareas-btn"><i class="fas fa-tasks"></i>Tareas</button>
+             <button data-i18n="material"  id="material-btn"><i class="fas fa-folder-open"></i>Material</button> 
+            <button  data-i18n="alumnos"  id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
+            <button data-i18n="avisos" id="avisos-btn"><i class="fas fa-bell"></i>Avisos</button>
             
         </nav>
     </div>
@@ -99,7 +99,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
         <header>
             <a href="../cursos.php" class="logo modern-back">
                 <span class="back-btn"><i class="fas fa-arrow-left"></i></span>
-                <span class="header-title">Segundo año B <span class="header-materia">Matemática</span></span>
+                <span class="header-title" data-i18n="segundo">Segundo año B <span class="header-materia" data-i18n="matematicaM">Matemática</span></span>
             </a>
             <div class="icons">
                 <span class="settings"><i class="fas fa-cog"></i></span>
@@ -111,29 +111,38 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                 <div class="banner" id="banner1">
                     <canvas id="particles-bg"></canvas>
                     <div class="abstract-shape"></div>
-                    <h1>MATEMÁTICA</h1>
+                    <h1 data-i18n="matematicaM">MATEMÁTICA</h1>
                 </div>
                 <div class="content">
                     <div class="profesor">
                         <div class="avatar-modern"></div>
-                        <p>Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
+                        <p data-i18n="profesor">Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
                     </div>
                         <div class="tareas-container">
                             <?php if (!empty($tareas_profesor)): ?>
                                 <?php foreach ($tareas_profesor as $tarea): ?>
-                            <div class="tarea">
-                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
-                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
-                                <small>Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
-                                <?php if (!empty($tarea['ruta_archivo'])): ?>
-                                    <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
-                                <?php endif; ?>
-                            </div>
-                                <?php endforeach; ?>
-                                <?php else: ?>
-                                <p>No se han asignado tareas aún.</p>
-                                <?php endif; ?>
-                        </div>
+                    <div class="tarea">
+        <!-- Solo el texto traducible va con data-i18n -->
+        <h4 data-i18n="titulo"><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+        <p data-i18n="descripcion"><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+        
+        <!-- Fecha límite y puntos combinados, se recomienda dividir para traducir -->
+        <small>
+          <span data-i18n="fechal">Fecha límite</span>: <?php echo $tarea['fecha_entrega']; ?>
+          | 
+          <span data-i18n="puntos">Puntos</span>: <?php echo $tarea['puntos']; ?>
+        </small>
+
+        <?php if (!empty($tarea['ruta_archivo'])): ?>
+          <br>
+          <a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank" data-i18n="archivo">📎 Ver archivo adjunto</a>
+        <?php endif; ?>
+      </div>
+    <?php endwhile; ?>
+  <?php else: ?>
+    <p data-i18n="notareas">No se han asignado tareas aún.</p>
+  <?php endif; ?>
+</div>
                     </div>
             </section>
             <section id="tareas" class="seccion" style="display: none;">

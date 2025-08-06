@@ -80,6 +80,7 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
         <nav>
             <button data-i18n="tablon" id="tablon-btn" class="active"><i class="fas fa-th-large"></i>Tablón</button>
             <button data-i18n="tareas" id="tareas-btn"><i class="fas fa-tasks"></i>Tareas</button>
+            <button id="material-btn"><i class="fas fa-folder-open"></i>Material</button> 
             <button data-i18n="alumnos"    id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
             <button data-i18n="avisos"  id="avisos-btn"><i class="fas fa-bell"></i>Avisos</button>
         </nav>
@@ -100,7 +101,7 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                 <div class="banner banner-lenguaje" id="banner2">
                     <canvas id="particles-bg"></canvas>
                     <div class="abstract-shape"></div>
-                    <h1 data-i18n="lenguaje">LENGUAJE Y LITERATURA</h1>
+                    <h1 data-i18n="lenguajeM">LENGUAJE Y LITERATURA</h1>
                 </div>
                 <div class="content">
                     <div class="profesor">
@@ -151,7 +152,7 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                     </li>
                     <li>
                         <i class="fas fa-language"></i>
-                        <span data-i18n="examenñ">Examen de Gramática</span>
+                        <span data-i18n="examenl">Examen de Gramática</span>
                         <p data-i18n="lp2">Estudiar para el examen de gramática que se realizará el próximo viernes.</p>
                         <small data-i18n="fecha">Fecha límite: 15 de abril</small>
                         <button data-i18n="añadir" class="boton-estilo">Añadir tarea</button>
@@ -234,28 +235,68 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                         <small>Fecha: 13 de abril</small>
                     </li>
                 </ul>
+
+                
             </section>
+
+                      <section id="material" class="seccion" style="display: none;">
+                <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
+                <ul class="lista-material">
+                    <li>
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Guía de ejercicios</span>
+                        <a href="materiales/guia_ejercicios.pdf" target="_blank">Descargar PDF</a>
+                        <small>Subido: 01 de agosto</small>
+                    </li>
+                    <li>
+                        <i class="fas fa-link"></i>
+                        <span>Video explicativo</span>
+                        <a href="https://www.youtube.com/watch?v=xxxxxx" target="_blank">Ver video</a>
+                        <small>Enlace externo</small>
+                    </li>
+                    <li>
+                        <i class="fas fa-file-word"></i>
+                        <span>Resumen teórico</span>
+                        <a href="materiales/resumen.docx" target="_blank">Descargar Word</a>
+                        <small>Subido: 28 de julio</small>
+                    </li>
+                </ul>
+            </section>
+
+
+
+
+
+
+
+
+
+
+
         </main>
     </div>
     <!-- Modal HTML -->
     <div id="modalTarea" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2 id="modalTitulo">Título de la tarea</h2>
-            <p id="modalDescripcion">Descripción de la tarea</p>
+            <h2 id="modalTitulo" data-i18n="titulo">Título de la tarea</h2>
+            <p id="modalDescripcion" data-i18n="descripcion">Descripción de la tarea</p>
             <div class="modal-section">
-                <label for="archivoSubir">Subir archivos:</label>
+                <label for="archivoSubir" data-i18n="archivos">Subir archivos:</label>
                 <input type="file" id="archivoSubir" multiple>
                 <ul id="listaArchivos"></ul>
             </div>
             <div class="modal-section">
-                <label for="enlaceInput">Añadir enlace:</label>
+                <label for="enlaceInput" data-i18n="enlace">Añadir enlace:</label>
                 <input type="url" id="enlaceInput" placeholder="https://">
-                <button id="agregarEnlace">Agregar enlace</button>
+                <button id="agregarEnlace" data-i18n="agregarE">Agregar enlace</button>
                 <ul id="listaEnlaces"></ul>
             </div>
         </div>
     </div>
     <script src="../materias/js/scriptLenguaje.js"></script>
+        <script src="../principal/lang.js"></script>
+      <script src="../principal/idioma.js"></script>
+     
 </body>
 </html>
