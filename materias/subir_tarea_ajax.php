@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/El_Salvador');
 session_start();
 header("Content-Type: application/json");
 include '../conexiones/conexion.php';
@@ -43,7 +44,7 @@ if (move_uploaded_file($_FILES['archivo']['tmp_name'], $rutaCompleta)) {
                 "id" => $id_insertado,
                 "nombre" => $nombreArchivo,
                 "ruta" => $rutaCompleta,
-                "fecha" => date("d/m/Y H:i", strtotime($fecha))
+                "fecha" => date("d/m/Y H:i:s", strtotime($fecha))
             ]
         ]);
     } else {

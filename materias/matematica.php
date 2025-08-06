@@ -79,6 +79,8 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../materias/css/styleMatematica.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="../materias/js/subir_tarea.js" defer></script>
+
 </head>
 <body>
     <div class="sidebar">
@@ -268,5 +270,30 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
         </div>
     </div>
     <script src="../materias/js/scriptMatematica.js"></script>
+
+
+<script>
+function eliminarTarea(id) {
+    if (!confirm("¿Estás seguro de que quieres eliminar esta tarea?")) return;
+
+    fetch("eliminar_tarea.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `id=${id}`
+    })
+    .then(response => response.text())
+    .then(res => {
+        if (res === "OK") {
+            const tareaLi = document.getElementById(`tarea_${id}`);
+            if (tareaLi) tareaLi.remove();
+        } else {
+            alert("No se pudo eliminar la tarea");
+        }
+    })
+    .catch(err => {
+        console.error("Error eliminando tarea:", err);
+    });
+}
+</script>    
 </body>
 </html>

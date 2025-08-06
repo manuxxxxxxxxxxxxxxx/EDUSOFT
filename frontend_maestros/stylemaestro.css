@@ -1,14 +1,16 @@
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
-    background: #f4f6fa;
+    background: linear-gradient(120deg, #eeeeee 60%, #adadad 100%);
+    color: #223a51;
 }
+
 .menu-toggle {
     display: none;
     position: fixed;
     top: 20px;
     left: 20px;
-    background: #1abc9c;
+    background: #223a51;
     color: #fff;
     border: none;
     border-radius: 50%;
@@ -19,9 +21,10 @@ body {
     cursor: pointer;
     box-shadow: 0 2px 8px #0002;
 }
+
 .sidebar {
     width: 220px;
-    background: #2d3e50;
+    background: #223a51;
     color: #fff;
     height: 100vh;
     position: fixed;
@@ -33,26 +36,33 @@ body {
     padding-top: 30px;
     transition: left 0.3s;
     z-index: 1000;
+    box-shadow: 2px 0 16px #0003;
 }
+
 .sidebar img {
     border-radius: 50%;
     width: 80px;
     margin-bottom: 10px;
-    border: 3px solid #1abc9c;
+    border: 3px solid #87bff5;
+    box-shadow: 0 2px 8px #0002;
 }
+
 .sidebar h2 {
     margin: 10px 0 30px 0;
     font-size: 1.2em;
     letter-spacing: 1px;
+    color: #ffffff;
 }
+
 .sidebar nav {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
+
 .sidebar a {
-    color: #fff;
+    color: #eaf3fb;
     text-decoration: none;
     margin: 8px 0;
     width: 100%;
@@ -64,98 +74,122 @@ body {
     font-size: 1em;
     position: relative;
 }
+
 .sidebar a:hover, .sidebar a.active {
-    background: #1abc9c;
-    color: #fff;
+    background: #87bff5;
+    color: #223a51;
 }
+
 .sidebar i {
     margin-right: 12px;
     font-size: 1.1em;
 }
+
 .badge {
-    background: #e74c3c;
+    background: #e67e22;
     color: #fff;
     border-radius: 12px;
     padding: 2px 8px;
     font-size: 0.8em;
     margin-left: 8px;
 }
+
 .main-content {
     margin-left: 240px;
     padding: 40px 30px 30px 30px;
-    background: #f9fafc;
+    background: rgba(34, 58, 81, 0.12);
     min-height: 100vh;
     transition: margin-left 0.3s;
 }
+
 .dashboard-cards {
     display: flex;
     gap: 24px;
     margin-bottom: 32px;
 }
+
 .card {
-    background: #fff;
+    background: linear-gradient(120deg, #fafdff 70%, #e3f0ff 100%);
     border-radius: 14px;
-    box-shadow: 0 2px 12px #0001;
+    box-shadow: 0 2px 12px #0002;
     padding: 28px 20px 20px 20px;
     flex: 1;
     min-width: 180px;
     text-align: center;
     transition: box-shadow 0.2s, transform 0.2s;
     position: relative;
+    color: #223a51;
 }
+
 .card:hover {
-    box-shadow: 0 6px 24px #0002;
+    box-shadow: 0 6px 24px #0003;
     transform: translateY(-4px) scale(1.03);
 }
+
 .card h3 {
     margin: 14px 0 6px 0;
     font-size: 2.2em;
+    color: #3b3b3b;
 }
+
 .card p {
-    color: #888;
+    color: #435d75;
     margin-bottom: 10px;
 }
+
 .quick-action {
     margin-top: 10px;
-    background: #1abc9c;
-    color: #fff;
+    background: #87bff5;
+    color: #223a51;
     border: none;
     border-radius: 6px;
     padding: 7px 18px;
     cursor: pointer;
     font-size: 1em;
-    transition: background 0.2s;
+    transition: background 0.2s, color 0.2s;
 }
+
 .quick-action:hover {
-    background: #16a085;
+    background: #223a51;
+    color: #87bff5;
 }
+
 .section {
-    background: #fff;
+    background: linear-gradient(120deg, #fafdff 85%, #e3f0ff 100%);
     border-radius: 12px;
     padding: 24px 20px;
     margin-bottom: 22px;
     box-shadow: 0 1px 6px #0001;
+    color: #223a51;
 }
+
 .section h2, .section h3 {
     margin-top: 0;
+    color: #363636;
 }
+
 .notificaciones {
     list-style: none;
     padding: 0;
     margin: 0;
 }
+
 .notificaciones li {
     margin-bottom: 12px;
     display: flex;
     align-items: center;
     font-size: 1em;
+    color: #000000;
 }
+
 .notificaciones i {
     margin-right: 10px;
 }
+
 .icon-green { color: #1abc9c; }
 .icon-blue { color: #3498db; }
 .icon-orange { color: #e67e22; }
+
 @media (max-width: 900px) {
     .dashboard-cards {
         flex-direction: column;
@@ -165,6 +199,7 @@ body {
         padding: 18px 8px 8px 8px;
     }
 }
+
 @media (max-width: 800px) {
     .menu-toggle { display: block; }
     .sidebar {
@@ -176,38 +211,46 @@ body {
     }
     .sidebar.active {
         left: 0;
-        box-shadow: 2px 0 12px #0002;
+        box-shadow: 2px 0 12px #0003;
     }
     .main-content {
         margin-left: 0;
         padding: 18px 8px 8px 8px;
     }
 }
+
 .seccion-panel { display: none; }
 #seccion-inicio { display: block; }
+
 #cursos-lista li {
     cursor: pointer;
     padding: 8px 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #e3eafc;
     transition: background 0.2s;
+    color: #223a51;
 }
+
 #cursos-lista li:hover {
-    background: #f0f8f7;
+    background: #e3f0ff;
 }
+
 .avisos-timeline {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
+
 .aviso-card {
-    background: #f9fafc;
+    background: linear-gradient(120deg, #fafdff 85%, #e3f0ff 100%);
     border-radius: 8px;
     padding: 10px 14px;
     display: flex;
     align-items: center;
     gap: 10px;
     box-shadow: 0 1px 4px #0001;
+    color: #223a51;
 }
+
 .modal {
     display: none;
     position: fixed;
@@ -218,45 +261,56 @@ body {
     justify-content: center;
     align-items: center;
 }
+
 .modal-content {
-    background: #fff;
+    background: #fafdff;
     padding: 28px 20px 20px 20px;
     border-radius: 12px;
     min-width: 280px;
     max-width: 90vw;
-    box-shadow: 0 4px 24px #0003;
+    box-shadow: 0 4px 24px #0002;
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    color: #223a51;
 }
+
 .close {
     position: absolute;
     top: 10px; right: 16px;
     font-size: 1.5em;
-    color: #888;
+    color: #87bff5;
     cursor: pointer;
 }
+
 .modal-content input, .modal-content textarea {
     width: 100%;
     padding: 8px;
     border-radius: 6px;
-    border: 1px solid #ccc;
+    border: 1px solid #e3eafc;
     margin-bottom: 8px;
     font-size: 1em;
+    background: #e3f0ff;
+    color: #223a51;
 }
+
 .modal-content button {
-    background: #1abc9c;
-    color: #fff;
+    background: #87bff5;
+    color: #223a51;
     border: none;
     border-radius: 6px;
     padding: 8px 16px;
     cursor: pointer;
     font-size: 1em;
 }
+
 .modal-content button:hover {
-    background: #16a085;
+    background: #223a51;
+    color: #87bff5;
 }
+
 #student-list li {
     padding: 2px 0;
+    color: #223a51;
 }

@@ -1,20 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Orbitron:wght@700&display=swap');
 
 body {
-    font-family: "Montserrat", Arial, sans-serif;
+    font-family: "Montserrat", sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(120deg, #e3f0ff 0%, #d6e6ff 100%);
+    background: linear-gradient(120deg, #fbeee6 0%, #f8d7da 100%);
     min-height: 100vh;
     display: flex;
 }
 
-/* SIDEBAR AZUL PASTEL */
+/* SIDEBAR ROJO SUAVE */
 .sidebar {
     width: 240px;
-    background: #e3f0ff;
+    background: #f8d7da;
     min-height: 100vh;
-    box-shadow: 2px 0 16px rgba(100,150,255,0.07);
+    box-shadow: 2px 0 16px rgba(200,50,50,0.07);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -24,26 +24,29 @@ body {
     top: 0;
     z-index: 100;
 }
+
 .sidebar-logo {
     font-size: 1.6em;
     font-weight: bold;
-    color: #6ea8fe;
+    color: #c0392b;
     margin-bottom: 36px;
     display: flex;
     align-items: center;
     gap: 10px;
     letter-spacing: 1px;
 }
+
 .sidebar nav {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
+
 .sidebar nav button {
     background: none;
     border: none;
-    color: #234567;
+    color: #a93226;
     font-size: 1.08em;
     font-weight: 600;
     padding: 16px 32px;
@@ -58,15 +61,17 @@ body {
     outline: none;
 }
 .sidebar nav button.active, .sidebar nav button:hover {
-    background: linear-gradient(90deg, #b6e0fe 60%, #6ea8fe 100%);
+    background: linear-gradient(90deg, #f5b7b1 60%, #c0392b 100%);
     color: #fff;
 }
+
 .main-content {
     margin-left: 240px;
     width: 100%;
     min-height: 100vh;
     background: transparent;
 }
+
 header {
     display: flex;
     justify-content: space-between;
@@ -76,6 +81,7 @@ header {
     border-bottom: none;
     box-shadow: none;
 }
+
 .logo.modern-back {
     display: flex;
     align-items: center;
@@ -83,42 +89,45 @@ header {
     text-decoration: none;
     font-weight: bold;
     font-size: 1.25em;
-    color: #234567;
+    color: #a93226;
     transition: color 0.2s;
 }
+
 .logo.modern-back:hover {
-    color: #6ea8fe;
+    color: #c0392b;
 }
+
 .back-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #b6e0fe 60%, #6ea8fe 100%);
+    background: linear-gradient(135deg, #f5b7b1 60%, #c0392b 100%);
     color: #fff;
     border-radius: 50%;
     width: 38px;
     height: 38px;
     font-size: 1.25em;
-    box-shadow: 0 2px 8px #b6e0fe33;
+    box-shadow: 0 2px 8px #f5b7b133;
     margin-right: 6px;
     transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
 }
 .logo.modern-back:hover .back-btn {
-    background: linear-gradient(135deg, #6ea8fe 60%, #b6e0fe 100%);
-    box-shadow: 0 4px 16px #6ea8fe44;
+    background: linear-gradient(135deg, #c0392b 60%, #f5b7b1 100%);
+    box-shadow: 0 4px 16px #c0392b44;
     transform: scale(1.08);
 }
+
 .header-title {
     letter-spacing: 1px;
     font-size: 1.08em;
-    color: #234567;
+    color: #a93226;
     font-weight: 700;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 .header-materia {
-    background: linear-gradient(90deg, #b6e0fe 60%, #6ea8fe 100%);
+    background: linear-gradient(90deg, #f5b7b1 60%, #c0392b 100%);
     color: #fff;
     border-radius: 8px;
     padding: 2px 12px;
@@ -126,73 +135,50 @@ header {
     font-size: 0.95em;
     font-weight: 700;
     letter-spacing: 1px;
-    box-shadow: 0 1px 6px #b6e0fe33;
+    box-shadow: 0 1px 6px #f5b7b133;
     transition: background 0.2s;
 }
+
 .icons span {
     margin-left: 18px;
     cursor: pointer;
     font-size: 1.5em;
-    color: #234567;
+    color: #a93226;
     transition: color 0.2s;
 }
 .icons span:hover {
-    color: #7de2d1;
+    color: #c0392b;
 }
+
 main {
     max-width: 1100px;
     margin: 32px auto;
     padding: 0 16px;
 }
 
-/* BANNER QUÍMICA - VERDE AGUA PASTEL */
-.banner {
-    background: linear-gradient(120deg, #b2f7ef 0%, #7de2d1 100%);
+/* BANNER DEBATE (ROJO SUAVE) */
+.banner.banner-debate {
+    background: linear-gradient(120deg, #f5b7b1 0%, #c0392b 100%);
     position: relative;
     overflow: hidden;
     padding: 70px 0 50px 0;
     text-align: center;
-    color: #234567;
+    color: #fff;
+    font-size: 2.7em;
+    font-weight: bold;
     border-radius: 24px;
-    box-shadow: 0 8px 32px rgba(125,226,209,0.13), 0 2px 24px #b2f7ef55;
+    box-shadow: 0 8px 32px rgba(200,50,50,0.10), 0 2px 24px #f5b7b155;
     margin-bottom: 32px;
     letter-spacing: 2px;
     text-shadow: none;
     backdrop-filter: blur(2px);
     isolation: isolate;
 }
-.banner::before {
-    content: '';
-    position: absolute;
-    top: -60px; left: -80px;
-    width: 220px; height: 220px;
-    background: radial-gradient(circle, #fff7 50%, transparent 80%);
-    border-radius: 50%;
-    z-index: 2;
-    animation: float1 7s infinite alternate;
-    filter: blur(2px);
-}
-.banner::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: url('data:image/svg+xml;utf8,<svg width="700" height="220" xmlns="http://www.w3.org/2000/svg"><circle cx="120" cy="110" r="70" fill="%23fff2"/><circle cx="350" cy="70" r="50" fill="%23b2f7ef55"/><circle cx="600" cy="140" r="90" fill="%237de2d155"/><ellipse cx="500" cy="60" rx="30" ry="12" fill="%23b2f7efaa"/><ellipse cx="200" cy="180" rx="40" ry="15" fill="%237de2d1aa"/></svg>') no-repeat center/cover;
-    opacity: 0.55;
-    z-index: 1;
-    pointer-events: none;
-    animation: float2 12s infinite alternate;
-}
-@keyframes float1 {
-    to { transform: translateY(40px) scale(1.08);}
-}
-@keyframes float2 {
-    to { background-position: 60px 20px; }
-}
-.banner .abstract-shape {
+.banner.banner-debate .abstract-shape {
     position: absolute;
     right: 10%; top: 10%;
     width: 90px; height: 90px;
-    background: linear-gradient(135deg, #fff8 60%, #7de2d1cc 100%);
+    background: linear-gradient(135deg, #fff8 60%, #f5b7b1cc 100%);
     border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
     filter: blur(2px);
     opacity: 0.7;
@@ -209,22 +195,33 @@ main {
         transform: scale(1.08) rotate(12deg);
     }
 }
-.banner h1 {
-    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+.banner.banner-debate h1 {
+    font-family: 'Orbitron', 'Montserrat', sans-serif;
     font-weight: 700;
-    font-size: 3.1em;
+    font-size: 1.3em;
     letter-spacing: 0.06em;
-    color: #234567;
+    color: #fff;
     text-transform: uppercase;
     margin: 0 auto;
     padding-bottom: 0.25em;
     line-height: 1.08;
     display: inline-block;
-    border-bottom: 3px solid #7de2d1;
+    border-bottom: 3px solid #c0392b;
     background: none;
     box-shadow: none;
     animation: fadeInModern 0.7s cubic-bezier(.4,1.4,.6,1) both;
 }
+
+.tema-actual {
+    background: rgba(255,255,255,0.13);
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 18px;
+    display: inline-block;
+    font-size: 1.1em;
+    margin-top: 10px;
+}
+
 @keyframes fadeInModern {
     from {
         opacity: 0;
@@ -235,40 +232,29 @@ main {
         transform: translateY(0) scale(1);
     }
 }
-#particles-bg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-    display: block;
-}
 
-/* TARJETAS Y SECCIONES AZUL PASTEL */
+/* TARJETAS Y SECCIONES ROJO SUAVE */
 .seccion {
-    background: #f6faff;
+    background: #fff6f6;
     border-radius: 18px;
-    box-shadow: 0 2px 12px rgba(100,150,255,0.08);
+    box-shadow: 0 2px 12px rgba(200,50,50,0.08);
     padding: 32px;
     margin-bottom: 32px;
     animation: fadeInUp 0.7s;
     opacity: 1;
     transition: opacity 0.18s;
 }
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px);}
-    to { opacity: 1; transform: translateY(0);}
-}
+
 .content {
     display: flex;
     gap: 32px;
-    background: #f6faff;
+    background: #fff6f6;
     border-radius: 18px;
-    box-shadow: 0 2px 12px rgba(100,150,255,0.08);
+    box-shadow: 0 2px 12px rgba(200,50,50,0.08);
     padding: 32px;
     align-items: flex-start;
 }
+
 .profesor {
     width: 220px;
     text-align: center;
@@ -279,96 +265,110 @@ main {
     height: 90px;
     margin: 0 auto 12px auto;
     border-radius: 50%;
-    background: linear-gradient(135deg, #b6e0fe 40%, #6ea8fe 100%);
+    background: linear-gradient(135deg, #f5b7b1 40%, #c0392b 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2.5em;
     color: #fff;
-    box-shadow: 0 2px 8px rgba(100,150,255,0.10);
-    background-image: url('https://ui-avatars.com/api/?name=Cristofer+Alfaro&background=b6e0fe&color=234567');
+    box-shadow: 0 2px 8px rgba(200,50,50,0.10);
+    background-image: url('https://ui-avatars.com/api/?name=Debate&background=f5b7b1&color=c0392b');
     background-size: cover;
     background-position: center;
 }
-.anuncios, .tareas-container {
+
+.tareas-container {
     flex: 1;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 24px;
 }
+
 .tarea {
     background: rgba(255,255,255,0.7);
     border-radius: 14px;
-    box-shadow: 0 2px 12px rgba(100,150,255,0.07);
+    box-shadow: 0 2px 12px rgba(200,50,50,0.07);
     padding: 24px 18px;
     cursor: pointer;
     transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
-    border: 1.5px solid #e3f0ff;
+    border: 1.5px solid #f8d7da;
     position: relative;
     backdrop-filter: blur(2px);
     animation: fadeInUp 0.6s;
 }
 .tarea:hover {
-    box-shadow: 0 8px 32px rgba(100,150,255,0.13);
+    box-shadow: 0 8px 32px rgba(200,50,50,0.13);
     transform: translateY(-6px) scale(1.03);
-    border-color: #6ea8fe;
-    background: #e3f0ff;
+    border-color: #c0392b;
+    background: #f8d7da;
 }
 .tarea h4 {
     margin: 0 0 10px 0;
-    color: #6ea8fe;
+    color: #c0392b;
     font-size: 1.1em;
     font-weight: bold;
 }
 .tarea p {
     margin: 0;
-    color: #234567;
+    color: #a93226;
     font-size: 0.98em;
 }
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
 .lista-tareas, .lista-alumnos, .lista-avisos {
     list-style: none;
     padding: 0;
     margin: 0;
 }
+
 .lista-tareas li, .lista-alumnos li, .lista-avisos li {
     background: rgba(255,255,255,0.7);
     border-radius: 12px;
-    box-shadow: 0 1px 6px rgba(100,150,255,0.07);
+    box-shadow: 0 1px 6px rgba(200,50,50,0.07);
     padding: 22px 18px;
     margin-bottom: 18px;
-    border-left: 5px solid #6ea8fe;
+    border-left: 5px solid #c0392b;
     position: relative;
     transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
     backdrop-filter: blur(1.5px);
     animation: fadeInUp 0.7s;
 }
 .lista-tareas li:hover, .lista-alumnos li:hover, .lista-avisos li:hover {
-    box-shadow: 0 4px 16px rgba(100,150,255,0.13);
-    border-color: #b6e0fe;
-    background: #e3f0ff;
+    box-shadow: 0 4px 16px rgba(200,50,50,0.13);
+    border-color: #f5b7b1;
+    background: #f8d7da;
 }
+
 .lista-tareas i, .lista-alumnos i, .lista-avisos i {
-    color: #6ea8fe;
+    color: #c0392b;
     margin-right: 12px;
     font-size: 1.3em;
     vertical-align: middle;
 }
+
 .lista-tareas span, .lista-alumnos span, .lista-avisos span {
     font-weight: bold;
-    color: #234567;
+    color: #a93226;
     font-size: 1.08em;
 }
+
 .lista-tareas p, .lista-alumnos p, .lista-avisos p {
     margin: 8px 0 0 0;
     color: #444;
     font-size: 0.97em;
 }
+
 .lista-tareas small, .lista-alumnos small, .lista-avisos small {
     color: #888;
     font-size: 0.93em;
     display: block;
     margin-top: 8px;
 }
+
 .boton-estilo {
     display: inline-block;
     padding: 10px 22px;
@@ -377,26 +377,26 @@ main {
     color: #fff;
     border: none;
     border-radius: 8px;
-    background: linear-gradient(90deg, #b6e0fe 60%, #6ea8fe 100%);
+    background: linear-gradient(90deg, #f5b7b1 60%, #c0392b 100%);
     cursor: pointer;
     font-size: 1em;
     font-weight: bold;
-    box-shadow: 0 2px 8px rgba(100,150,255,0.09);
+    box-shadow: 0 2px 8px rgba(200,50,50,0.09);
     transition: background 0.3s, transform 0.2s;
 }
 .boton-estilo:hover {
-    background: linear-gradient(90deg, #6ea8fe 60%, #b6e0fe 100%);
+    background: linear-gradient(90deg, #c0392b 60%, #f5b7b1 100%);
     transform: scale(1.04);
 }
 
-/* MODAL AZUL PASTEL */
+/* MODAL ROJO SUAVE */
 .modal {
     display: none;
     position: fixed;
     z-index: 1000;
     left: 0; top: 0;
     width: 100vw; height: 100vh;
-    background: rgba(100,150,255,0.10);
+    background: rgba(200,50,50,0.10);
     justify-content: center;
     align-items: center;
 }
@@ -404,11 +404,11 @@ main {
     display: flex !important;
 }
 .modal-content {
-    background: #f6faff;
+    background: #fff6f6;
     margin: auto;
     padding: 32px 28px;
     border-radius: 18px;
-    box-shadow: 0 8px 32px rgba(100,150,255,0.18);
+    box-shadow: 0 8px 32px rgba(200,50,50,0.18);
     width: 95%;
     max-width: 500px;
     animation: animatetop 0.5s;
@@ -429,7 +429,7 @@ main {
     transition: color 0.2s;
 }
 .close:hover {
-    color: #6ea8fe;
+    color: #c0392b;
 }
 .modal-section {
     margin-top: 22px;
@@ -443,7 +443,7 @@ input[type="file"], input[type="url"] {
     font-size: 1em;
 }
 #agregarEnlace {
-    background: linear-gradient(90deg, #b6e0fe 60%, #6ea8fe 100%);
+    background: linear-gradient(90deg, #f5b7b1 60%, #c0392b 100%);
     color: white;
     padding: 8px 18px;
     margin-top: 8px;
@@ -455,7 +455,7 @@ input[type="file"], input[type="url"] {
     transition: background 0.3s;
 }
 #agregarEnlace:hover {
-    background: linear-gradient(90deg, #6ea8fe 60%, #b6e0fe 100%);
+    background: linear-gradient(90deg, #c0392b 60%, #f5b7b1 100%);
 }
 ul {
     list-style-type: disc;
@@ -477,7 +477,7 @@ ul li {
         flex-direction: row;
         padding-top: 0;
         box-shadow: none;
-        border-bottom: 2px solid #e3f0ff;
+        border-bottom: 2px solid #f8d7da;
     }
     .sidebar-logo {
         margin-bottom: 0;
@@ -496,6 +496,7 @@ ul li {
         margin-left: 0;
     }
 }
+
 @media (max-width: 900px) {
     .content {
         flex-direction: column;
@@ -506,7 +507,7 @@ ul li {
         width: 100%;
         margin-bottom: 18px;
     }
-    .anuncios, .tareas-container {
+    .tareas-container {
         grid-template-columns: 1fr;
     }
     main {
