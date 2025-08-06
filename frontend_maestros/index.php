@@ -160,18 +160,39 @@ $nombre = $_SESSION['nombre'];
                 <button class="quick-action" onclick="window.location.href='../frontend_maestros/subir_tarea.php'">Crear tarea</button>
             </div>
         </div>
-        <!-- MATERIALES -->
-        <div id="seccion-materiales" class="seccion-panel" style="display:none;">
-            <div class="section">
-                <h3>Materiales</h3>
-                <ul>
-                    <li>Guía de Matemáticas.pdf</li>
-                    <li>Presentación Historia.pptx</li>
-                    <li>Lectura Lengua.docx</li>
-                </ul>
-                <button class="quick-action" disabled>Subir material</button>
-            </div>
-        </div>
+<!-- MATERIALES -->
+<div id="seccion-materiales" class="seccion-panel" style="display:none;">
+    <div class="section">
+        <h3>Materiales</h3>
+        <ul>
+            <?php
+            if (isset($id_clase)) {
+                $sql = "SELECT archivo FROM materiales WHERE id_clase = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $id_clase);
+                $stmt->execute();
+                $resultado = $stmt->get_result();
+
+                if ($resultado->num_rows > 0) {
+                    while ($material = $resultado->fetch_assoc()) {
+                        echo "<li>" . htmlspecialchars($material["archivo"]) . "</li>";
+                    }
+                } else {
+                    echo "<li>📂 No hay archivos registrados para esta clase.</li>";
+                }
+            } else {
+                echo "<li> Ningun material agregado .</li>";
+            }
+            ?>
+        </ul>
+        <?php
+        $id_clase = isset($_GET['id_clase']) ? intval($_GET['id_clase']) : null;
+        ?>
+        <form action="subir_material.php?id_clase=<?php echo $id_clase; ?>" method="get">
+            <button class="quick-action">Subir material</button>
+        </form>
+    </div>
+</div>
         <!-- AVISOS -->
         <div id="seccion-avisos" class="seccion-panel" style="display:none;">
             <div class="section">
