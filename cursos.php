@@ -148,7 +148,7 @@
         <?php
               require_once 'conexiones/conexion.php';  // Asegúrate que esta ruta es correcta
 
-              $id_estudiante = $_SESSION['id'];  // Asegúrate de tener esto guardado en la sesión
+              $id_estudiante = $_SESSION['id_estudiante'];  // Asegúrate de tener esto guardado en la sesión
 
               $query = "SELECT c.nombre_clase, c.materia, p.nombre AS nombre_profesor 
                         FROM clases_estudiantes ce

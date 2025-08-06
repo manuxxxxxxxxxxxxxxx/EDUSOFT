@@ -79,8 +79,6 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../materias/css/styleMatematica.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <script src="../materias/js/subir_tarea.js" defer></script>
-
 </head>
 <body>
     <div class="sidebar">
@@ -123,28 +121,19 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                         <div class="tareas-container">
                             <?php if (!empty($tareas_profesor)): ?>
                                 <?php foreach ($tareas_profesor as $tarea): ?>
-                    <div class="tarea">
-        <!-- Solo el texto traducible va con data-i18n -->
-        <h4 data-i18n="titulo"><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
-        <p data-i18n="descripcion"><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
-        
-        <!-- Fecha límite y puntos combinados, se recomienda dividir para traducir -->
-        <small>
-          <span data-i18n="fechal">Fecha límite</span>: <?php echo $tarea['fecha_entrega']; ?>
-          | 
-          <span data-i18n="puntos">Puntos</span>: <?php echo $tarea['puntos']; ?>
-        </small>
-
-        <?php if (!empty($tarea['ruta_archivo'])): ?>
-          <br>
-          <a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank" data-i18n="archivo">📎 Ver archivo adjunto</a>
-        <?php endif; ?>
-      </div>
-    <?php endwhile; ?>
-  <?php else: ?>
-    <p data-i18n="notareas">No se han asignado tareas aún.</p>
-  <?php endif; ?>
-</div>
+                            <div class="tarea">
+                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                                <small>Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
+                                <?php if (!empty($tarea['ruta_archivo'])): ?>
+                                    <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
+                                <?php endif; ?>
+                            </div>
+                                <?php endforeach; ?>
+                                <?php else: ?>
+                                <p>No se han asignado tareas aún.</p>
+                                <?php endif; ?>
+                        </div>
                     </div>
             </section>
             <section id="tareas" class="seccion" style="display: none;">
@@ -168,7 +157,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                 </div>
             </section>
             <section id="alumnos" class="seccion" style="display: none;">
-                <h2>Lista de Alumnos</h2>
+                <h2 data-i18n="lista">Lista de Alumnos</h2>
                 <ul class="lista-alumnos">
                     <li>
                         <i class="fas fa-user"></i>
@@ -197,7 +186,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                 </ul>
             </section>
             <section id="avisos" class="seccion" style="display: none;">
-                <h2>Avisos</h2>
+                <h2 data-i18n="avisos">Avisos</h2>
                 <ul class="lista-avisos">
                     <li>
                         <i class="fas fa-bell"></i>
@@ -270,30 +259,5 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
         </div>
     </div>
     <script src="../materias/js/scriptMatematica.js"></script>
-
-
-<script>
-function eliminarTarea(id) {
-    if (!confirm("¿Estás seguro de que quieres eliminar esta tarea?")) return;
-
-    fetch("eliminar_tarea.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `id=${id}`
-    })
-    .then(response => response.text())
-    .then(res => {
-        if (res === "OK") {
-            const tareaLi = document.getElementById(`tarea_${id}`);
-            if (tareaLi) tareaLi.remove();
-        } else {
-            alert("No se pudo eliminar la tarea");
-        }
-    })
-    .catch(err => {
-        console.error("Error eliminando tarea:", err);
-    });
-}
-</script>    
 </body>
 </html>
