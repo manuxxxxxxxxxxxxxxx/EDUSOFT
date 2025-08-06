@@ -202,6 +202,9 @@ const translations = {
     lp2:"Estudiar para el examen de gramática que se realizará el próximo viernes.",
     composicionl:"Tarea de Composición",
     lp3:"Escribir un ensayo sobre un tema de actualidad.",
+    h4:"plataforma",
+    recursosP:"recursos",
+
     
 
     
@@ -421,6 +424,9 @@ const translations = {
     lp2:"Study for the grammar test next Friday.",
     composicionl:"Composition Task",
     lp3:"Write an essay on a current topic.",
+    h4:"platform",
+    recursosP:"resources",
+
     
 
     

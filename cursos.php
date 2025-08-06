@@ -1,10 +1,10 @@
 <?php 
     session_start();
-      if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "estudiante") {
+    if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "estudiante") {
         echo "<script>alert('Debes iniciar sesión como estudiante.'); window.location.href='loginAlumno.php';</script>";
         exit;
-      }
- ?>
+    }
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,7 +17,7 @@
 </head>
 <body>
   <div class="layout">
-    <!-- Navbar Vertical -->
+    <!-- Sidebar -->
     <nav class="sidebar collapsed">
       <div class="sidebar-header">
         <img src="../img/ELEFANTE.png" alt="Logo Colegio Balbuena" class="logo">
@@ -100,9 +100,9 @@
             <span data-i18n="noticiasN">Noticias</span>
           </a>
         </li>
-       
+        
         <li class="sidebar-item">
-          <a href="../contactanos/contactanos.php" class="sidebar-link" title="Contacto">
+          <a href="#" class="sidebar-link" title="Contacto">
             <i class="fas fa-envelope"></i>
             <span data-i18n="contactoN">Contacto</span>
           </a>
@@ -116,7 +116,6 @@
         </a>
       </div>
     </nav>
-    
     <!-- Contenido Principal -->
     <main class="main-content">
       <header class="top-header">
@@ -124,140 +123,130 @@
           <i class="fas fa-bars"></i>
         </button>
         <div class="user-info">
-       <span data-i18n="bienvenido">Bienvenido</span>
-       <span><?= isset($_SESSION['nombre']) ? htmlspecialchars($_SESSION['nombre']) : 'estudiante'; ?></span>
-          <a href="#" class="user-link">
-            <i class="fas fa-user-circle"></i>
-          </a>
+          <span data-i18n="bienvenido">Bienvenido</span>
+          <span><?= isset($_SESSION['nombre']) ? htmlspecialchars($_SESSION['nombre']) : 'estudiante'; ?></span>
+          <a href="#" class="user-link"><i class="fas fa-user-circle"></i></a>
         </div>
       </header>
-      
+
       <!-- Imagen principal -->
       <div class="hero">
         <h1 data-i18n="cursos">Nuestros cursos</h1>
       </div>
 
-      <div class="container">
-        <div class="unirse-clase">
+      <!-- NUEVO: Contenedor superior -->
+      <div class="container-top">
+        <!-- Caja para unirse a una clase -->
+        <div class="join-class-box">
           <h3>Unirse a una clase</h3>
           <form method="POST" action="unirse_clase.php">
-              <input type="text" name="codigo_clase" placeholder="Código de la clase" required>
-              <button type="submit">Unirse</button>
+            <input type="text" name="codigo_clase" placeholder="Código de la clase" required>
+            <button type="submit">Unirse</button>
           </form>
         </div>
+
+        <!-- Mensaje si no hay clases -->
         <?php
-              require_once 'conexiones/conexion.php';  // Asegúrate que esta ruta es correcta
+          require_once 'conexiones/conexion.php';
+          $id_estudiante = $_SESSION['id_estudiante'];
+          $query = "SELECT c.nombre_clase, c.materia, p.nombre AS nombre_profesor 
+                    FROM clases_estudiantes ce
+                    JOIN clases c ON ce.id_clase = c.id
+                    JOIN profesores p ON c.profesor_id = p.id
+                    WHERE ce.id_estudiante = ?";
+          $stmt = $conn->prepare($query);
+          $stmt->bind_param("i", $id_estudiante);
+          $stmt->execute();
+          $resultado = $stmt->get_result();
 
-              $id_estudiante = $_SESSION['id_estudiante'];  // Asegúrate de tener esto guardado en la sesión
+          $clases_estudiantes = [];
+          while ($row = $resultado->fetch_assoc()) {
+            $clases_estudiantes[] = $row;
+          }
+        ?>
 
-              $query = "SELECT c.nombre_clase, c.materia, p.nombre AS nombre_profesor 
-                        FROM clases_estudiantes ce
-                        JOIN clases c ON ce.id_clase = c.id
-                        JOIN profesores p ON c.profesor_id = p.id
-                        WHERE ce.id_estudiante = ?";
-              $stmt = $conn->prepare($query);
-              $stmt->bind_param("i", $id_estudiante);
-              $stmt->execute();
-              $resultado = $stmt->get_result();
+        <?php if (empty($clases_estudiantes)): ?>
+          <p class="no-class-msg">No estás inscrito en ninguna clase. Usa el código para unirte.</p>
+        <?php endif; ?>
+      </div>
 
+      <!-- NUEVO: Contenedor solo para tarjetas -->
+      <div class="container-cards">
+        <?php foreach ($clases_estudiantes as $clases): 
+          $materia = strtolower($clases['materia']);
+          $imagenes = [
+            'lenguaje' => '../img/lenguaje_cursos.jpg',
+            'matemática' => '../img/mate_cursos.webp',
+            'matematica' => '../img/mate_cursos.webp',
+            'ciencia' => '../img/ciencias_cursos.png',
+            'biología' => '../img/biologia.jpg',
+            'biologia' => '../img/biologia.jpg',
+            'química' => '../img/quimica.jpg',
+            'quimica' => '../img/quimica.jpg',
+          ];
+          $img = $imagenes[$materia] ?? '../img/default.jpg';
+        ?>
+          <div class="card bg-green">
+            <div class="card-image-container">
+              <img src="<?= $img ?>" class="card-img" alt="<?= htmlspecialchars($clases['materia']) ?>">
+            </div>
+            <div class="card-content">
+              <h2><?= htmlspecialchars($clases['nombre_clase']) ?></h2>
+              <p class="card-title">
+                <?= htmlspecialchars($clases['materia']) ?> - Prof. <?= htmlspecialchars($clases['nombre_profesor']) ?>
+              </p>
+              <a href="../materias/<?= htmlspecialchars($clases['materia']) ?>.php" class="btn">Más información</a>
+            </div>
+          </div>
+        <?php endforeach; ?>
 
-              // Dentro de un ciclo o de forma individual
-              while ($clases = $resultado->fetch_assoc()) {
-                  // Mostrar tarjeta (ya corregida como arriba)
-              }
-          ?>
-
-          <?php if (empty($clases_estudiantes)): ?>
-            <p>No estás inscrito en ninguna clase. Usa el código para unirte.</p>
-          <?php else: ?>
-
-            <?php foreach ($clases_estudiantes as $clases): 
-              // Determinar imagen basada en la materia
-              $materia = strtolower($clases['materia']);
-              $imagenes = [
-                  'lenguaje' => '../img/lenguaje_cursos.jpg',
-                  'matemática' => '../img/mate_cursos.webp',
-                  'matematica' => '../img/mate_cursos.webp',
-                  'ciencia' => '../img/ciencias_cursos.png',
-                  'biología' => '../img/biologia.jpg',
-                  'biologia' => '../img/biologia.jpg',
-                  'química' => '../img/quimica.jpg',
-                  'quimica' => '../img/quimica.jpg',
-              ];
-              $img = $imagenes[$materia] ?? '../img/default.jpg';
-            ?>
-                <div class="card bg-green">
-                    <div class="card-image-container">
-                        <img src="<?= $img ?>" class="card-img" alt="<?= htmlspecialchars($clases['materia']) ?>">
-                    </div>
-                    <?php if (isset($clases) && is_array($clases)) : ?>
-                      <div class="card-content">
-                        <h2><?= htmlspecialchars($clases['nombre_clase'] ?? 'Sin nombre') ?></h2>
-                        <p class="card-title">
-                            <?= htmlspecialchars($clases['materia'] ?? 'Materia desconocida') ?>
-                            - Prof. <?= htmlspecialchars($clases['nombre'] ?? 'Desconocido') ?>
-                        </p>
-                        <a href="../materias/<?= htmlspecialchars($clases['materia'] ?? 'materia') ?>.php" class="btn" data-i18n="mas_informacion">Más información</a>
-                      </div>
-                    <?php else : ?>
-                      <p class="text-danger">No se pudo cargar la clase correctamente.</p>
-                    <?php endif; ?>
-                </div>
-            <?php endforeach; ?>
-          <?php endif; ?>
-
-
-          
+        <!-- Cards fijas -->
         <div class="card bg-blue">
           <div class="card-image-container">
             <img src="../img/biologia.jpg" class="card-img" alt="Biología">
           </div>
           <div class="card-content">
             <h2>1</h2>
-            <p class="card-title" data-i18n="biologia">Biología</p>
-            <a href="../materias/biologia.php" class="btn" data-i18n="mas_informacion">Más información</a>
+            <p class="card-title">Biología</p>
+            <a href="../materias/biologia.php" class="btn">Más información</a>
           </div>
         </div>
-        
         <div class="card bg-green">
           <div class="card-image-container">
             <img src="../img/lenguaje_cursos.jpg" class="card-img" alt="Lenguaje">
           </div>
           <div class="card-content">
             <h2>2</h2>
-            <p class="card-title" data-i18n="lenguaje">Lenguaje</p>
-            <a href="../materias/lenguaje.php" class="btn" data-i18n="mas_informacion">Más información</a>
+            <p class="card-title">Lenguaje</p>
+            <a href="../materias/lenguaje.php" class="btn">Más información</a>
           </div>
         </div>
-        
         <div class="card bg-yellow">
           <div class="card-image-container">
             <img src="../img/ciencias_cursos.png" class="card-img" alt="Ciencia">
           </div>
           <div class="card-content">
             <h2>3</h2>
-            <p class="card-title" data-i18n="ciencias">Ciencia</p>
-            <a href="../materias/ciencias.php" class="btn" data-i18n="mas_informacion">Más información</a>
+            <p class="card-title">Ciencia</p>
+            <a href="../materias/ciencias.php" class="btn">Más información</a>
           </div>
         </div>
-        
         <div class="card bg-blue">
           <div class="card-image-container">
             <img src="../img/mate_cursos.webp" class="card-img" alt="Matemática">
           </div>
           <div class="card-content">
             <h2>4</h2>
-            <p class="card-title" data-i18n="matematicas">Matemática</p>
-            <a href="../materias/matematica.php" class="btn" data-i18n="mas_informacion">Más información</a>
+            <p class="card-title">Matemática</p>
+            <a href="../materias/matematica.php" class="btn">Más información</a>
           </div>
         </div>
-        
-        <!-- Más tarjetas aquí... -->
       </div>
     </main>
   </div>
 
-   <!-- Footer -->
+  <!-- Footer -->
+ <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">
@@ -298,10 +287,8 @@
         </div>
     </footer>
 
-
-
   <script src="../nosotros/cursos.js"></script>
-    <script src="../principal/lang.js"></script>
+  <script src="../principal/lang.js"></script>
   <script src="../principal/idioma.js"></script>
 </body>
 </html>

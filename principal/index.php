@@ -120,7 +120,7 @@
         </div>
         <div class="fila fila-invertida">
             <div class="card chica">
-                <img src="./img/imagen3.webp" alt="Noticias">
+                <img src="../img/imagen3.webp" alt="Noticias">
                 <div class="card-texto">
                     <h2 data-i18n="noticias">Noticias</h2>
                     <p data-i18n="parrafo_n">Párrafo. Haz clic aquí para agregar tu propio texto y editar. Es fácil.</p>
@@ -190,7 +190,7 @@
                     </ul>
                 </div>
                 <div class="footer-column">
-                    <h4>Recursos</h4>
+                    <h4 data-i18n="recursosP">Recursos</h4>
                     <ul>
                         <li><a href="#" data-i18n="biblioteca">Biblioteca Digital</a></li>
                         <li><a href="#" data-i18n="tutoriales">Tutoriales</a></li>
