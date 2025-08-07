@@ -41,13 +41,63 @@ function setLanguage(lang) {
 const selector = document.getElementById("langSelector");
 if (selector) {
   selector.addEventListener("change", function () {
-    setLanguage(this.value);
+    const selectedLang = this.value;
+    setLanguage(selectedLang);
+    updateLangDropdownUI(selectedLang); // 🔥 Esto actualiza el texto y bandera en el botón
   });
 }
-
 // Esto se ejecuta en todas las páginas:
 window.addEventListener("DOMContentLoaded", function () {
   const lang = localStorage.getItem("lang") || "es";
   if (selector) selector.value = lang;
   setLanguage(lang);
+});
+const langDropdownBtn = document.getElementById('langDropdownBtn');
+const langDropdownList = document.getElementById('langDropdownList');
+const currentLangFlag = document.getElementById('currentLangFlag');
+const currentLangText = document.getElementById('currentLangText');
+
+const langNames = {
+  es: 'Español',
+  en: 'English'
+};
+const langFlags = {
+  es: '../img/mexico.png',
+  en: '../img/estados.png'
+};
+
+function updateLangDropdownUI(lang) {
+  currentLangFlag.src = langFlags[lang];
+  currentLangText.textContent = langNames[lang];
+  document.querySelectorAll('.lang-option').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+  });
+}
+
+// Abrir/cerrar el menú
+langDropdownBtn.addEventListener('click', function(e) {
+  document.querySelector('.language-dropdown').classList.toggle('open');
+});
+
+// Cambiar idioma al hacer clic en opción
+document.querySelectorAll('.lang-option').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const lang = btn.getAttribute('data-lang');
+    setLanguage(lang);
+    updateLangDropdownUI(lang);
+    document.querySelector('.language-dropdown').classList.remove('open');
+  });
+});
+
+// Cerrar si haces clic fuera
+document.addEventListener('click', function(e) {
+  if (!document.querySelector('.language-dropdown').contains(e.target)) {
+    document.querySelector('.language-dropdown').classList.remove('open');
+  }
+});
+
+// Inicializar al cargar
+window.addEventListener('DOMContentLoaded', function() {
+  const lang = localStorage.getItem("lang") || "es";
+  updateLangDropdownUI(lang);
 });

@@ -57,10 +57,21 @@
                     </a>
                 </div>
 
-                <select id="langSelector" style="margin:10px;">
-               <option value="es">Español</option>
-                <option value="en">English</option>
-                </select>
+<div class="language-dropdown">
+  <button class="lang-dropdown-btn" id="langDropdownBtn">
+    <img id="currentLangFlag" src="/img/mexico.png" alt="Idioma actual" width="18">
+    <span id="currentLangText">Español</span>
+    <i class="fas fa-chevron-down"></i>
+  </button>
+  <div class="lang-dropdown-list" id="langDropdownList">
+    <button class="lang-option" data-lang="es">
+      <img src="/img/mexico.png" alt="Español" width="18"> Español
+    </button>
+    <button class="lang-option" data-lang="en">
+      <img src="/img/estados.png" alt="English" width="18"> English
+    </button>
+  </div>
+</div>
 
                 <!-- Botón hamburguesa para móvil -->
                 <button class="nav-toggle" id="navToggle">
