@@ -10,10 +10,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Materias extracurriculares - Edusoft </title>
-  <link rel="stylesheet" href="extracurriculares.css">
+  <title> - Edusoft </title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="extracurriculares.css">
 </head>
 <body>
   <div class="layout">
@@ -42,7 +42,7 @@
             <i class="fas fa-chevron-down arrow"></i>
           </a>
           <ul class="submenu">
-            <li><a href="#" data-i18n="ActividadesN">Materias escolares</a></li>
+            <li><a href="cursos.php" data-i18n="ActividadesE">Materias escolares</a></li>
             <li><a href="#" data-i18n="Primaria">Primaria</a></li>
             <li><a href="#" data-i18n="secundaria">Secundaria</a></li>
             <li><a href="#" data-i18n="bachillerato">Bachillerato</a></li>
@@ -131,7 +131,7 @@
 
       <!-- Imagen principal -->
       <div class="hero">
-        <h1 data-i18n="cursos">Materias extracurriculares</h1>
+        <h1 data-i18n="cursosE">Materias extracurriculares</h1>
       </div>
 
       <!-- NUEVO: Contenedor superior -->
@@ -203,42 +203,42 @@
         <!-- Cards fijas -->
         <div class="card bg-blue">
           <div class="card-image-container">
-            <img src="../img/biologia.jpg" class="card-img" alt="Biología">
+            <img src="https://plus.unsplash.com/premium_photo-1676668708126-39b12a0e9d96?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img" alt="Arte">
           </div>
           <div class="card-content">
             <h2>1</h2>
-            <p class="card-title">Biología</p>
-            <a href="../materias/biologia.php" class="btn">Más información</a>
+            <p class="card-title">Arte</p>
+            <a href="../materias/arte.php" class="btn">Más información</a>
           </div>
         </div>
         <div class="card bg-green">
           <div class="card-image-container">
-            <img src="../img/lenguaje_cursos.jpg" class="card-img" alt="Lenguaje">
+            <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img" alt="Deportes">
           </div>
           <div class="card-content">
             <h2>2</h2>
-            <p class="card-title">Lenguaje</p>
-            <a href="../materias/lenguaje.php" class="btn">Más información</a>
+            <p class="card-title">Deportes</p>
+            <a href="../materias/deportes.php" class="btn">Más información</a>
           </div>
         </div>
         <div class="card bg-yellow">
           <div class="card-image-container">
-            <img src="../img/ciencias_cursos.png" class="card-img" alt="Ciencia">
+            <img src="https://plus.unsplash.com/premium_photo-1666739032615-ecbd14dfb543?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img" alt="Inglés">
           </div>
           <div class="card-content">
             <h2>3</h2>
-            <p class="card-title">Ciencia</p>
-            <a href="../materias/ciencias.php" class="btn">Más información</a>
+            <p class="card-title">Inglés</p>
+            <a href="../materias/ingles.php" class="btn">Más información</a>
           </div>
         </div>
         <div class="card bg-blue">
           <div class="card-image-container">
-            <img src="../img/mate_cursos.webp" class="card-img" alt="Matemática">
+            <img src="https://images.unsplash.com/photo-1547656834-630c4efa3c19?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img" alt="Debate">
           </div>
           <div class="card-content">
             <h2>4</h2>
-            <p class="card-title">Matemática</p>
-            <a href="../materias/matematica.php" class="btn">Más información</a>
+            <p class="card-title">Debate</p>
+            <a href="../materias/debate.php" class="btn">Más información</a>
           </div>
         </div>
       </div>
@@ -250,7 +250,7 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">
-                <img src="/placeholder.svg?height=60&width=60" alt="Logo EDUSOFT" class="logo">
+                <img src="/placeholder.svg?height=60&width=60" alt="" class="logo">
                 <h3>EDUSOFT</h3>
             </div>
             <div class="footer-links">

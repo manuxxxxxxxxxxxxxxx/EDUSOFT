@@ -216,6 +216,8 @@ const translations = {
     asuntoCo:"Asunto",
     escribe:"Escribe tu mensaje ",
     enviarCo:"Enviar mensaje",
+    ActividadesE: "Materias escolares",
+    cursosE: "Materias extracurriculares",
 
 
 

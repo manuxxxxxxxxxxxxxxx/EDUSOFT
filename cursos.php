@@ -42,7 +42,7 @@
             <i class="fas fa-chevron-down arrow"></i>
           </a>
           <ul class="submenu">
-            <li><a href="#" data-i18n="ActividadesN">Actividades extrarriculares</a></li>
+            <li><a href="extracurriculares.php" data-i18n="ActividadesN">Actividades extrarriculares</a></li>
             <li><a href="#" data-i18n="Primaria">Primaria</a></li>
             <li><a href="#" data-i18n="secundaria">Secundaria</a></li>
             <li><a href="#" data-i18n="bachillerato">Bachillerato</a></li>
