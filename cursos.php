@@ -56,12 +56,12 @@
             <i class="fas fa-chevron-down arrow"></i>
           </a>
           <ul class="submenu">
-            <li><a href="#" data-i18n="biologiaN">Biología</a></li>
-            <li><a href="#" data-i18n="lenguajeN">Lenguaje</a></li>
-            <li><a href="#" data-i18n="cienciasN">Ciencia</a></li>
-            <li><a href="#" data-i18n="matematicasN">Matemática</a></li>
-            <li><a href="#" data-i18n="quimicaN">Química</a></li>
-            <li><a href="#" data-i18n="Ciencias_socialesN">Ciencias Sociales</a></li>
+            <li><a href="../materias/biologia.php" data-i18n="biologiaN">Biología</a></li>
+            <li><a href="../materias/lenguaje.php" data-i18n="lenguajeN">Lenguaje</a></li>
+            <li><a href="../materias/ciencias.php" data-i18n="cienciasN">Ciencia</a></li>
+            <li><a href="../materias/matematica.php" data-i18n="matematicasN">Matemática</a></li>
+            <li><a href="../materias/quimica.php" data-i18n="quimicaN">Química</a></li>
+            <li><a href="../materias/sociales.php" data-i18n="Ciencias_socialesN">Ciencias Sociales</a></li>
           </ul>
         </li>
         

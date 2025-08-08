@@ -66,7 +66,7 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduSoft - Debate</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../materias/css/styleCiencias.css">
+    <link rel="stylesheet" href="../materias/css/styleQuimica.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
 </head>
@@ -95,43 +95,40 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
             </div>
         </header>
         <main>
-            <section id="tablon" class="seccion">
-                <div class="banner banner-debate" id="bannerDebate">
-                    <h1>DEBATE</h1>
-                    <div class="abstract-shape"></div>
-                    <div class="tema-actual">
-                        <i class="fas fa-bullhorn"></i>
-                        <span><strong>Tema actual:</strong> ¿La inteligencia artificial debería regularse por ley?</span>
-                    </div>
-                </div>
-                <div class="content">
-                    <div class="profesor">
-                        <div class="avatar-modern"></div>
-                        <p>Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
-                    </div>
-                    <div class="tareas-container">
-                        <?php if (isset($resultado_tareas_profesor) && $resultado_tareas_profesor->num_rows > 0): ?>
-                            <?php while ($tarea = $resultado_tareas_profesor->fetch_assoc()): ?>
-                                <div class="tarea">
-                                    <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
-                                    <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
-                                    <small>
-                                        <span>Tema</span>: <?php echo htmlspecialchars($tarea['tema']); ?>
-                                        | <span>Fecha límite</span>: <?php echo $tarea['fecha_entrega']; ?>
-                                        | <span>Puntos</span>: <?php echo $tarea['puntos']; ?>
-                                    </small>
-                                    <?php if (!empty($tarea['archivo_adjunto'])): ?>
-                                        <br>
-                                        <a href="<?php echo htmlspecialchars($tarea['archivo_adjunto']); ?>" target="_blank">📎 Ver archivo adjunto</a>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endwhile; ?>
-                        <?php else: ?>
-                            <p>No se han asignado tareas aún.</p>
+<section id="tablon" class="seccion">
+    <div class="banner banner-debate" id="bannerDebate">
+        <h1>DEBATE</h1>
+        <div class="abstract-shape"></div>
+    </div>
+    <div class="content">
+        <div class="profesor">
+            <div class="avatar-modern"></div>
+            <p>Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
+        </div>
+        <div class="tareas-container">
+            <?php if (isset($resultado_tareas_profesor) && $resultado_tareas_profesor->num_rows > 0): ?>
+                <?php while ($tarea = $resultado_tareas_profesor->fetch_assoc()): ?>
+                    <div class="tarea">
+                        <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                        <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                        <small>
+                            <span>Tema</span>: <?php echo htmlspecialchars($tarea['tema']); ?>
+                            | <span>Fecha límite</span>: <?php echo $tarea['fecha_entrega']; ?>
+                            | <span>Puntos</span>: <?php echo $tarea['puntos']; ?>
+                        </small>
+                        <?php if (!empty($tarea['archivo_adjunto'])): ?>
+                            <br>
+                            <a href="<?php echo htmlspecialchars($tarea['archivo_adjunto']); ?>" target="_blank">📎 Ver archivo adjunto</a>
                         <?php endif; ?>
                     </div>
-                </div>
-            </section>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p>No se han asignado tareas aún.</p>
+            <?php endif; ?>
+        </div>
+    </div>
+</section>
+
             <section id="tareas" class="seccion" style="display: none;">
                 <h2>Tareas</h2>
                 <ul class="lista-tareas">
