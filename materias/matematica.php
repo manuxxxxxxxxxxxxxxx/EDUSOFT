@@ -215,76 +215,64 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                 </ul>
             </section>
 
-<section id="material" class="seccion" style="display: none;">
+            <section id="material" class="seccion" style="display: none;">
     <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
-    <ul class="lista-material">
-        <?php
-        require_once "../conexiones/conexion.php";
 
-        if (!isset($_GET["id_clase"])) {
-            echo "<li>⚠️ Clase no especificada.</li>";
-        } else {
-            $id_clase = $_GET["id_clase"];
+    <?php
+    // Aseguramos que $id_clase está definido y es entero
+    $id_clase = isset($_GET['id_clase']) ? intval($_GET['id_clase']) : null;
 
-            $sql = "SELECT titulo, descripcion, archivo, ruta_archivo, fecha_subida 
-                    FROM materiales 
-                    WHERE id_clase = ?
-                    ORDER BY fecha_subida DESC";
+    if (!$id_clase) {
+        echo "<p>⚠️ Clase no especificada.</p>";
+    } else {
+        // Consultar materiales subidos para esta clase
+        $sql = "SELECT titulo, descripcion, archivo, ruta_archivo, fecha_subida 
+                FROM materiales_estudio 
+                WHERE id_clase = ? 
+                ORDER BY fecha_subida DESC";
 
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("i", $id_clase);
-            $stmt->execute();
-            $resultado = $stmt->get_result();
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id_clase);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
 
-            if ($resultado->num_rows > 0) {
-                while ($material = $resultado->fetch_assoc()) {
-                    $archivo = $material["archivo"];
-                    $ruta = $material["ruta_archivo"];
-                    $extension = pathinfo($archivo, PATHINFO_EXTENSION);
-                    $fecha = date("d \d\e F", strtotime($material["fecha_subida"]));
+        if ($resultado->num_rows > 0) {
+            echo '<div class="materiales-container">';
+            while ($material = $resultado->fetch_assoc()) {
+                $titulo = htmlspecialchars($material["titulo"]);
+                $descripcion = htmlspecialchars($material["descripcion"]);
+                $archivo = htmlspecialchars($material["archivo"]);
+                $ruta = htmlspecialchars($material["ruta_archivo"]);
+                $fecha = date("d/m/Y", strtotime($material["fecha_subida"]));
 
-                    // Determinar icono por tipo (compatible con PHP 7+)
-                    switch (strtolower($extension)) {
-                        case "pdf":
-                            $icono = "fa-file-pdf";
-                            break;
-                        case "doc":
-                        case "docx":
-                            $icono = "fa-file-word";
-                            break;
-                        case "ppt":
-                        case "pptx":
-                            $icono = "fa-file-powerpoint";
-                            break;
-                        case "xls":
-                        case "xlsx":
-                            $icono = "fa-file-excel";
-                            break;
-                        case "mp4":
-                        case "avi":
-                        case "mov":
-                            $icono = "fa-file-video";
-                            break;
-                        default:
-                            $icono = "fa-file";
-                    }
-
-                    echo "<li>";
-                    echo "<i class='fas $icono'></i> ";
-                    echo "<span>" . htmlspecialchars($material["titulo"]) . "</span> ";
-                    echo "<a href='" . htmlspecialchars($ruta) . "' target='_blank'>Descargar</a> ";
-                    echo "<small>Subido: $fecha</small>";
-                    echo "</li>";
+                // Icono según extensión
+                $extension = pathinfo($archivo, PATHINFO_EXTENSION);
+                switch (strtolower($extension)) {
+                    case "pdf": $icono = "fa-file-pdf"; break;
+                    case "doc": case "docx": $icono = "fa-file-word"; break;
+                    case "ppt": case "pptx": $icono = "fa-file-powerpoint"; break;
+                    case "xls": case "xlsx": $icono = "fa-file-excel"; break;
+                    case "mp4": case "avi": case "mov": $icono = "fa-file-video"; break;
+                    default: $icono = "fa-file"; break;
                 }
-            } else {
-                echo "<li>📭 No hay materiales disponibles para esta clase.</li>";
+
+                echo "<div class='material-item'>";
+                echo "<i class='fas $icono'></i> <strong>$titulo</strong><br>";
+                if ($descripcion) {
+                    echo "<p>$descripcion</p>";
+                }
+                echo "<a href='$ruta' target='_blank'>📎 Descargar archivo: $archivo</a><br>";
+                echo "<small>Subido el $fecha</small>";
+                echo "</div>";
             }
+            echo '</div>';
+        } else {
+            echo "<p>📭 No hay materiales disponibles para esta clase.</p>";
         }
-        ?>
-    </ul>
+    }
+    ?>
 </section>
-        </main>
-    </div>
+
     <div id="modalTarea" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close">&times;</span>

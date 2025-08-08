@@ -10,7 +10,7 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['id_estudiante'])) {
 // Lógica para estudiantes
 if (isset($_SESSION['id_estudiante'])) {
     $id_estudiante = $_SESSION['id_estudiante'];
-    $materia = 'biologia'; // Puedes cambiar esto dinámicamente si lo deseas
+    $materia = 'sociales';
 
     // Obtener tareas que subió este estudiante en esta materia
     $sql = "SELECT nombre_archivo, ruta_archivo, fecha_subida FROM tareas WHERE id_estudiante = ? AND materia = ?";
@@ -30,9 +30,8 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
 
     $id_clase = intval($_GET['id_clase']);
 
-    $profesor_id = $_SESSION['id'];
-    
     $nombre = $_SESSION['nombre'];
+
     // Verificar que la clase pertenezca al profesor
     $sql = "SELECT * FROM clases WHERE id = ? AND profesor_id = ?";
     $stmt = $conn->prepare($sql);
@@ -45,25 +44,30 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
     }
 
     $clase = $result_clase->fetch_assoc();
-}
-// Obtener tareas subidas por el profesor para esta clase
+
+    // Obtener tareas para esta clase y guardarlas en array $tareas_profesor
     $sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
     $stmt_tareas = $conn->prepare($sql_tareas);
     $stmt_tareas->bind_param("i", $id_clase);
     $stmt_tareas->execute();
-    $resultado_tareas_profesor = $stmt_tareas->get_result();
+    $result_tareas = $stmt_tareas->get_result();
 
+    $tareas_profesor = [];
+    while ($fila = $result_tareas->fetch_assoc()) {
+        $tareas_profesor[] = $fila;
+    }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>EduSoft - Sociales</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../materias/css/styleSociales.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../materias/css/styleSociales.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
 <body>
     <div class="sidebar">
@@ -72,10 +76,11 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
             <span>EduSoft</span>
         </div>
         <nav>
-            <button id="tablon-btn" class="active"><i class="fas fa-th-large"></i>Tablón</button>
-            <button id="tareas-btn"><i class="fas fa-tasks"></i>Tareas</button>
-            <button id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
-            <button id="avisos-btn"><i class="fas fa-bell"></i>Avisos</button>
+            <button id="tablon-btn" class="active"><i class="fas fa-th-large"></i> Tablón</button>
+            <button id="tareas-btn"><i class="fas fa-tasks"></i> Tareas</button>
+            <button id="alumnos-btn"><i class="fas fa-users"></i> Alumnos</button>
+            <button id="avisos-btn"><i class="fas fa-bell"></i> Avisos</button>
+            <button id="material-btn"><i class="fas fa-folder-open"></i> Material</button>
         </nav>
     </div>
     <div class="main-content">
@@ -99,150 +104,134 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
                 <div class="content">
                     <div class="profesor">
                         <div class="avatar-modern"></div>
-                        <p>Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
+                        <p>Profesor<br><strong><?php echo htmlspecialchars($nombre ?? ''); ?></strong></p>
                     </div>
                     <div class="tareas-container">
-                                <?php if (isset($resultado_tareas_profesor) && $resultado_tareas_profesor->num_rows > 0): ?>
-                                <?php while ($tarea = $resultado_tareas_profesor->fetch_assoc()): ?>
-                            <div class="tarea">
-                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
-                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
-                                <small>Fecha límite: <?php echo $tarea['fecha_entrega']; ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
-                
-                                <?php if (!empty($tarea['ruta_archivo'])): ?>
-                                <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
-                                <?php endif; ?>
-                            </div>
-                                <?php endwhile; ?>
-                                <?php else: ?>
-                                <p>No se han asignado tareas aún.</p>
-                                <?php endif; ?>
+                        <?php if (!empty($tareas_profesor)): ?>
+                            <?php foreach ($tareas_profesor as $tarea): ?>
+                                <div class="tarea">
+                                    <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                                    <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                                    <small>Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
+                                    <?php if (!empty($tarea['ruta_archivo'])): ?>
+                                        <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p>No se han asignado tareas aún.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </section>
+
             <section id="tareas" class="seccion" style="display: none;">
                 <h2>Tareas</h2>
-                <ul class="lista-tareas">
-                    <li>
-                        <i class="fas fa-globe"></i>
-                        <span>Tarea de Historia Universal</span>
-                        <p>Resolver los problemas de historia universal del capítulo 3.</p>
-                        <small>Fecha límite: 10 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
-                    </li>
-                    <li>
-                        <i class="fas fa-map"></i>
-                        <span>Proyecto de Geografía</span>
-                        <p>Crear un proyecto sobre la geografía de un país.</p>
-                        <small>Fecha límite: 12 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
-                    </li>
-                    <li>
-                        <i class="fas fa-users"></i>
-                        <span>Examen de Ciencias Sociales</span>
-                        <p>Estudiar para el examen de ciencias sociales que se realizará el próximo viernes.</p>
-                        <small>Fecha límite: 15 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
-                    </li>
-                    <li>
-                        <i class="fas fa-money-bill-alt"></i>
-                        <span>Tarea de Economía</span>
-                        <p>Escribir un ensayo sobre la importancia de la economía en la sociedad.</p>
-                        <small>Fecha límite: 17 de abril</small>
-                        <button class="boton-estilo">Añadir tarea</button>
-                    </li>
-                </ul>
+                <div class="tareas-container">
+                    <?php if (!empty($tareas_profesor)): ?>
+                        <?php foreach ($tareas_profesor as $tarea): ?>
+                            <div class="tarea">
+                                <i class="fas fa-book"></i>
+                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                                <small>Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
+                                <?php if (!empty($tarea['ruta_archivo'])): ?>
+                                    <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
+                                <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>No se han asignado tareas aún.</p>
+                    <?php endif; ?>
+                </div>
             </section>
+
             <section id="alumnos" class="seccion" style="display: none;">
                 <h2>Lista de Alumnos</h2>
                 <ul class="lista-alumnos">
-                    <li>
-                        <i class="fas fa-user"></i>
-                        <span>Juan Pérez</span>
-                        <p>Número de estudiante: 001</p>
-                        <small>Correo electrónico: juan.perez@gmail.com</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-user"></i>
-                        <span>María López</span>
-                        <p>Número de estudiante: 002</p>
-                        <small>Correo electrónico: maria.lopez@gmail.com</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-user"></i>
-                        <span>Carlos Gómez</span>
-                        <p>Número de estudiante: 003</p>
-                        <small>Correo electrónico: carlos.gomez@gmail.com</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-user"></i>
-                        <span>Ana Ramírez</span>
-                        <p>Número de estudiante: 004</p>
-                        <small>Correo electrónico: ana.ramirez@gmail.com</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-user"></i>
-                        <span>Luis Hernández</span>
-                        <p>Número de estudiante: 005</p>
-                        <small>Correo electrónico: luis.hernandez@gmail.com</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-user"></i>
-                        <span>Sofía García</span>
-                        <p>Número de estudiante: 006</p>
-                        <small>Correo electrónico: sofia.garcia@gmail.com</small>
-                    </li>
+                    <!-- Aquí tu lista o código dinámico para alumnos -->
                 </ul>
             </section>
+
             <section id="avisos" class="seccion" style="display: none;">
                 <h2>Avisos</h2>
                 <ul class="lista-avisos">
-                    <li>
-                        <i class="fas fa-bell"></i>
-                        <span>Examen de Historia Universal</span>
-                        <p>El próximo viernes se realizará el examen de historia universal. Asegúrate de estudiar y prepararte adecuadamente.</p>
-                        <small>Fecha: 15 de abril</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-bell"></i>
-                        <span>Entrega de Tareas</span>
-                        <p>Recuerda que la tarea de geografía debe ser entregada el próximo lunes. Asegúrate de tenerla lista y entregada a tiempo.</p>
-                        <small>Fecha: 12 de abril</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-bell"></i>
-                        <span>Feria de Ciencias</span>
-                        <p>La feria de ciencias se realizará el próximo sábado. Asegúrate de asistir y participar en los eventos y actividades programadas.</p>
-                        <small>Fecha: 17 de abril</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-bell"></i>
-                        <span>Información Importante</span>
-                        <p>Recuerda que la escuela estará cerrada el próximo martes por motivo de una reunión de padres y maestros. Asegúrate de planificar tus actividades adecuadamente.</p>
-                        <small>Fecha: 13 de abril</small>
-                    </li>
+                    <!-- Aquí tu lista o código dinámico para avisos -->
+                </ul>
+            </section>
+
+            <section id="material" class="seccion" style="display: none;">
+                <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
+                <ul class="lista-material">
+                    <?php
+                    if (!isset($id_clase)) {
+                        echo "<li>⚠️ Clase no especificada.</li>";
+                    } else {
+                        $sql_materiales = "SELECT titulo, descripcion, archivo, ruta_archivo, fecha_subida 
+                                           FROM materiales_estudio 
+                                           WHERE id_clase = ? 
+                                           ORDER BY fecha_subida DESC";
+                        $stmt_materiales = $conn->prepare($sql_materiales);
+                        $stmt_materiales->bind_param("i", $id_clase);
+                        $stmt_materiales->execute();
+                        $resultado_materiales = $stmt_materiales->get_result();
+
+                        if ($resultado_materiales->num_rows > 0) {
+                            while ($material = $resultado_materiales->fetch_assoc()) {
+                                $titulo = htmlspecialchars($material['titulo']);
+                                $descripcion = htmlspecialchars($material['descripcion']);
+                                $archivo = htmlspecialchars($material['archivo']);
+                                $ruta = htmlspecialchars($material['ruta_archivo']);
+                                $fecha = date("d/m/Y", strtotime($material['fecha_subida']));
+
+                                $extension = pathinfo($archivo, PATHINFO_EXTENSION);
+                                switch (strtolower($extension)) {
+                                    case 'pdf': $icono = 'fa-file-pdf'; break;
+                                    case 'doc':
+                                    case 'docx': $icono = 'fa-file-word'; break;
+                                    case 'ppt':
+                                    case 'pptx': $icono = 'fa-file-powerpoint'; break;
+                                    case 'xls':
+                                    case 'xlsx': $icono = 'fa-file-excel'; break;
+                                    case 'mp4':
+                                    case 'avi':
+                                    case 'mov': $icono = 'fa-file-video'; break;
+                                    default: $icono = 'fa-file'; break;
+                                }
+
+                                echo "<li>";
+                                echo "<i class='fas $icono'></i> <strong>$titulo</strong><br>";
+                                if ($descripcion) {
+                                    echo "<p>$descripcion</p>";
+                                }
+                                echo "<a href='$ruta' target='_blank'>📎 Descargar archivo: $archivo</a><br>";
+                                echo "<small>Subido el $fecha</small>";
+                                echo "</li>";
+                            }
+                        } else {
+                            echo "<li>📭 No hay materiales disponibles para esta clase.</li>";
+                        }
+                    }
+                    ?>
                 </ul>
             </section>
         </main>
     </div>
-    <div id="modalTarea" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="modalTitulo">Título de la tarea</h2>
-            <p id="modalDescripcion">Descripción de la tarea</p>
-            <div class="modal-section">
-                <label for="archivoSubir">Subir archivos:</label>
-                <input type="file" id="archivoSubir" multiple>
-                <ul id="listaArchivos"></ul>
-            </div>
-            <div class="modal-section">
-                <label for="enlaceInput">Añadir enlace:</label>
-                <input type="url" id="enlaceInput" placeholder="https://">
-                <button id="agregarEnlace">Agregar enlace</button>
-                <ul id="listaEnlaces"></ul>
-            </div>
-        </div>
-    </div>
+
     <script src="../materias/js/scriptSociales.js"></script>
+    <script>
+    // Script simple para mostrar/ocultar secciones con los botones sidebar
+    document.querySelectorAll('.sidebar nav button').forEach(button => {
+        button.addEventListener('click', () => {
+            document.querySelectorAll('main .seccion').forEach(seccion => seccion.style.display = 'none');
+            const id = button.id.replace('-btn','');
+            const seccionMostrar = document.getElementById(id);
+            if (seccionMostrar) seccionMostrar.style.display = 'block';
+
+            document.querySelectorAll('.sidebar nav button').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        });
+    });
+    </script>
 </body>
 </html>

@@ -2,7 +2,6 @@
 session_start();
 require_once "../conexiones/conexion.php";
 
-// Verificar sesión activa de profesor
 if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "profesor") {
     header("Location: ../conexiones/loginProfes.php");
     exit;
@@ -10,7 +9,6 @@ if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "profesor") {
 
 $profesor_id = $_SESSION["id"];
 
-// Obtener las clases del profesor
 $sql = "SELECT id, nombre_clase, materia FROM clases WHERE profesor_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $profesor_id);
@@ -27,13 +25,13 @@ while ($fila = $res->fetch_assoc()) {
 <head>
   <meta charset="UTF-8">
   <title>Subir Material</title>
-  <link rel="stylesheet" href="prueba.css"> <!-- O usa tu propio estilo -->
+  <link rel="stylesheet" href="prueba.css">
 </head>
 <body>
   <div class="task-modal">
     <div class="task-header">
       <span class="task-title">Material de Estudio</span>
-      <button class="task-close" onclick="cerrarModal()">✕</button>
+      <button class="task-close" onclick="window.history.back()">✕</button>
     </div>
 
     <form class="task-form" action="procesar_material.php" method="POST" enctype="multipart/form-data">
@@ -69,11 +67,5 @@ while ($fila = $res->fetch_assoc()) {
       </div>
     </form>
   </div>
-
-  <script>
-    function cerrarModal() {
-      document.querySelector('.task-modal').style.display = 'none';
-    }
-  </script>
 </body>
 </html>

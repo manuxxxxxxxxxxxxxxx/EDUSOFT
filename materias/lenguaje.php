@@ -13,7 +13,7 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['id_estudiante'])) {
 // Lógica para estudiantes
 if (isset($_SESSION['id_estudiante'])) {
     $id_estudiante = $_SESSION['id_estudiante'];
-    $materia = 'biologia'; // Puedes cambiar esto dinámicamente si lo deseas
+    $materia = 'lenguaje'; // Ajusta si es necesario
 
     // Obtener tareas que subió este estudiante en esta materia
     $sql = "SELECT nombre_archivo, ruta_archivo, fecha_subida FROM tareas WHERE id_estudiante = ? AND materia = ?";
@@ -50,26 +50,31 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
     }
 
     $clase = $result_clase->fetch_assoc();
-}
 
-// Obtener tareas subidas por el profesor para esta clase
-$sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
-$stmt_tareas = $conn->prepare($sql_tareas);
-$stmt_tareas->bind_param("i", $id_clase);
-$stmt_tareas->execute();
-$resultado_tareas_profesor = $stmt_tareas->get_result();
+    // Obtener tareas para esta clase y guardarlas en array $tareas_profesor
+    $sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
+    $stmt_tareas = $conn->prepare($sql_tareas);
+    $stmt_tareas->bind_param("i", $id_clase);
+    $stmt_tareas->execute();
+    $result_tareas = $stmt_tareas->get_result();
+
+    $tareas_profesor = [];
+    while ($fila = $result_tareas->fetch_assoc()) {
+        $tareas_profesor[] = $fila;
+    }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>EduSoft - Lenguaje y Literatura</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../materias/css/styleLenguaje.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../materias/css/styleLenguaje.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet" />
 </head>
 <body>
     <div class="sidebar">
@@ -80,9 +85,9 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
         <nav>
             <button data-i18n="tablon" id="tablon-btn" class="active"><i class="fas fa-th-large"></i>Tablón</button>
             <button data-i18n="tareas" id="tareas-btn"><i class="fas fa-tasks"></i>Tareas</button>
-            <button id="material-btn"><i class="fas fa-folder-open"></i>Material</button> 
-            <button data-i18n="alumnos"    id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
-            <button data-i18n="avisos"  id="avisos-btn"><i class="fas fa-bell"></i>Avisos</button>
+            <button id="material-btn"><i class="fas fa-folder-open"></i>Material</button>
+            <button data-i18n="alumnos" id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
+            <button data-i18n="avisos" id="avisos-btn"><i class="fas fa-bell"></i>Avisos</button>
         </nav>
     </div>
     <div class="main-content">
@@ -109,63 +114,49 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                         <p data-i18n="profesor">Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
                     </div>
                     <div class="tareas-container">
-                            <?php if (isset($resultado_tareas_profesor) && $resultado_tareas_profesor->num_rows > 0): ?>
-                            <?php while ($tarea = $resultado_tareas_profesor->fetch_assoc()): ?>
-                           <div class="tarea">
-        <h4 data-i18n="titulo"><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
-        <p data-i18n="descripcion"><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
-        
- 
-        <small>
-          <span data-i18n="fechal">Fecha límite</span>: <?php echo $tarea['fecha_entrega']; ?>
-          | 
-          <span data-i18n="puntos">Puntos</span>: <?php echo $tarea['puntos']; ?>
-        </small>
-
-        <?php if (!empty($tarea['ruta_archivo'])): ?>
-          <br>
-          <a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank" data-i18n="archivo">📎 Ver archivo adjunto</a>
-        <?php endif; ?>
-      </div>
-    <?php endwhile; ?>
-  <?php else: ?>
-    <p data-i18n="notareas">No se han asignado tareas aún.</p>
-  <?php endif; ?>
-</div>
+                        <?php if (!empty($tareas_profesor)): ?>
+                            <?php foreach ($tareas_profesor as $tarea): ?>
+                                <div class="tarea">
+                                    <h4 data-i18n="titulo"><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                                    <p data-i18n="descripcion"><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                                    <small>
+                                        <span data-i18n="fechal">Fecha límite</span>: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> |
+                                        <span data-i18n="puntos">Puntos</span>: <?php echo htmlspecialchars($tarea['puntos']); ?>
+                                    </small>
+                                    <?php if (!empty($tarea['ruta_archivo'])): ?>
+                                        <br>
+                                        <a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank" data-i18n="archivo">📎 Ver archivo adjunto</a>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p data-i18n="notareas">No se han asignado tareas aún.</p>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </section>
+
             <section id="tareas" class="seccion" style="display: none;">
                 <h2 data-i18n="tareas">Tareas</h2>
-                <ul class="lista-tareas">
-                    <li>
-                        <i class="fas fa-pen"></i>
-                        <span data-i18n="analisisM">Tarea de Análisis de Texto</span>
-                        <p data-i18n="lp">Analizar el texto "La casa de los espíritus" de Isabel Allende.</p>
-                        <small data-i18n="fecha">Fecha límite: 10 de abril</small>
-                        <button data-i18n="añadir" class="boton-estilo">Añadir tarea</button>
-                    </li>
-                    <li>
-                        <i class="fas fa-bookmark"></i>
-                        <span data-i18n="proyectol">Proyecto de Literatura</span>
-                        <p data-i18n="lp1">Crear un proyecto sobre la vida y obra de un autor literario.</p>
-                        <small data-i18n="fecha">Fecha límite: 12 de abril</small>
-                        <button data-i18n="añadir" class="boton-estilo">Añadir tarea</button>
-                    </li>
-                    <li>
-                        <i class="fas fa-language"></i>
-                        <span data-i18n="examenl">Examen de Gramática</span>
-                        <p data-i18n="lp2">Estudiar para el examen de gramática que se realizará el próximo viernes.</p>
-                        <small data-i18n="fecha">Fecha límite: 15 de abril</small>
-                        <button data-i18n="añadir" class="boton-estilo">Añadir tarea</button>
-                    </li>
-                    <li>
-                        <i class="fas fa-edit"></i>
-                        <span data-i18n="composicionl">Tarea de Composición</span>
-                        <p data-i18n="lp3">Escribir un ensayo sobre un tema de actualidad.</p>
-                        <small data-i18n="fecha">Fecha límite: 17 de abril</small>
-                        <button data-i18n="añadir" class="boton-estilo">Añadir tarea</button>
-                    </li>
-                </ul>
+                <div class="tareas-container">
+                    <?php if (!empty($tareas_profesor)): ?>
+                        <?php foreach ($tareas_profesor as $tarea): ?>
+                            <div class="tarea">
+                                <i class="fas fa-book"></i>
+                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                                <small>Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | Puntos: <?php echo htmlspecialchars($tarea['puntos']); ?></small>
+                                <?php if (!empty($tarea['ruta_archivo'])): ?>
+                                    <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
+                                <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>No se han asignado tareas aún.</p>
+                    <?php endif; ?>
+                </div>
             </section>
+
             <section id="alumnos" class="seccion" style="display: none;">
                 <h2 data-i18n="lista">Lista de Alumnos</h2>
                 <ul class="lista-alumnos">
@@ -207,8 +198,9 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                     </li>
                 </ul>
             </section>
+
             <section id="avisos" class="seccion" style="display: none;">
-                <h data-i18n="avisos">Avisos</h2>
+                <h2 data-i18n="avisos">Avisos</h2>
                 <ul class="lista-avisos">
                     <li>
                         <i class="fas fa-bell"></i>
@@ -235,46 +227,66 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
                         <small>Fecha: 13 de abril</small>
                     </li>
                 </ul>
-
-                
             </section>
 
-                      <section id="material" class="seccion" style="display: none;">
+            <section id="material" class="seccion" style="display: none;">
                 <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
                 <ul class="lista-material">
-                    <li>
-                        <i class="fas fa-file-pdf"></i>
-                        <span>Guía de ejercicios</span>
-                        <a href="materiales/guia_ejercicios.pdf" target="_blank">Descargar PDF</a>
-                        <small>Subido: 01 de agosto</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-link"></i>
-                        <span>Video explicativo</span>
-                        <a href="https://www.youtube.com/watch?v=xxxxxx" target="_blank">Ver video</a>
-                        <small>Enlace externo</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-file-word"></i>
-                        <span>Resumen teórico</span>
-                        <a href="materiales/resumen.docx" target="_blank">Descargar Word</a>
-                        <small>Subido: 28 de julio</small>
-                    </li>
+                <?php
+                if (!isset($id_clase)) {
+                    echo "<li>⚠️ Clase no especificada.</li>";
+                } else {
+                    $sql_materiales = "SELECT titulo, descripcion, archivo, ruta_archivo, fecha_subida 
+                                       FROM materiales_estudio 
+                                       WHERE id_clase = ? 
+                                       ORDER BY fecha_subida DESC";
+                    $stmt_materiales = $conn->prepare($sql_materiales);
+                    $stmt_materiales->bind_param("i", $id_clase);
+                    $stmt_materiales->execute();
+                    $resultado_materiales = $stmt_materiales->get_result();
+
+                    if ($resultado_materiales->num_rows > 0) {
+                        while ($material = $resultado_materiales->fetch_assoc()) {
+                            $titulo = htmlspecialchars($material['titulo']);
+                            $descripcion = htmlspecialchars($material['descripcion']);
+                            $archivo = htmlspecialchars($material['archivo']);
+                            $ruta = htmlspecialchars($material['ruta_archivo']);
+                            $fecha = date("d/m/Y", strtotime($material['fecha_subida']));
+
+                            $extension = pathinfo($archivo, PATHINFO_EXTENSION);
+                            switch (strtolower($extension)) {
+                                case 'pdf': $icono = 'fa-file-pdf'; break;
+                                case 'doc':
+                                case 'docx': $icono = 'fa-file-word'; break;
+                                case 'ppt':
+                                case 'pptx': $icono = 'fa-file-powerpoint'; break;
+                                case 'xls':
+                                case 'xlsx': $icono = 'fa-file-excel'; break;
+                                case 'mp4':
+                                case 'avi':
+                                case 'mov': $icono = 'fa-file-video'; break;
+                                default: $icono = 'fa-file'; break;
+                            }
+
+                            echo "<li>";
+                            echo "<i class='fas $icono'></i> <strong>$titulo</strong><br>";
+                            if ($descripcion) {
+                                echo "<p>$descripcion</p>";
+                            }
+                            echo "<a href='$ruta' target='_blank'>📎 Descargar archivo: $archivo</a><br>";
+                            echo "<small>Subido el $fecha</small>";
+                            echo "</li>";
+                        }
+                    } else {
+                        echo "<li>📭 No hay materiales disponibles para esta clase.</li>";
+                    }
+                }
+                ?>
                 </ul>
             </section>
-
-
-
-
-
-
-
-
-
-
-
         </main>
     </div>
+
     <!-- Modal HTML -->
     <div id="modalTarea" class="modal" style="display:none;">
         <div class="modal-content">
@@ -283,20 +295,35 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
             <p id="modalDescripcion" data-i18n="descripcion">Descripción de la tarea</p>
             <div class="modal-section">
                 <label for="archivoSubir" data-i18n="archivos">Subir archivos:</label>
-                <input type="file" id="archivoSubir" multiple>
+                <input type="file" id="archivoSubir" multiple />
                 <ul id="listaArchivos"></ul>
             </div>
             <div class="modal-section">
                 <label for="enlaceInput" data-i18n="enlace">Añadir enlace:</label>
-                <input type="url" id="enlaceInput" placeholder="https://">
+                <input type="url" id="enlaceInput" placeholder="https://" />
                 <button id="agregarEnlace" data-i18n="agregarE">Agregar enlace</button>
                 <ul id="listaEnlaces"></ul>
             </div>
         </div>
     </div>
+
     <script src="../materias/js/scriptLenguaje.js"></script>
-        <script src="../principal/lang.js"></script>
-      <script src="../principal/idioma.js"></script>
-     
+    <script src="../principal/lang.js"></script>
+    <script src="../principal/idioma.js"></script>
+
+    <script>
+        // Cambiar secciones con botones sidebar
+        document.querySelectorAll('.sidebar nav button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('main .seccion').forEach(seccion => seccion.style.display = 'none');
+                const id = button.id.replace('-btn','');
+                const seccionMostrar = document.getElementById(id);
+                if (seccionMostrar) seccionMostrar.style.display = 'block';
+
+                document.querySelectorAll('.sidebar nav button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            });
+        });
+    </script>
 </body>
 </html>

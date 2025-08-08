@@ -160,14 +160,42 @@ $nombre = $_SESSION['nombre'];
                 <button class="quick-action" onclick="window.location.href='../frontend_maestros/subir_tarea.php'">Crear tarea</button>
             </div>
         </div>
+
+        <?php
+// Obtener id_clase desde GET para mostrar materiales de esa clase
+$id_clase = isset($_GET['id_clase']) ? intval($_GET['id_clase']) : null;
+
+// Obtener datos de la clase para mostrar nombre y materia
+$clase_nombre = $clase_materia = "";
+
+if ($id_clase) {
+    $stmt_clase = $conn->prepare("SELECT nombre_clase, materia FROM clases WHERE id = ?");
+    $stmt_clase->bind_param("i", $id_clase);
+    $stmt_clase->execute();
+    $res_clase = $stmt_clase->get_result();
+    if ($row_clase = $res_clase->fetch_assoc()) {
+        $clase_nombre = $row_clase['nombre_clase'];
+        $clase_materia = $row_clase['materia'];
+    }
+    $stmt_clase->close();
+}
+?>
+
 <!-- MATERIALES -->
-<div id="seccion-materiales" class="seccion-panel" style="display:none;">
+<div id="seccion-materiales" class="seccion-panel">
     <div class="section">
-        <h3>Materiales</h3>
-        <ul>
+        <h3>Materiales
+            <?php if ($clase_nombre && $clase_materia): ?>
+                — <?= htmlspecialchars($clase_nombre) ?> – <?= htmlspecialchars(ucfirst($clase_materia)) ?>
+            <?php endif; ?>
+        </h3>
+
+        <ul id="lista-materiales">
             <?php
-            if (isset($id_clase)) {
-                $sql = "SELECT archivo FROM materiales WHERE id_clase = ?";
+            if (!$id_clase) {
+                echo "<li>📂 No hay clase seleccionada.</li>";
+            } else {
+                $sql = "SELECT id, titulo, archivo, ruta_archivo, fecha_subida FROM materiales_estudio WHERE id_clase = ? ORDER BY fecha_subida DESC";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("i", $id_clase);
                 $stmt->execute();
@@ -175,24 +203,42 @@ $nombre = $_SESSION['nombre'];
 
                 if ($resultado->num_rows > 0) {
                     while ($material = $resultado->fetch_assoc()) {
-                        echo "<li>" . htmlspecialchars($material["archivo"]) . "</li>";
+                        $material_id = $material["id"];
+                        $titulo = htmlspecialchars($material["titulo"] ?? '');
+                        $archivo = htmlspecialchars($material["archivo"] ?? '');
+                        $ruta = htmlspecialchars($material["ruta_archivo"] ?? '#');
+                        $fecha = date("d/m/Y", strtotime($material["fecha_subida"] ?? ''));
+
+                        echo "<li>";
+                        echo "$titulo — <a href='$ruta' target='_blank'>$archivo</a> (Subido el $fecha) ";
+
+                        echo "<form action='../frontend_maestros/eliminar_tarea.php' method='POST' style='display:inline-block; margin-left:10px;'>";
+                        echo "<input type='hidden' name='accion' value='eliminar_material'>";
+                        echo "<input type='hidden' name='id_material' value='$material_id'>";
+                        echo "<input type='hidden' name='id_clase' value='" . htmlspecialchars($id_clase) . "'>";
+                        echo "<button type='submit' class='btn btn-danger' onclick='return confirm(\"¿Seguro que deseas eliminar este material?\");'>Eliminar</button>";
+                        echo "</form>";
+
+                        echo "</li>";
                     }
                 } else {
                     echo "<li>📂 No hay archivos registrados para esta clase.</li>";
                 }
-            } else {
-                echo "<li> Ningun material agregado .</li>";
             }
             ?>
         </ul>
-        <?php
-        $id_clase = isset($_GET['id_clase']) ? intval($_GET['id_clase']) : null;
-        ?>
-        <form action="subir_material.php?id_clase=<?php echo $id_clase; ?>" method="get">
-            <button class="quick-action">Subir material</button>
+
+        <form action="../frontend_maestros/subir_material.php" method="get">
+            <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase ?? '') ?>">
+            <button type="submit" class="quick-action">Subir material</button>
         </form>
     </div>
 </div>
+
+
+
+
+
         <!-- AVISOS -->
         <div id="seccion-avisos" class="seccion-panel" style="display:none;">
             <div class="section">
