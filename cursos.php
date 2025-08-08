@@ -102,7 +102,7 @@
         </li>
         
         <li class="sidebar-item">
-          <a href="#" class="sidebar-link" title="Contacto">
+          <a href="../contactanos/contactanos.php" class="sidebar-link" title="Contacto">
             <i class="fas fa-envelope"></i>
             <span data-i18n="contactoN">Contacto</span>
           </a>
@@ -207,8 +207,8 @@
           </div>
           <div class="card-content">
             <h2>1</h2>
-            <p class="card-title">Biología</p>
-            <a href="../materias/biologia.php" class="btn">Más información</a>
+            <p class="card-title" data-i18n="Biologia">Biología</p>
+            <a href="../materias/biologia.php" class="btn" data-i18n="mas_informacion">Más información</a>
           </div>
         </div>
         <div class="card bg-green">
@@ -217,8 +217,8 @@
           </div>
           <div class="card-content">
             <h2>2</h2>
-            <p class="card-title">Lenguaje</p>
-            <a href="../materias/lenguaje.php" class="btn">Más información</a>
+            <p class="card-title" data-i18n="lenguaje">Lenguaje</p>
+            <a href="../materias/lenguaje.php" class="btn" data-i18n="mas_informacion">Más información</a>
           </div>
         </div>
         <div class="card bg-yellow">
@@ -227,8 +227,8 @@
           </div>
           <div class="card-content">
             <h2>3</h2>
-            <p class="card-title">Ciencia</p>
-            <a href="../materias/ciencias.php" class="btn">Más información</a>
+            <p class="card-title" data-i18n="ciencias">Ciencia</p>
+            <a href="../materias/ciencias.php" class="btn" data-i18n="ms_informacion">Más información</a>
           </div>
         </div>
         <div class="card bg-blue">
@@ -237,8 +237,8 @@
           </div>
           <div class="card-content">
             <h2>4</h2>
-            <p class="card-title">Matemática</p>
-            <a href="../materias/matematica.php" class="btn">Más información</a>
+            <p class="card-title" data-i18n="matematicas">Matemática</p>
+            <a href="../materias/matematica.php" class="btn" data-i18n="mas_informacion">Más información</a>
           </div>
         </div>
       </div>
@@ -250,7 +250,7 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">
-                <img src="/placeholder.svg?height=60&width=60" alt="Logo EDUSOFT" class="logo">
+                <img src="../img/ELEFANTE.png" alt="Logo EDUSOFT" class="logo">
                 <h3>EDUSOFT</h3>
             </div>
             <div class="footer-links">

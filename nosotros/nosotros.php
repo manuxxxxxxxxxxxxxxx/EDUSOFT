@@ -97,7 +97,7 @@
         </li>
         
         <li class="sidebar-item">
-          <a href="#" class="sidebar-link" title="Contacto">
+          <a href="../contactanos/contactanos.php" class="sidebar-link" title="Contacto">
             <i class="fas fa-envelope"></i>
             <span data-i18n="contactoN">Contacto</span>
           </a>
@@ -302,7 +302,7 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">
-                <img src="/placeholder.svg?height=60&width=60" alt="Logo EDUSOFT" class="logo">
+                <img src="../img/ELEFANTE.png" alt="Logo EDUSOFT" class="logo">
                 <h3>EDUSOFT</h3>
             </div>
             <div class="footer-links">

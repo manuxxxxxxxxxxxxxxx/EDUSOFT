@@ -60,7 +60,7 @@ const translations = {
     actividades: "Actividades",
     logros: "Logros",
     progreso: "Mi progeso",
-    accader_estudiante: "Acceder como estudiante",
+    acceder_estudiante: "Acceder como estudiante",
     porque: "¿Porque elegir nuestra plataforma?",
     desorrollada: "Desarrollado por estudiantes",
     creado:"Creado por estudiantes de bachillerato tecnico que entienden las necesidades reales del aprendizaje modern",
@@ -98,7 +98,7 @@ const translations = {
     cienciasN:"Ciencias",
     matematicasN:"Matematicas",
     quimicaN:"Quimica",
-    ciencias_socialesN:"Ciencias sociales",
+    Ciencias_socialesN:"Ciencias sociales",
     calendario:"Calendario",
     nosotros:"Nosotros",
     comunidadN:"Comunidad",
@@ -204,6 +204,21 @@ const translations = {
     lp3:"Escribir un ensayo sobre un tema de actualidad.",
     h4:"plataforma",
     recursosP:"recursos",
+    acceder_estudiante1:"Continuar como estudiante",
+    acceder_como1:"Continuar como profesor",
+    inicioV:"Inicio",
+    nosotrosV:"Nosotros",
+    contactoV:"contacto",
+    inicairS:"iniciar sesion",
+    unete:"Unete",
+    nombreCo:" Nombre y apellido",
+    correoCo:"Correo electronico",
+    asuntoCo:"Asunto",
+    escribe:"Escribe tu mensaje ",
+    enviarCo:"Enviar mensaje",
+
+
+
 
     
 
@@ -272,7 +287,7 @@ const translations = {
     subir:"Upload Content",
     analasis:"Progress Analysis",
     evaluaciones:"Evaluations",
-    acceder_como:"Login as a Teacher",
+    acceder_como:"Access as a teacher",
     estudiante:"Student",
     soyestudiante:"I am student",
     p_estudiante:"Access interactive courses, complete activities, and track your personalized academic progress.",
@@ -280,7 +295,7 @@ const translations = {
     actividades:"Actividades",
     logros:"Achievements",
     progreso:"My Progress",
-    accader_estudiante:"Access as a Student",
+    acceder_estudiante:"Access as a Student",
     porque:"Why choose our platform?",
     desorrollada:"Developed by Students",
     creado:"Created by technical high school students who understand the real needs of modern learning",
@@ -321,7 +336,7 @@ const translations = {
     cienciasN:"Science",
     matematicasN:"Matemática",
     quimicaN:"Chemistry",
-    ciencias_socialesN:"Social Sciences",
+    Ciencias_socialesN:"Social Sciences",
     calendario:"Calendar",
     nosotros:"Us",
     comunidadN:"Comunidad",
@@ -426,6 +441,19 @@ const translations = {
     lp3:"Write an essay on a current topic.",
     h4:"platform",
     recursosP:"resources",
+    acceder_estudiante1:"Login as a student",
+    acceder_como1:"Login as a teacher",
+    inicioV:"Main",
+    nosotrosV:"US",
+    contactoV:"contact",
+    iniciarS:"Login",
+    unete:"join",
+    nombreCo:"Full name",
+    correoCo:"Email",
+    asuntoCo:"Affair",
+    escribe:"Write your message...",
+    enviarCo:"Send message",
+
 
     
 

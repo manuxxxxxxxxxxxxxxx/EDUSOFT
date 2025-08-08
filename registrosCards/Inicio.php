@@ -139,7 +139,7 @@
             </div>
             
             <button class="access-btn professor-btn" onclick="window.location.href='../Registros/inicioProfes.php'">
-              <span class="btn-text" data-i18n="acceder_como">Acceder como Profesor</span>
+              <span class="btn-text" data-i18n="acceder_como1">Acceder como Profesor</span>
               <div class="btn-icon">
                 <i class="fas fa-arrow-right"></i>
               </div>
@@ -212,7 +212,7 @@
             </div>
             
             <button class="access-btn student-btn" onclick="window.location.href='../Registros/inicio.php'">
-              <span class="btn-text" data-i18n="acceder_estudiante">Acceder como Estudiante</span>
+              <span class="btn-text" data-i18n="acceder_estudiante1">Acceder como Estudiante</span>
               <div class="btn-icon">
                 <i class="fas fa-arrow-right"></i>
               </div>

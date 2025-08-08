@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <div class="box-info">
-            <h1>CONTÁCTATE CON NOSOTROS</h1>
+            <h1 data-i18n="contacto">CONTÁCTATE CON NOSOTROS</h1>
             <div class="data">
                 <p><i class="fa-solid fa-phone"></i> +503 7800 2012</p>
                 <p><i class="fa-solid fa-envelope"></i> Edusoft@gmail.com</p>
@@ -25,22 +25,25 @@
         </div>
         <form action="ContacDB.php" method="post">
             <div class="input-box">
-                <input type="text"  name="Nombre" placeholder="Nombre y apellido" required>
+                <input data-i18n="nombreCo" type="text"  name="Nombre" placeholder="Nombre y apellido" required>
                 <i class="fa-solid fa-user"></i>
             </div>
             <div class="input-box">
-                <input type="email" name="Email" required placeholder="Correo electrónico">
+                <input  data-i18n="correoCo" type="email" name="Email" required placeholder="Correo electrónico">
                 <i class="fa-solid fa-envelope"></i>
             </div>
             <div class="input-box">
-                <input type="text"  name="Asunto" placeholder="Asunto">
+                <input data-i18n="asuntoCo" type="text"  name="Asunto" placeholder="Asunto">
                 <i class="fa-solid fa-pen-to-square"></i>
             </div>
             <div class="input-box">
-                <textarea  name="Msj" placeholder="Escribe tu mensaje..."></textarea>
+                <textarea data-i18n="escribe"  name="Msj" placeholder="Escribe tu mensaje..."></textarea>
             </div>
-            <button type="submit">Enviar mensaje</button>
+            <button type="submit" data-i18n="enviarCo">Enviar mensaje</button>
         </form>
     </div>
+
+    <script src="../principal/lang.js"></script>
+  <script src="../principal/idioma.js"></script>
 </body>
 </html>

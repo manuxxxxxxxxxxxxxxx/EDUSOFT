@@ -27,19 +27,19 @@
                         <li class="nav-item">
                             <a href="#inicio" class="nav-link active">
                                 <i class="fas fa-home"></i>
-                                <span>Inicio</span>
+                                <span data-i18n="inicioV">Inicio</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#nosotros" class="nav-link">
                                 <i class="fas fa-users"></i>
-                                <span>Nosotros</span>
+                                <span data-i18n="nosotrosV">Nosotros</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="../contactanos/contactanos.php" class="nav-link">
                                 <i class="fas fa-envelope"></i>
-                                <span>Contacto</span>
+                                <span data-i18n="contactoV">Contacto</span>
                             </a>
                         </li>
                     </ul>
@@ -47,11 +47,11 @@
 
                 <!-- Botones de acción -->
                 <div class="nav-actions">
-                    <a href="../registrosCards/Inicio.php" class="btn-login">
+                    <a data-i18n="iniciarS" href="../registrosCards/Inicio.php" class="btn-login">
                         <i class="fas fa-sign-in-alt"></i>
                         Iniciar Sesión
                     </a>
-                    <a href="../registrosCards/registro.php" class="btn-register">
+                    <a data-i18n="unete" href="../registrosCards/registro.php" class="btn-register">
                         <i class="fas fa-user-plus"></i>
                         Únete
                     </a>
@@ -160,7 +160,7 @@
             </div>
             <div class="line"></div>
             <div class="stat-text" data-i18n="dolares">
-                Dólares<br>recaudados
+                Dólares recaudados
             </div>
         </div>
         <div class="stat">
@@ -169,7 +169,7 @@
             </div>
             <div class="line"></div>
             <div class="stat-text" data-i18n="alumnos">
-                Alumnos<br>graduados
+                Alumnos graduados
             </div>
         </div>
         <div class="stat">
@@ -178,7 +178,7 @@
             </div>
             <div class="line"></div>
             <div class="stat-text" data-i18n="centros">
-                Centros<br>tecnológicos
+                Centros tecnológicos
             </div>
         </div>
     </div>
@@ -187,7 +187,7 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">
-                <img src="/placeholder.svg?height=60&width=60" alt="Logo EDUSOFT" class="logo">
+                <img src="../img/ELEFANTE.png" alt="Logo EDUSOFT" class="logo">
                 <h3>EDUSOFT</h3>
             </div>
             <div class="footer-links">
@@ -212,9 +212,9 @@
                 <div class="footer-column">
                     <h4 data-i18n="legal">Legal</h4>
                     <ul>
-                        <li data-i18n="terminos"><a href="#">Términos de Uso</a></li>
-                        <li data-i18n="politica"><a href="#">Política de Privacidad</a></li>
-                        <li data-i18n="cookies"><a href="#">Cookies</a></li>
+                        <li data-i18n="terminos"><a href="#"></a></li>
+                        <li data-i18n="politica"><a href="#"></a></li>
+                        <li data-i18n="cookies"><a href="#"></a></li>
                     </ul>
                 </div>
             </div>
