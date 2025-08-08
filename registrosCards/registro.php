@@ -61,9 +61,9 @@
       <div class="welcome-section">
         <div class="welcome-content">
           <div class="title-container">
-            <h2 data-i18n="bienvenida2">Bienvenido a <span class="highlight">nuestra plataforma educativa</span></h2>
+            <h2 data-i18n="bienvenida2">Bienvenido a <span class="highlight"> nuestra plataforma educativa</span></h2>
             <div class="subtitle-animation">
-              <p data-i18n="desarrollo" class="typing-text">Desarrollada por estudiantes, para estudiantes y profesores</p>
+              <p data-i18n="desarrollo" class="typing-text">Desarrollada por estudiantes para estudiantes y profesores</p>
             </div>
           </div>
           
