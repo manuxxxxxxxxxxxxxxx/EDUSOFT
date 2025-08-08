@@ -85,7 +85,7 @@ $resultado_tareas_profesor = $stmt_tareas->get_result();
     </div>
     <div class="main-content">
         <header>
-            <a href="../cursos.php" class="logo modern-back">
+            <a href="../extracurriculares.php" class="logo modern-back">
                 <span class="back-btn"><i class="fas fa-arrow-left"></i></span>
                 <span class="header-title">Club de Debate <span class="header-materia">Debate</span></span>
             </a>

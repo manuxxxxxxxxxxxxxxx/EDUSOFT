@@ -73,7 +73,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
     </div>
     <div class="main-content">
         <header>
-            <a href="../cursos.php" class="logo modern-back">
+            <a href="../extracurriculares.php" class="logo modern-back">
                 <span class="back-btn"><i class="fas fa-arrow-left"></i></span>
                 <span class="header-title">Segundo año B <span class="header-materia">Arte</span></span>
             </a>
