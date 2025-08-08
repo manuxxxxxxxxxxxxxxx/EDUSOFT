@@ -3,17 +3,17 @@ session_start();
 require_once "conexiones/conexion.php";
 
 // Verificar que el usuario sea estudiante
-if (!isset($_SESSION['id']) || $_SESSION['rol'] !== 'estudiante') {
+if (!isset($_SESSION['id_estudiante']) || $_SESSION['rol'] !== 'estudiante') {
     header("Location: ../conexiones/loginAlumno.php");
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $codigo = $_POST['codigo_clase'] ?? '';
-    $estudiante_id = $_SESSION['id'];
+    $estudiante_id = $_SESSION['id_estudiante'];
 
     if (empty($codigo)) {
-        echo "<script>alert('Por favor, ingresa un código de clase.'); window.location.href='index_estudiante.php';</script>";
+        echo "<script>alert('Por favor, ingresa un código de clase.'); window.location.href='cursos.php';</script>";
         exit;
     }
 
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $resultado = $stmt->get_result();
 
     if ($resultado->num_rows === 0) {
-        echo "<script>alert('Código de clase no válido.'); window.location.href='index_estudiante.php';</script>";
+        echo "<script>alert('Código de clase no válido.'); window.location.href='cursos.php';</script>";
         exit;
     }
 
