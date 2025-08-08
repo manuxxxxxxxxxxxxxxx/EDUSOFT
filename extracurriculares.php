@@ -208,7 +208,7 @@
           <div class="card-content">
             <h2>1</h2>
             <p class="card-title">Arte</p>
-            <a href="../materias/arte.php" class="btn">Más información</a>
+            <a href="../materias/arte copy.php" class="btn">Más información</a>
           </div>
         </div>
         <div class="card bg-green">
