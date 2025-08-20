@@ -96,7 +96,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
     <header>
         <a href="../extracurriculares.php" class="logo modern-back">
             <span class="back-btn"><i class="fas fa-arrow-left"></i></span>
-            <span data-i18n="segundo" class="header-title">Segundo año B <span class="header-materia" data-i18n="arteN">Arte</span></span>
+            <span data-i18n="segundo" class="header-title">Segundo año B <span class="header-materia" data-i18n="arte">Arte</span></span>
         </a>
         <div class="icons">
             <span class="settings"><i class="fas fa-cog"></i></span>
@@ -109,7 +109,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
             <div class="banner" id="banner6">
                 <canvas id="particles-bg"></canvas>
                 <div class="abstract-shape"></div>
-                <h1 data-i18n="arteN">ARTE</h1>
+                <h1 data-i18n="arte">ARTE</h1>
             </div>
             <div class="content">
                 <div class="profesor">
@@ -190,7 +190,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                     </li>
                 <?php endwhile; ?>
             <?php else: ?>
-                <li>No has subido tareas aún.</li>
+                <li data-i18n="notareas">No has subido tareas aún.</li>
             <?php endif; ?>
         </ul>
     <?php else: ?>

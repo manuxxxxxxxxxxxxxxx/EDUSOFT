@@ -207,7 +207,7 @@
           </div>
           <div class="card-content">
             <h2>1</h2>
-            <p class="card-title" data-i18n="Biologia">Biología</p>
+            <p class="card-title" data-i18n="biologia">Biología</p>
             <a href="../materias/biologia.php" class="btn" data-i18n="mas_informacion">Más información</a>
           </div>
         </div>

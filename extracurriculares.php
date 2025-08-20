@@ -207,7 +207,7 @@
           </div>
           <div class="card-content">
             <h2>1</h2>
-            <p class="card-title">Arte</p>
+            <p class="card-title" data-i18n="arte">Arte</p>
             <a href="../materias/arte copy.php" class="btn">Más información</a>
           </div>
         </div>
@@ -217,7 +217,7 @@
           </div>
           <div class="card-content">
             <h2>2</h2>
-            <p class="card-title">Deportes</p>
+            <p class="card-title" data-i18n="deportes">Deportes</p>
             <a href="../materias/deportes copy.php" class="btn">Más información</a>
           </div>
         </div>
@@ -227,8 +227,8 @@
           </div>
           <div class="card-content">
             <h2>3</h2>
-            <p class="card-title">Inglés</p>
-            <a href="../materias/ingles.php" class="btn">Más información</a>
+            <p class="card-title" data-i18n="ingles">Inglés</p>
+            <a href="../materias/ingles copy.php" class="btn">Más información</a>
           </div>
         </div>
         <div class="card bg-blue">
@@ -237,8 +237,8 @@
           </div>
           <div class="card-content">
             <h2>4</h2>
-            <p class="card-title">Debate</p>
-            <a href="../materias/debate.php" class="btn">Más información</a>
+            <p class="card-title" data-i18n="debate">Debate</p>
+            <a href="../materias/debate copy.php" class="btn">Más información</a>
           </div>
         </div>
       </div>
