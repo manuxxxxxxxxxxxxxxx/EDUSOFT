@@ -43,6 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Crear aviso | Edusoft</title>
+    <link rel="stylesheet" href="../frontend_maestros/crear_aviso.css">
+    
 </head>
 <body>
     <h2>Crear aviso</h2>
