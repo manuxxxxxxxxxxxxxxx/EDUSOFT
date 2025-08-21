@@ -191,10 +191,10 @@ if ($id_clase) {
                         $stmtTareas->close();
                     } else {
                         $sqlTareas = "SELECT t.id, t.titulo, t.fecha_entrega, t.descripcion, c.materia, c.nombre_clase, t.id_clase
-                                      FROM tareas_profesor t
-                                      INNER JOIN clases c ON t.id_clase = c.id
-                                      WHERE c.profesor_id = ?
-                                      ORDER BY c.nombre_clase, t.fecha_entrega DESC";
+                                    FROM tareas_profesor t
+                                    INNER JOIN clases c ON t.id_clase = c.id
+                                    WHERE c.profesor_id = ?
+                                    ORDER BY c.nombre_clase, t.fecha_entrega DESC";
                         $stmtTareas = $conn->prepare($sqlTareas);
                         $stmtTareas->bind_param("i", $profesor_id);
                         $stmtTareas->execute();
@@ -350,20 +350,103 @@ if ($id_clase) {
                 </form>
             </div>
         </div>
-        <!-- AVISOS -->
+<!-- AVISOS DINÁMICOS -->
         <div id="seccion-avisos" class="seccion-panel" style="display:none;">
             <div class="section">
                 <h3>Avisos</h3>
-                <div class="avisos-timeline">
-                    <div class="aviso-card">
-                        <i class="fas fa-bullhorn icon-orange"></i>
-                        <span>Nuevo aviso en Matemáticas 2°A: "Examen el viernes".</span>
-                    </div>
-                    <div class="aviso-card">
-                        <i class="fas fa-bullhorn icon-orange"></i>
-                        <span>Reunión con padres el 25/06/2025.</span>
-                    </div>
-                </div>
+                <label for="select-aviso-clase"><b>Filtrar por clase:</b></label>
+                <select id="select-aviso-clase" name="select-aviso-clase" style="margin-bottom: 10px;">
+                    <option value="">Todas las clases</option>
+                    <?php foreach ($clases as $clase): ?>
+                        <option value="<?= $clase['id'] ?>" <?= ($id_clase == $clase['id']) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($clase['nombre_clase']) ?> – <?= htmlspecialchars($clase['materia']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <script>
+                document.getElementById('select-aviso-clase').addEventListener('change', function() {
+                    const idClase = this.value;
+                    const url = idClase ? `?id_clase=${idClase}#seccion-avisos` : `#seccion-avisos`;
+                    window.location = url;
+                });
+                </script>
+                <ul id="avisos-lista">
+                <?php
+                // Mostrar avisos según filtro
+                if ($id_clase) {
+                    $sqlAvisos = "SELECT a.id, a.titulo, a.descripcion, a.fecha_subida, c.materia 
+                                  FROM avisos a
+                                  INNER JOIN clases c ON a.id_clase = c.id
+                                  WHERE a.id_clase = ?
+                                  ORDER BY a.fecha_subida DESC";
+                    $stmtAvisos = $conn->prepare($sqlAvisos);
+                    $stmtAvisos->bind_param("i", $id_clase);
+                    $stmtAvisos->execute();
+                    $resultadoAvisos = $stmtAvisos->get_result();
+
+                    if ($resultadoAvisos->num_rows > 0):
+                        while ($aviso = $resultadoAvisos->fetch_assoc()): ?>
+                            <li>
+                                <b><?= htmlspecialchars($aviso['titulo']); ?></b>
+                                 – <?= ucfirst(htmlspecialchars($aviso['materia'])); ?> 
+                                 – <span>Fecha: <?= htmlspecialchars($aviso['fecha_subida']); ?></span><br>
+                                <small><?= htmlspecialchars($aviso['descripcion']); ?></small>
+                                <form action="../frontend_maestros/eliminar_aviso.php" method="POST" style="display:inline;">
+                                    <input type="hidden" name="id_aviso" value="<?= $aviso['id']; ?>">
+                                    <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase); ?>">
+                                    <button type="submit" class="quick-action" style="margin-left:10px;color:red;">Eliminar</button>
+                                </form>
+                            </li>
+                        <?php endwhile;
+                    else: ?>
+                        <li>No hay avisos registrados para esta clase.</li>
+                    <?php endif;
+                    $stmtAvisos->close();
+                } else {
+                    $sqlAvisos = "SELECT a.id, a.titulo, a.descripcion, a.fecha_subida, c.materia, c.nombre_clase, a.id_clase
+                                FROM avisos a
+                                INNER JOIN clases c ON a.id_clase = c.id
+                                WHERE c.profesor_id = ?
+                                ORDER BY c.nombre_clase, a.fecha_subida DESC";
+                    $stmtAvisos = $conn->prepare($sqlAvisos);
+                    $stmtAvisos->bind_param("i", $profesor_id);
+                    $stmtAvisos->execute();
+                    $resultadoAvisos = $stmtAvisos->get_result();
+
+                    $avisosPorClase = [];
+                    while ($aviso = $resultadoAvisos->fetch_assoc()) {
+                        $avisosPorClase[$aviso['id_clase']]['nombre_clase'] = $aviso['nombre_clase'];
+                        $avisosPorClase[$aviso['id_clase']]['materia'] = $aviso['materia'];
+                        $avisosPorClase[$aviso['id_clase']]['avisos'][] = $aviso;
+                    }
+
+                    if (count($avisosPorClase) > 0) {
+                        foreach ($avisosPorClase as $idClase => $datosClase) {
+                            echo "<li style='margin-top:10px;'><strong>" . htmlspecialchars($datosClase['nombre_clase']) . " – " . htmlspecialchars($datosClase['materia']) . "</strong><ul>";
+                            foreach ($datosClase['avisos'] as $aviso) {
+                                echo "<li>";
+                                echo "<b>" . htmlspecialchars($aviso['titulo']) . "</b> – Fecha: " . htmlspecialchars($aviso['fecha_subida']);
+                                echo "<br><small>" . htmlspecialchars($aviso['descripcion']) . "</small>";
+                                echo "<form action='../frontend_maestros/eliminar_tarea.php' method='POST' style='display:inline;'>";
+                                echo "<input type='hidden' name='id_aviso' value='" . $aviso['id'] . "'>";
+                                echo "<input type='hidden' name='id_clase' value='" . htmlspecialchars($idClase) . "'>";
+                                echo "<button type='submit' class='quick-action' style='margin-left:10px;color:red;'>Eliminar</button>";
+                                echo "</form>";
+                                echo "</li>";
+                            }
+                            echo "</ul></li>";
+                        }
+                    } else {
+                        echo "<li>No hay avisos registrados aún.</li>";
+                    }
+                    $stmtAvisos->close();
+                }
+                ?>
+                </ul>
+                <form action="../frontend_maestros/crear_aviso.php" method="get">
+                    <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase ?? '') ?>">
+                    <button type="submit" class="quick-action">Crear aviso</button>
+                </form>
             </div>
         </div>
         <!-- MENSAJES -->

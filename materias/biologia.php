@@ -120,24 +120,23 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                         <strong><?php echo htmlspecialchars($nombre); ?></strong>
                     </p>
                 </div>
-
-                        <div class="tareas-container">
-                            <?php if (!empty($tareas_profesor)): ?>
-                                <?php foreach ($tareas_profesor as $tarea): ?>
-                            <div class="tarea">
-                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
-                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
-                                <small>Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
-                                <?php if (!empty($tarea['ruta_archivo'])): ?>
-                                    <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
-                                <?php endif; ?>
-                            </div>
-                                <?php endforeach; ?>
-                                <?php else: ?>
-                                <p>No se han asignado tareas aún.</p>
+                    <div class="tareas-container">
+                        <?php if (!empty($tareas_profesor)): ?>
+                            <?php foreach ($tareas_profesor as $tarea): ?>
+                        <div class="tarea">
+                            <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                            <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                            <small>Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
+                            <?php if (!empty($tarea['ruta_archivo'])): ?>
+                                <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
                                 <?php endif; ?>
                         </div>
+                            <?php endforeach; ?>
+                            <?php else: ?>
+                            <p>No se han asignado tareas aún.</p>
+                            <?php endif; ?>
                     </div>
+                </div>
         </section>
 
         <section id="tareas" class="seccion" style="display: none;">

@@ -69,6 +69,19 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
         $tareas_profesor[] = $fila;
     }
 }
+
+$avisos = [];
+if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase)) {
+    $sql_avisos = "SELECT * FROM avisos WHERE id_clase = ? ORDER BY fecha_subida DESC";
+    $stmt_avisos = $conn->prepare($sql_avisos);
+    $stmt_avisos->bind_param("i", $id_clase);
+    $stmt_avisos->execute();
+    $resultado_avisos = $stmt_avisos->get_result();
+
+    while ($aviso = $resultado_avisos->fetch_assoc()) {
+        $avisos[] = $aviso;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -89,7 +102,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
         <nav>
             <button data-i18n="tablon" id="tablon-btn" class="active"><i class="fas fa-th-large"></i>Tablón</button>
             <button data-i18n="tareas"    id="tareas-btn"><i class="fas fa-tasks"></i>Tareas</button>
-             <button data-i18n="material"  id="material-btn"><i class="fas fa-folder-open"></i>Material</button> 
+            <button data-i18n="material"  id="material-btn"><i class="fas fa-folder-open"></i>Material</button> 
             <button  data-i18n="alumnos"  id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
             <button data-i18n="avisos" id="avisos-btn"><i class="fas fa-bell"></i>Avisos</button>
             
@@ -185,36 +198,25 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                     </li>
                 </ul>
             </section>
-            <section id="avisos" class="seccion" style="display: none;">
-                <h2 data-i18n="avisos">Avisos</h2>
-                <ul class="lista-avisos">
-                    <li>
-                        <i class="fas fa-bell"></i>
-                        <span>Examen de Matemáticas</span>
-                        <p>El próximo viernes se realizará el examen de matemáticas. Asegúrate de estudiar y prepararte adecuadamente.</p>
-                        <small>Fecha: 15 de abril</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-bell"></i>
-                        <span>Entrega de Tareas</span>
-                        <p>Recuerda que la tarea de álgebra debe ser entregada el próximo lunes. Asegúrate de tenerla lista y entregada a tiempo.</p>
-                        <small>Fecha: 12 de abril</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-bell"></i>
-                        <span>Feria de Ciencias</span>
-                        <p>La feria de ciencias se realizará el próximo sábado. Asegúrate de asistir y participar en los eventos y actividades programadas.</p>
-                        <small>Fecha: 17 de abril</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-bell"></i>
-                        <span>Información Importante</span>
-                        <p>Recuerda que la escuela estará cerrada el próximo martes por motivo de una reunión de padres y maestros. Asegúrate de planificar tus actividades adecuadamente.</p>
-                        <small>Fecha: 13 de abril</small>
-                    </li>
-                </ul>
-            </section>
-
+<section id="avisos" class="seccion" style="display: none;">
+    <h2 data-i18n="avisos">Avisos</h2>
+    <ul class="lista-avisos">
+        <?php
+        // Mostrar los avisos de la clase actual
+        if (!empty($avisos)) {
+            foreach ($avisos as $aviso) {
+                echo "<li>";
+                echo "<span>" . htmlspecialchars($aviso['titulo']) . "</span>";
+                echo "<p>" . htmlspecialchars($aviso['descripcion']) . "</p>";
+                echo "<small>Fecha: " . htmlspecialchars($aviso['fecha_subida']) . "</small>";
+                echo "</li>";
+            }
+        } else {
+            echo "<li>No hay avisos registrados para esta clase.</li>";
+        }
+        ?>
+    </ul>
+</section>
             <section id="material" class="seccion" style="display: none;">
     <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
 
