@@ -16,7 +16,7 @@ if (isset($_SESSION['id_estudiante'])) {
     $materia = 'biologia'; // Puedes cambiar esto dinámicamente si lo deseas
 
     // Obtener tareas que subió este estudiante en esta materia
-    $sql = "SELECT id, nombre_archivo, ruta_archivo, fecha_subida FROM tareas WHERE id_estudiante = ? AND materia = ?";
+    $sql = "SELECT nombre_archivo, ruta_archivo, fecha_subida FROM tareas WHERE id_estudiante = ? AND materia = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("is", $id_estudiante, $materia);
     $stmt->execute();
@@ -24,6 +24,7 @@ if (isset($_SESSION['id_estudiante'])) {
 }
 
 // Lógica para profesores
+
 if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
     $profesor_id = $_SESSION['id'];
 
@@ -53,8 +54,11 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
 }
 
 // Obtener tareas subidas por el profesor para esta clase
-$tareas_profesor = [];
+$tareas_profesor = []; // para almacenar las tareas del profesor
+
 if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase)) {
+    // Ya validaste arriba que la clase pertenece al profesor
+
     $sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
     $stmt_tareas = $conn->prepare($sql_tareas);
     $stmt_tareas->bind_param("i", $id_clase);
@@ -63,6 +67,19 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
 
     while ($fila = $resultado_tareas_profesor->fetch_assoc()) {
         $tareas_profesor[] = $fila;
+    }
+}
+
+$avisos = [];
+if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase)) {
+    $sql_avisos = "SELECT * FROM avisos WHERE id_clase = ? ORDER BY fecha_subida DESC";
+    $stmt_avisos = $conn->prepare($sql_avisos);
+    $stmt_avisos->bind_param("i", $id_clase);
+    $stmt_avisos->execute();
+    $resultado_avisos = $stmt_avisos->get_result();
+
+    while ($aviso = $resultado_avisos->fetch_assoc()) {
+        $avisos[] = $aviso;
     }
 }
 ?>
@@ -120,49 +137,46 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                     </p>
                 </div>
 
-                <div class="tareas-container">
-                    <?php if (!empty($tareas_profesor)): ?>
-                        <?php foreach ($tareas_profesor as $tarea): ?>
+                        <div class="tareas-container">
+                            <?php if (!empty($tareas_profesor)): ?>
+                                <?php foreach ($tareas_profesor as $tarea): ?>
                             <div class="tarea">
-                                <h4 data-i18n="titulo"><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
-                                <p data-i18n="descripcion"><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
-                                <small>
-                                    <span data-i18n="fechal">Fecha límite</span>: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?>
-                                    | <span data-i18n="puntos">Puntos</span>: <?php echo $tarea['puntos']; ?>
-                                </small>
+                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                                <small>Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
                                 <?php if (!empty($tarea['ruta_archivo'])): ?>
-                                    <br /><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank" data-i18n="archivo">📎 Ver archivo adjunto</a>
+                                    <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
                                 <?php endif; ?>
                             </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p data-i18n="notareas">No se han asignado tareas aún.</p>
-                    <?php endif; ?>
-                </div>
-            </div>
+                                <?php endforeach; ?>
+                                <?php else: ?>
+                                <p>No se han asignado tareas aún.</p>
+                                <?php endif; ?>
+                        </div>
+                    </div>
         </section>
 
         <section id="tareas" class="seccion" style="display: none;">
     <h2 data-i18n="tareas">Tareas</h2>
 
     <!-- Mostrar tareas del profesor -->
-    <div class="tareas-container">
-        <?php if (isset($resultado_tareas_profesor) && $resultado_tareas_profesor->num_rows > 0): ?>
-            <?php while ($tarea = $resultado_tareas_profesor->fetch_assoc()): ?>
-                <div class="tarea">
-                    <i class="fas fa-book"></i>
-                    <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
-                    <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
-                    <small>Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
-                    <?php if (!empty($tarea['ruta_archivo'])): ?>
-                        <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
+                <div class="tareas-container">
+                    <?php if (!empty($tareas_profesor)): ?>
+                        <?php foreach ($tareas_profesor as $tarea): ?>
+                            <div class="tarea">
+                                <i class="fas fa-book"></i>
+                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                                <small>Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
+                                <?php if (!empty($tarea['ruta_archivo'])): ?>
+                                    <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
+                                <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>No se han asignado tareas aún.</p>
                     <?php endif; ?>
                 </div>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <p data-i18n="notareas">No se han asignado tareas aún.</p>
-        <?php endif; ?>
-    </div>
 
     <!-- Formulario para estudiantes subir tarea -->
     <?php if (isset($_SESSION['id_estudiante'])): ?>
@@ -206,19 +220,32 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
             </ul>
         </section>
 
-        <section id="avisos" class="seccion" style="display: none;">
-            <h2 data-i18n="avisos">Avisos</h2>
-            <ul class="lista-avisos">
-                <!-- Lista estática o dinámica de avisos -->
-            </ul>
-        </section>
+<section id="avisos" class="seccion" style="display: none;">
+    <h2 data-i18n="avisos">Avisos</h2>
+    <ul class="lista-avisos">
+        <?php
+        // Mostrar los avisos de la clase actual
+        if (!empty($avisos)) {
+            foreach ($avisos as $aviso) {
+                echo "<li>";
+                echo "<span>" . htmlspecialchars($aviso['titulo']) . "</span>";
+                echo "<p>" . htmlspecialchars($aviso['descripcion']) . "</p>";
+                echo "<small>Fecha: " . htmlspecialchars($aviso['fecha_subida']) . "</small>";
+                echo "</li>";
+            }
+        } else {
+            echo "<li>No hay avisos registrados para esta clase.</li>";
+        }
+        ?>
+    </ul>
+</section>
 
         <section id="material" class="seccion" style="display: none;">
             <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
             <ul class="lista-material">
                 <?php
                 if (!isset($id_clase)) {
-                    echo "<li>⚠️ Clase no especificada.</li>";
+                    echo "<li>Clase no especificada.</li>";
                 } else {
                     $sql = "SELECT titulo, descripcion, archivo, ruta_archivo, fecha_subida 
                             FROM materiales_estudio 

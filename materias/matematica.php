@@ -149,8 +149,9 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                         </div>
                     </div>
             </section>
-            <section id="tareas" class="seccion" style="display: none;">
-            <h2>Tareas</h2>
+        <section id="tareas" class="seccion" style="display: none;">
+            <h2 data-i18n="tareas">Tareas</h2>
+            <!-- Mostrar tareas del profesor -->
                 <div class="tareas-container">
                     <?php if (!empty($tareas_profesor)): ?>
                         <?php foreach ($tareas_profesor as $tarea): ?>
@@ -168,7 +169,40 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                         <p>No se han asignado tareas aún.</p>
                     <?php endif; ?>
                 </div>
-            </section>
+
+    <!-- Formulario para estudiantes subir tarea -->
+    <?php if (isset($_SESSION['id_estudiante'])): ?>
+        <h2 data-i18n="sube">Sube tu tarea de Arte</h2>
+        <form id="formSubirTarea" action="subir_tarea_ajax.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="materia" value="biologia">
+            <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>">
+            <label for="archivo" data-i18n="archivo2">Archivo (PDF, DOCX, JPG...):</label>
+            <input type="file" name="archivo" id="archivo" required><br><br>
+            <button type="submit" data-i18n="subir">Subir tarea</button>
+        </form>
+
+        <div id="mensajeSubida"></div>
+
+        <h3 data-i18n="subidas">Tareas subidas</h3>
+        <ul id="listaTareas" style="list-style-type: none; padding-left: 0;">
+            <?php if (isset($resultado_tareas) && $resultado_tareas->num_rows > 0): ?>
+                <?php while ($fila = $resultado_tareas->fetch_assoc()): ?>
+                    <li id="tarea_<?php echo $fila['id']; ?>">
+                        <a href="<?php echo htmlspecialchars($fila['ruta_archivo']); ?>" target="_blank">
+                            <?php echo htmlspecialchars($fila['nombre_archivo']); ?>
+                        </a>
+                        <small>(<?php echo htmlspecialchars($fila['fecha_subida']); ?>)</small>
+                        <button onclick="eliminarTarea(<?php echo $fila['id']; ?>)">❌ Eliminar</button>
+                    </li>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <li>No has subido tareas aún.</li>
+            <?php endif; ?>
+        </ul>
+    <?php else: ?>
+        <p>No tienes permisos para subir tareas.</p>
+    <?php endif; ?>
+        </section>
             <section id="alumnos" class="seccion" style="display: none;">
                 <h2 data-i18n="lista">Lista de Alumnos</h2>
                 <ul class="lista-alumnos">
