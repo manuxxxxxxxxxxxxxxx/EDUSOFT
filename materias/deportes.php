@@ -279,6 +279,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
     <?php else: ?>
         <p>No tienes permisos para subir tareas.</p>
     <?php endif; ?>
+            </section>
             <section id="material" class="seccion" style="display: none;">
                 <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
                 <?php
@@ -319,7 +320,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                 ?>
             </section>
             <section id="avisos" class="seccion" style="display: none;">
-                <h2>Avisos</h2>
+                <h2 data-i18n="avisos">Avisos</h2>
                 <ul class="lista-avisos">
                     <?php
                     if (!empty($avisos)) {
@@ -337,19 +338,31 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                 </ul>
             </section>
             <section id="alumnos" class="seccion" style="display: none;">
-                <h2>Lista de Alumnos</h2>
+                <h2 data-i18n="lista">Lista de Alumnos</h2>
                 <ul class="lista-alumnos">
                     <li>
                         <i class="fas fa-user"></i>
-                        <span>Miguel Flores</span>
-                        <p>Número de estudiante: 013</p>
-                        <small>Correo electrónico: miguel.flores@gmail.com</small>
+                        <span>Juan Pérez</span>
+                        <p>Número de estudiante: 001</p>
+                        <small>Correo electrónico: juan.perez@gmail.com</small>
                     </li>
                     <li>
                         <i class="fas fa-user"></i>
-                        <span>Camila Díaz</span>
-                        <p>Número de estudiante: 014</p>
-                        <small>Correo electrónico: camila.diaz@gmail.com</small>
+                        <span>María López</span>
+                        <p>Número de estudiante: 002</p>
+                        <small>Correo electrónico: maria.lopez@gmail.com</small>
+                    </li>
+                    <li>
+                        <i class="fas fa-user"></i>
+                        <span>Carlos Gómez</span>
+                        <p>Número de estudiante: 003</p>
+                        <small>Correo electrónico: carlos.gomez@gmail.com</small>
+                    </li>
+                    <li>
+                        <i class="fas fa-user"></i>
+                        <span>Ana Ramírez</span>
+                        <p>Número de estudiante: 004</p>
+                        <small>Correo electrónico: ana.ramirez@gmail.com</small>
                     </li>
                 </ul>
             </section>
@@ -373,6 +386,6 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
             </div>
         </main>
     </div>
-    <script src="../materias/js/scriptDeportes.js"></script>
+    <script src="../materias/js/scriptMatematica.js"></script>
 </body>
 </html>

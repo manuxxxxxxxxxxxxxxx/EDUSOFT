@@ -319,24 +319,24 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
             }
             ?>
         </section>
-        <section id="avisos" class="seccion" style="display: none;">
-            <h2>Avisos</h2>
-            <ul class="lista-avisos">
-                <?php
-                if (!empty($avisos)) {
-                    foreach ($avisos as $aviso) {
-                        echo "<li>";
-                        echo "<span>" . htmlspecialchars($aviso['titulo']) . "</span>";
-                        echo "<p>" . htmlspecialchars($aviso['descripcion']) . "</p>";
-                        echo "<small>Fecha: " . htmlspecialchars($aviso['fecha_subida']) . "</small>";
-                        echo "</li>";
+       <section id="avisos" class="seccion" style="display: none;">
+                <h2 data-i18n="avisos">Avisos</h2>
+                <ul class="lista-avisos">
+                    <?php
+                    if (!empty($avisos)) {
+                        foreach ($avisos as $aviso) {
+                            echo "<li>";
+                            echo "<span>" . htmlspecialchars($aviso['titulo']) . "</span>";
+                            echo "<p>" . htmlspecialchars($aviso['descripcion']) . "</p>";
+                            echo "<small>Fecha: " . htmlspecialchars($aviso['fecha_subida']) . "</small>";
+                            echo "</li>";
+                        }
+                    } else {
+                        echo "<li>No hay avisos registrados para esta clase.</li>";
                     }
-                } else {
-                    echo "<li>No hay avisos registrados para esta clase.</li>";
-                }
-                ?>
-            </ul>
-        </section>
+                    ?>
+                </ul>
+            </section>
         <section id="alumnos" class="seccion" style="display: none;">
             <h2>Lista de Alumnos</h2>
             <ul class="lista-alumnos">
