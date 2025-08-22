@@ -42,6 +42,69 @@ if ($id_clase) {
     <link rel="stylesheet" href="/frontend_maestros/stylemaestro.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script defer src="/frontend_maestros/script.js"></script>
+    <style>
+        .btn-eliminar {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 3px 12px;
+            font-size: 0.92em;
+            cursor: pointer;
+            margin-left: 8px;
+            transition: background 0.2s;
+            font-family: inherit;
+            vertical-align: middle;
+        }
+        .btn-eliminar:hover {
+            background: #c0392b;
+        }
+        /* Cursos estilo link pero con el mismo diseño */
+        .cursos-lista li {
+            background: #f5f5f5;
+            border-radius: 5px;
+            margin: 8px 0;
+            padding: 10px 12px;
+            list-style: none;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            font-weight: 500;
+            color: #333;
+        }
+        .cursos-lista .curso-link {
+            text-decoration: none;
+            color: #333;
+            display: block;
+            padding: 0;
+            margin: 0;
+            font-size: 1.08em;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        .cursos-lista .curso-link:hover {
+            color: #2980b9;
+        }
+        .cursos-lista .curso-materia {
+            font-size: 0.98em;
+            color: #666;
+        }
+        .cursos-lista .curso-codigo {
+            font-size: 0.93em;
+            color: #888;
+        }
+    </style>
+    <script>
+    // Confirmación para eliminar
+    function confirmEliminar(tipo) {
+        if (tipo === 'tarea') {
+            return confirm('¿Estás seguro de que deseas eliminar esta tarea?');
+        } else if (tipo === 'material') {
+            return confirm('¿Estás seguro de que deseas eliminar este material?');
+        } else if (tipo === 'aviso') {
+            return confirm('¿Estás seguro de que deseas eliminar este aviso?');
+        }
+        return true;
+    }
+    </script>
 </head>
 <body>
     <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Abrir menú">
@@ -103,14 +166,15 @@ if ($id_clase) {
             <div class="section">
                 <h3>Mis cursos</h3>
                 <input type="button" value="Crear curso" class="quick-action" onclick="window.location.href='../frontend_maestros/crear_curso.php'">
-                <ul id="cursos-lista">
+                <ul class="cursos-lista">
                     <?php if (count($clases) > 0): ?>
                         <?php foreach ($clases as $clase): ?>
                             <li>
-                                <a href="../materias/<?php echo $clase['materia']; ?>.php?id_clase=<?php echo $clase['id']; ?>">
-                                <?php echo htmlspecialchars($clase['nombre_clase']); ?> – <?php echo ucfirst($clase['materia']); ?>
-                                </a><br>
-                                <small><strong>Código de clase:</strong> <?php echo htmlspecialchars($clase['codigo_clase']); ?></small>
+                                <a class="curso-link" href="../materias/<?php echo $clase['materia']; ?>.php?id_clase=<?php echo $clase['id']; ?>">
+                                    <?= htmlspecialchars($clase['nombre_clase']); ?>
+                                </a>
+                                <span class="curso-materia"> – <?= ucfirst($clase['materia']); ?></span><br>
+                                <span class="curso-codigo"><strong>Código de clase:</strong> <?= htmlspecialchars($clase['codigo_clase']); ?></span>
                             </li>
                         <?php endforeach; ?>
                     <?php else: ?>
@@ -177,11 +241,11 @@ if ($id_clase) {
                                     – <?= ucfirst(htmlspecialchars($tarea['materia'])); ?> 
                                     – Fecha entrega: <?= htmlspecialchars($tarea['fecha_entrega']); ?>
                                     <br><small><?= htmlspecialchars($tarea['descripcion']); ?></small>
-                                    <form action="../frontend_maestros/eliminar_tarea.php" method="POST" style="display:inline;">
+                                    <form action="../frontend_maestros/eliminar_tarea.php" method="POST" style="display:inline;" onsubmit="return confirmEliminar('tarea');">
                                         <input type="hidden" name="accion" value="eliminar_tarea">
                                         <input type="hidden" name="id_tarea" value="<?= $tarea['id']; ?>">
                                         <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase); ?>">
-                                        <button type="submit" class="quick-action" style="margin-left:10px;color:red;">Eliminar</button>
+                                        <button type="submit" class="btn-eliminar">Eliminar</button>
                                     </form>
                                 </li>
                             <?php endwhile;
@@ -214,11 +278,11 @@ if ($id_clase) {
                                     echo "<li>";
                                     echo "<b>" . htmlspecialchars($tarea['titulo']) . "</b> – Fecha entrega: " . htmlspecialchars($tarea['fecha_entrega']);
                                     echo "<br><small>" . htmlspecialchars($tarea['descripcion']) . "</small>";
-                                    echo "<form action='../frontend_maestros/eliminar_tarea.php' method='POST' style='display:inline;'>";
+                                    echo "<form action='../frontend_maestros/eliminar_tarea.php' method='POST' style='display:inline;' onsubmit=\"return confirmEliminar('tarea');\">";
                                     echo "<input type='hidden' name='accion' value='eliminar_tarea'>";
                                     echo "<input type='hidden' name='id_tarea' value='" . $tarea['id'] . "'>";
                                     echo "<input type='hidden' name='id_clase' value='" . htmlspecialchars($idClase) . "'>";
-                                    echo "<button type='submit' class='quick-action' style='margin-left:10px;color:red;'>Eliminar</button>";
+                                    echo "<button type='submit' class='btn-eliminar'>Eliminar</button>";
                                     echo "</form>";
                                     echo "</li>";
                                 }
@@ -281,11 +345,11 @@ if ($id_clase) {
                                     echo "<br><small>$descripcion</small>";
                                 }
                                 echo " — <a href='$ruta' target='_blank'>$archivo</a> (Subido el $fecha) ";
-                                echo "<form action='../frontend_maestros/eliminar_tarea.php' method='POST' style='display:inline-block; margin-left:10px;'>";
+                                echo "<form action='../frontend_maestros/eliminar_tarea.php' method='POST' style='display:inline-block; margin-left:10px;' onsubmit=\"return confirmEliminar('material');\">";
                                 echo "<input type='hidden' name='accion' value='eliminar_material'>";
                                 echo "<input type='hidden' name='id_material' value='$material_id'>";
                                 echo "<input type='hidden' name='id_clase' value='" . htmlspecialchars($id_clase) . "'>";
-                                echo "<button type='submit' class='btn btn-danger' onclick='return confirm(\"¿Seguro que deseas eliminar este material?\");'>Eliminar</button>";
+                                echo "<button type='submit' class='btn-eliminar'>Eliminar</button>";
                                 echo "</form>";
                                 echo "</li>";
                             }
@@ -327,11 +391,11 @@ if ($id_clase) {
                                         echo "<br><small>$descripcion</small>";
                                     }
                                     echo " — <a href='$ruta' target='_blank'>$archivo</a> (Subido el $fecha) ";
-                                    echo "<form action='../frontend_maestros/eliminar_tarea.php' method='POST' style='display:inline-block; margin-left:10px;'>";
+                                    echo "<form action='../frontend_maestros/eliminar_tarea.php' method='POST' style='display:inline-block; margin-left:10px;' onsubmit=\"return confirmEliminar('material');\">";
                                     echo "<input type='hidden' name='accion' value='eliminar_material'>";
                                     echo "<input type='hidden' name='id_material' value='$material_id'>";
                                     echo "<input type='hidden' name='id_clase' value='" . htmlspecialchars($idClase) . "'>";
-                                    echo "<button type='submit' class='btn btn-danger' onclick='return confirm(\"¿Seguro que deseas eliminar este material?\");'>Eliminar</button>";
+                                    echo "<button type='submit' class='btn-eliminar'>Eliminar</button>";
                                     echo "</form>";
                                     echo "</li>";
                                 }
@@ -391,10 +455,11 @@ if ($id_clase) {
                                  – <?= ucfirst(htmlspecialchars($aviso['materia'])); ?> 
                                  – <span>Fecha: <?= htmlspecialchars($aviso['fecha_subida']); ?></span><br>
                                 <small><?= htmlspecialchars($aviso['descripcion']); ?></small>
-                                <form action="../frontend_maestros/eliminar_aviso.php" method="POST" style="display:inline;">
+                                <form action="../frontend_maestros/eliminar_tarea.php" method="POST" style="display:inline;" onsubmit="return confirmEliminar('aviso');">
+                                    <input type="hidden" name="accion" value="eliminar_aviso">
                                     <input type="hidden" name="id_aviso" value="<?= $aviso['id']; ?>">
                                     <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase); ?>">
-                                    <button type="submit" class="quick-action" style="margin-left:10px;color:red;">Eliminar</button>
+                                    <button type="submit" class="btn-eliminar">Eliminar</button>
                                 </form>
                             </li>
                         <?php endwhile;
@@ -427,10 +492,11 @@ if ($id_clase) {
                                 echo "<li>";
                                 echo "<b>" . htmlspecialchars($aviso['titulo']) . "</b> – Fecha: " . htmlspecialchars($aviso['fecha_subida']);
                                 echo "<br><small>" . htmlspecialchars($aviso['descripcion']) . "</small>";
-                                echo "<form action='../frontend_maestros/eliminar_tarea.php' method='POST' style='display:inline;'>";
+                                echo "<form action='../frontend_maestros/eliminar_tarea.php' method='POST' style='display:inline;' onsubmit=\"return confirmEliminar('aviso');\">";
+                                echo "<input type='hidden' name='accion' value='eliminar_aviso'>";
                                 echo "<input type='hidden' name='id_aviso' value='" . $aviso['id'] . "'>";
                                 echo "<input type='hidden' name='id_clase' value='" . htmlspecialchars($idClase) . "'>";
-                                echo "<button type='submit' class='quick-action' style='margin-left:10px;color:red;'>Eliminar</button>";
+                                echo "<button type='submit' class='btn-eliminar'>Eliminar</button>";
                                 echo "</form>";
                                 echo "</li>";
                             }

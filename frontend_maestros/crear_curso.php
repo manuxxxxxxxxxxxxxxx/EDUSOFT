@@ -76,6 +76,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <option value="biologia" data-i18n="crear_clase_option_biologia">Biología</option>
                             <option value="sociales" data-i18n="crear_clase_option_sociales">Sociales</option>
                             <option value="lenguaje" data-i18n="crear_clase_option_lenguaje">Lenguaje</option>
+                            <option value="ciencia" data-i18n="crear_clase_option_lenguaje">Ciencia</option>                            <option value="lenguaje" data-i18n="crear_clase_option_lenguaje">Lenguaje</option>
+                            <option value="quimica" data-i18n="crear_clase_option_lenguaje">Quimica</option>
+                            <option value="ingles" data-i18n="crear_clase_option_lenguaje">Ingles</option>                            <option value="ingles" data-i18n="crear_clase_option_lenguaje">Ingles</option>
+                            <option value="deporte" data-i18n="crear_clase_option_lenguaje">Deporte</option>
+                            <option value="debate" data-i18n="crear_clase_option_lenguaje">Debate</option>
+
                         </select>
                         <span class="select-icon"><i class="fa-solid fa-book-open"></i></span>
                     </div>
