@@ -2,13 +2,32 @@
 session_start();
 require_once "../conexiones/conexion.php";
 
-// Valor por defecto para evitar error si no se define $nombre
-$nombre = "Nombre no disponible";
-
-// Verificar si el usuario está logueado como profesor o como estudiante
+// Verificar si el usuario está logueado como profesor o estudiante
 if (!isset($_SESSION['id']) && !isset($_SESSION['id_estudiante'])) {
     die("⚠️ Debes iniciar sesión como profesor o estudiante para acceder a esta materia.");
 }
+
+// Verifica que venga el id_clase por GET para ambos roles
+if (!isset($_GET['id_clase'])) {
+    die("⚠️ Clase no especificada.");
+}
+$id_clase = intval($_GET['id_clase']);
+
+// Obtener SIEMPRE el nombre del profesor y nombre de la clase
+$sql_prof = "SELECT c.nombre_clase, p.nombre AS nombre_profesor 
+             FROM clases c 
+             JOIN profesores p ON c.profesor_id = p.id 
+             WHERE c.id = ?";
+$stmt_prof = $conn->prepare($sql_prof);
+$stmt_prof->bind_param("i", $id_clase);
+$stmt_prof->execute();
+$result_prof = $stmt_prof->get_result();
+if ($result_prof->num_rows === 0) {
+    die("Clase no encontrada.");
+}
+$clase_info = $result_prof->fetch_assoc();
+$nombre_clase = $clase_info['nombre_clase'];
+$nombre_profesor = $clase_info['nombre_profesor'];
 
 // Lógica para estudiantes
 if (isset($_SESSION['id_estudiante'])) {
@@ -27,17 +46,6 @@ if (isset($_SESSION['id_estudiante'])) {
 if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
     $profesor_id = $_SESSION['id'];
 
-    if (!isset($_GET['id_clase'])) {
-        die("Clase no especificada.");
-    }
-
-    $id_clase = intval($_GET['id_clase']);
-
-    // Obtener nombre si está definido en sesión
-    if (isset($_SESSION['nombre'])) {
-        $nombre = $_SESSION['nombre'];
-    }
-
     // Verificar que la clase pertenezca al profesor
     $sql = "SELECT * FROM clases WHERE id = ? AND profesor_id = ?";
     $stmt = $conn->prepare($sql);
@@ -49,19 +57,36 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
         die("No tienes acceso a esta clase.");
     }
 
-    $clase = $result_clase->fetch_assoc();
-
-    // Obtener tareas para esta clase y guardarlas en array $tareas_profesor
+    // Obtener tareas del profesor para esta clase
     $sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
     $stmt_tareas = $conn->prepare($sql_tareas);
     $stmt_tareas->bind_param("i", $id_clase);
     $stmt_tareas->execute();
-    $result_tareas = $stmt_tareas->get_result();
-
     $tareas_profesor = [];
+    $result_tareas = $stmt_tareas->get_result();
     while ($fila = $result_tareas->fetch_assoc()) {
         $tareas_profesor[] = $fila;
     }
+
+    // Obtener materiales de estudio para esta clase
+    $sql_materiales = "SELECT titulo, descripcion, archivo, ruta_archivo, fecha_subida 
+                    FROM materiales_estudio 
+                    WHERE id_clase = ? 
+                    ORDER BY fecha_subida DESC";
+    $stmt_materiales = $conn->prepare($sql_materiales);
+    $stmt_materiales->bind_param("i", $id_clase);
+    $stmt_materiales->execute();
+    $resultado_materiales = $stmt_materiales->get_result();
+
+    // Obtener avisos para esta clase
+    $sql_avisos = "SELECT titulo, descripcion, fecha_subida 
+                FROM avisos 
+                WHERE id_clase = ? 
+                ORDER BY fecha_subida DESC";
+    $stmt_avisos = $conn->prepare($sql_avisos);
+    $stmt_avisos->bind_param("i", $id_clase);
+    $stmt_avisos->execute();
+    $resultado_avisos = $stmt_avisos->get_result();
 }
 ?>
 
@@ -111,7 +136,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
                 <div class="content">
                     <div class="profesor">
                         <div class="avatar-modern"></div>
-                        <p data-i18n="profesor">Profesor<br><strong><?php echo htmlspecialchars($nombre); ?></strong></p>
+                        <p data-i18n="profesor">Profesor<br><strong><?php echo htmlspecialchars($nombre_profesor); ?></strong></p>
                     </div>
                     <div class="tareas-container">
                         <?php if (!empty($tareas_profesor)): ?>
