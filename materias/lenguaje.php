@@ -43,6 +43,10 @@ if (isset($_SESSION['id_estudiante'])) {
 }
 
 // Lógica para profesores
+$tareas_profesor = [];
+$materiales_clase = [];
+$avisos = [];
+
 if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
     $profesor_id = $_SESSION['id'];
 
@@ -57,55 +61,17 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
         die("No tienes acceso a esta clase.");
     }
 
-<<<<<<< HEAD
     // Obtener tareas del profesor para esta clase
-=======
-    $clase = $result_clase->fetch_assoc();
-}
-
-// Obtener tareas subidas por el profesor para esta clase
-$tareas_profesor = [];
-if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase)) {
->>>>>>> 50a62bf1d69eb14b72575af67129ecb2d48ce7e8
     $sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
     $stmt_tareas = $conn->prepare($sql_tareas);
     $stmt_tareas->bind_param("i", $id_clase);
     $stmt_tareas->execute();
-<<<<<<< HEAD
-    $tareas_profesor = [];
-    $result_tareas = $stmt_tareas->get_result();
-    while ($fila = $result_tareas->fetch_assoc()) {
-=======
     $resultado_tareas_profesor = $stmt_tareas->get_result();
     while ($fila = $resultado_tareas_profesor->fetch_assoc()) {
->>>>>>> 50a62bf1d69eb14b72575af67129ecb2d48ce7e8
         $tareas_profesor[] = $fila;
     }
 
     // Obtener materiales de estudio para esta clase
-    $sql_materiales = "SELECT titulo, descripcion, archivo, ruta_archivo, fecha_subida 
-                    FROM materiales_estudio 
-                    WHERE id_clase = ? 
-                    ORDER BY fecha_subida DESC";
-    $stmt_materiales = $conn->prepare($sql_materiales);
-    $stmt_materiales->bind_param("i", $id_clase);
-    $stmt_materiales->execute();
-    $resultado_materiales = $stmt_materiales->get_result();
-
-    // Obtener avisos para esta clase
-    $sql_avisos = "SELECT titulo, descripcion, fecha_subida 
-                FROM avisos 
-                WHERE id_clase = ? 
-                ORDER BY fecha_subida DESC";
-    $stmt_avisos = $conn->prepare($sql_avisos);
-    $stmt_avisos->bind_param("i", $id_clase);
-    $stmt_avisos->execute();
-    $resultado_avisos = $stmt_avisos->get_result();
-}
-
-// Obtener materiales subidos por el profesor para esta clase
-$materiales_clase = [];
-if (isset($id_clase)) {
     $sql_materiales = "SELECT * FROM materiales_estudio WHERE id_clase = ? ORDER BY fecha_subida DESC";
     $stmt_materiales = $conn->prepare($sql_materiales);
     $stmt_materiales->bind_param("i", $id_clase);
@@ -114,11 +80,8 @@ if (isset($id_clase)) {
     while ($material = $resultado_materiales->fetch_assoc()) {
         $materiales_clase[] = $material;
     }
-}
 
-// Obtener avisos de la clase
-$avisos = [];
-if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase)) {
+    // Obtener avisos para esta clase
     $sql_avisos = "SELECT * FROM avisos WHERE id_clase = ? ORDER BY fecha_subida DESC";
     $stmt_avisos = $conn->prepare($sql_avisos);
     $stmt_avisos->bind_param("i", $id_clase);
@@ -138,75 +101,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../materias/css/styleLenguaje.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <style>
-        .tablon-secciones {
-            display: flex;
-            gap: 28px;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-        .tablon-section {
-            flex: 1 1 320px;
-            min-width: 320px;
-            max-width: 380px;
-            background: #f9f9fb;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(44,64,187,.09);
-            padding: 14px 18px 6px 18px;
-            margin-bottom: 10px;
-        }
-        .tablon-section h3 {
-            font-size: 1.2em;
-            font-weight: bold;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 9px;
-        }
-        .tablon-card {
-            background: #f5f5f5;
-            border-radius: 5px;
-            margin: 12px 0;
-            padding: 14px 14px 10px 14px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-            font-weight: 500;
-            color: #333;
-            cursor: pointer;
-            transition: background 0.18s;
-            display: block;
-            text-decoration: none;
-            border-left: 5px solid #e4eaff;
-            min-height: 80px;
-        }
-        .tablon-card:hover {
-            background: #e4eaff;
-        }
-        .tablon-titulo {
-            font-size: 1.07em;
-            font-weight: bold;
-        }
-        .tablon-desc {
-            font-size: 0.97em;
-            color: #444;
-            margin: 4px 0 0 0;
-        }
-        .tablon-info {
-            font-size: 0.93em;
-            color: #888;
-            margin-top: 5px;
-            font-weight: normal;
-        }
-        .sidebar nav button.active {
-            background: #e4eaff;
-            color: #2d3483;
-            font-weight: bold;
-            box-shadow: 0 2px 8px rgba(44,64,187,.12);
-        }
-        @media (max-width: 1100px) {
-            .tablon-secciones { flex-direction: column; gap: 10px;}
-            .tablon-section { max-width: none; min-width: 0;}
-        }
-    </style>
+ 
     <script>
     function showSection(id) {
         document.querySelectorAll("main > section").forEach(function(section) {
@@ -364,7 +259,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
     <?php if (isset($_SESSION['id_estudiante'])): ?>
         <h2 data-i18n="sube">Sube tu tarea </h2>
         <form id="formSubirTarea" action="subir_tarea_ajax.php" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="materia" value="biologia">
+            <input type="hidden" name="materia" value="lenguaje">
             <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>">
             <label for="archivo" data-i18n="archivo2">Archivo (PDF, DOCX, JPG...):</label>
             <input type="file" name="archivo" id="archivo" required><br><br>
