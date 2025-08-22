@@ -134,16 +134,38 @@
         <h1 data-i18n="cursos">Nuestros cursos</h1>
       </div>
 
-      <!-- NUEVO: Contenedor superior -->
-      <div class="container-top">
-        <!-- Caja para unirse a una clase -->
-        <div class="join-class-box">
-          <h3>Unirse a una clase</h3>
-          <form method="POST" action="unirse_clase.php">
-            <input type="text" name="codigo_clase" placeholder="Código de la clase" required>
-            <button type="submit">Unirse</button>
-          </form>
-        </div>
+<div class="container-top">
+  <div class="quick-access-cards-row">
+    <!-- Card: Únete a una clase -->
+    <div class="qa-card full-card">
+      <i class="fa-solid fa-chalkboard-user"></i>
+      <h4>Únete a una clase</h4>
+      <form method="POST" action="unirse_clase.php" class="card-form">
+        <input type="text" name="codigo_clase" placeholder="Código de la clase" required>
+        <button type="submit" class="qa-btn qa-btn-long"><i class="fa-solid fa-sign-in-alt"></i> Unirse</button>
+      </form>
+      <p class="card-hint">¿No tienes código? Pide a tu profesor que te lo proporcione.</p>
+    </div>
+    <!-- Card: Calendario -->
+    <div class="qa-card">
+      <i class="fa-solid fa-calendar-alt"></i>
+      <h4>Calendario</h4>
+      <p>Consulta tus eventos y fechas importantes.</p>
+      <a href="../calendario/calendario.php" class="qa-btn">Ir</a>
+    </div>
+    <!-- Card: Avisos -->
+    <div class="qa-card">
+      <i class="fa-solid fa-bell"></i>
+      <h4>Avisos</h4>
+      <p>Revisa las últimas novedades y mensajes de tus profesores.</p>
+      <a href="../avisos/avisos.php" class="qa-btn">Ir</a>
+    </div>
+  </div>
+  <div class="motivational-phrase">
+    <span>¡Aprender juntos es mejor! Descubre nuevas clases cada día.</span>
+  </div>
+
+</div>
 
         <!-- Mensaje si no hay clases -->
         <?php
@@ -201,46 +223,7 @@
         <?php endforeach; ?>
 
         <!-- Cards fijas -->
-        <div class="card bg-blue">
-          <div class="card-image-container">
-            <img src="../img/biologia.jpg" class="card-img" alt="Biología">
-          </div>
-          <div class="card-content">
-            <h2>1</h2>
-            <p class="card-title" data-i18n="biologia">Biología</p>
-            <a href="../materias/biologia.php" class="btn" data-i18n="mas_informacion">Más información</a>
-          </div>
-        </div>
-        <div class="card bg-green">
-          <div class="card-image-container">
-            <img src="../img/lenguaje_cursos.jpg" class="card-img" alt="Lenguaje">
-          </div>
-          <div class="card-content">
-            <h2>2</h2>
-            <p class="card-title" data-i18n="lenguaje">Lenguaje</p>
-            <a href="../materias/lenguaje.php" class="btn" data-i18n="mas_informacion">Más información</a>
-          </div>
-        </div>
-        <div class="card bg-yellow">
-          <div class="card-image-container">
-            <img src="../img/ciencias_cursos.png" class="card-img" alt="Ciencia">
-          </div>
-          <div class="card-content">
-            <h2>3</h2>
-            <p class="card-title" data-i18n="ciencias">Ciencia</p>
-            <a href="../materias/ciencias.php" class="btn" data-i18n="ms_informacion">Más información</a>
-          </div>
-        </div>
-        <div class="card bg-blue">
-          <div class="card-image-container">
-            <img src="../img/mate_cursos.webp" class="card-img" alt="Matemática">
-          </div>
-          <div class="card-content">
-            <h2>4</h2>
-            <p class="card-title" data-i18n="matematicas">Matemática</p>
-            <a href="../materias/matematica.php" class="btn" data-i18n="mas_informacion">Más información</a>
-          </div>
-        </div>
+  
       </div>
     </main>
   </div>
