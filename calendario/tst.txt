@@ -16,4 +16,4 @@ $end = isset($data['end']) ? $mysqli->real_escape_string($data['end']) : null;
 $query = "UPDATE citas SET start = '$start', end = " . ($end ? "'$end'" : "NULL") . " WHERE id = $id";
 $success = $mysqli->query($query);
 echo json_encode(['success' => $success]);
-?>
+?> 
