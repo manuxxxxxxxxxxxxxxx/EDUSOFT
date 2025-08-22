@@ -314,3 +314,53 @@ body {
     padding: 2px 0;
     color: #223a51;
 }
+       .btn-eliminar {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 3px 12px;
+            font-size: 0.92em;
+            cursor: pointer;
+            margin-left: 8px;
+            transition: background 0.2s;
+            font-family: inherit;
+            vertical-align: middle;
+        }
+        .btn-eliminar:hover {
+            background: #c0392b;
+        }
+        /* Cursos estilo link pero con el mismo diseño */
+        .cursos-lista li {
+            background: #f5f5f5;
+            border-radius: 5px;
+            margin: 8px 0;
+            padding: 10px 12px;
+            list-style: none;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            font-weight: 500;
+            color: #333;
+        }
+        .cursos-lista .curso-link {
+            text-decoration: none;
+            color: #333;
+            display: block;
+            padding: 0;
+            margin: 0;
+            font-size: 1.08em;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        .cursos-lista .curso-link:hover {
+            color: #2980b9;
+        }
+        .cursos-lista .curso-materia {
+            font-size: 0.98em;
+            color: #666;
+        }
+        .cursos-lista .curso-codigo {
+            font-size: 0.93em;
+            color: #888;
+        }
+
+        
