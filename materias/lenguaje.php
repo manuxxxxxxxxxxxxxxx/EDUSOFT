@@ -62,6 +62,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
     }
 
     // Obtener tareas del profesor para esta clase
+
     $sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
     $stmt_tareas = $conn->prepare($sql_tareas);
     $stmt_tareas->bind_param("i", $id_clase);
@@ -72,6 +73,46 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
     }
 
     // Obtener materiales de estudio para esta clase
+
+    $clase = $result_clase->fetch_assoc();
+}
+
+// Obtener tareas subidas por el profesor para esta clase
+$tareas_profesor = [];
+$sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
+$stmt_tareas = $conn->prepare($sql_tareas);
+$stmt_tareas->bind_param("i", $id_clase);
+$stmt_tareas->execute();
+$result_tareas = $stmt_tareas->get_result();
+while ($fila = $result_tareas->fetch_assoc()) {
+    $tareas_profesor[] = $fila;
+}
+
+    // Obtener materiales de estudio para esta clase
+    $sql_materiales = "SELECT titulo, descripcion, archivo, ruta_archivo, fecha_subida 
+                    FROM materiales_estudio 
+                    WHERE id_clase = ? 
+                    ORDER BY fecha_subida DESC";
+    $stmt_materiales = $conn->prepare($sql_materiales);
+    $stmt_materiales->bind_param("i", $id_clase);
+    $stmt_materiales->execute();
+    $resultado_materiales = $stmt_materiales->get_result();
+
+    // Obtener avisos para esta clase
+    $sql_avisos = "SELECT titulo, descripcion, fecha_subida 
+                FROM avisos 
+                WHERE id_clase = ? 
+                ORDER BY fecha_subida DESC";
+    $stmt_avisos = $conn->prepare($sql_avisos);
+    $stmt_avisos->bind_param("i", $id_clase);
+    $stmt_avisos->execute();
+    $resultado_avisos = $stmt_avisos->get_result();
+
+
+// Obtener materiales subidos por el profesor para esta clase
+$materiales_clase = [];
+if (isset($id_clase)) 
+
     $sql_materiales = "SELECT * FROM materiales_estudio WHERE id_clase = ? ORDER BY fecha_subida DESC";
     $stmt_materiales = $conn->prepare($sql_materiales);
     $stmt_materiales->bind_param("i", $id_clase);
@@ -81,7 +122,27 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
         $materiales_clase[] = $material;
     }
 
+
     // Obtener avisos para esta clase
+//obtener alumnos
+$lista_alumnos = [];
+$sql_alumnos = "SELECT ce.id AS numero_estudiante, e.nombre, e.email
+                FROM clases_estudiantes ce
+                JOIN estudiantes e ON ce.id_estudiante = e.ID
+                WHERE ce.id_clase = ?
+                ORDER BY ce.id ASC";
+$stmt_alumnos = $conn->prepare($sql_alumnos);
+$stmt_alumnos->bind_param("i", $id_clase);
+$stmt_alumnos->execute();
+$resultado_alumnos = $stmt_alumnos->get_result();
+while($row = $resultado_alumnos->fetch_assoc()) {
+    $lista_alumnos[] = $row;
+}
+
+// Obtener avisos de la clase
+$avisos = [];
+if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase)) {
+
     $sql_avisos = "SELECT * FROM avisos WHERE id_clase = ? ORDER BY fecha_subida DESC";
     $stmt_avisos = $conn->prepare($sql_avisos);
     $stmt_avisos->bind_param("i", $id_clase);
@@ -257,7 +318,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
 
     <!-- Formulario para estudiantes subir tarea -->
     <?php if (isset($_SESSION['id_estudiante'])): ?>
-        <h2 data-i18n="sube">Sube tu tarea </h2>
+        <h2 data-i18n="sube">Sube tu tarea de Arte</h2>
         <form id="formSubirTarea" action="subir_tarea_ajax.php" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="materia" value="lenguaje">
             <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>">
@@ -287,113 +348,101 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
     <?php else: ?>
         <p>No tienes permisos para subir tareas.</p>
     <?php endif; ?>
-        </section>
-            <section id="material" class="seccion" style="display: none;">
-                <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
-                <?php
-                if (!$id_clase) {
-                    echo "<p>⚠️ Clase no especificada.</p>";
-                } else {
-                    if (count($materiales_clase) > 0) {
-                        echo '<div class="materiales-container">';
-                        foreach ($materiales_clase as $material) {
-                            $titulo = htmlspecialchars($material["titulo"]);
-                            $descripcion = htmlspecialchars($material["descripcion"]);
-                            $archivo = htmlspecialchars($material["archivo"]);
-                            $ruta = htmlspecialchars($material["ruta_archivo"]);
-                            $fecha = date("d/m/Y", strtotime($material["fecha_subida"]));
-                            $extension = pathinfo($archivo, PATHINFO_EXTENSION);
-                            switch (strtolower($extension)) {
-                                case "pdf": $icono = "fa-file-pdf"; break;
-                                case "doc": case "docx": $icono = "fa-file-word"; break;
-                                case "ppt": case "pptx": $icono = "fa-file-powerpoint"; break;
-                                case "xls": case "xlsx": $icono = "fa-file-excel"; break;
-                                case "mp4": case "avi": case "mov": $icono = "fa-file-video"; break;
-                                default: $icono = "fa-file"; break;
-                            }
-                            echo "<div class='material-item'>";
-                            echo "<i class='fas $icono'></i> <strong>$titulo</strong><br>";
-                            if ($descripcion) {
-                                echo "<p>$descripcion</p>";
-                            }
-                            echo "<a href='$ruta' target='_blank'>📎 Descargar archivo: $archivo</a><br>";
-                            echo "<small>Subido el $fecha</small>";
-                            echo "</div>";
+    </section>
+        <section id="material" class="seccion" style="display: none;">
+            <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
+            <?php
+            if (!$id_clase) {
+                echo "<p>⚠️ Clase no especificada.</p>";
+            } else {
+                if (count($materiales_clase) > 0) {
+                    echo '<div class="materiales-container">';
+                    foreach ($materiales_clase as $material) {
+                        $titulo = htmlspecialchars($material["titulo"]);
+                        $descripcion = htmlspecialchars($material["descripcion"]);
+                        $archivo = htmlspecialchars($material["archivo"]);
+                        $ruta = htmlspecialchars($material["ruta_archivo"]);
+                        $fecha = date("d/m/Y", strtotime($material["fecha_subida"]));
+                        $extension = pathinfo($archivo, PATHINFO_EXTENSION);
+                        switch (strtolower($extension)) {
+                            case "pdf": $icono = "fa-file-pdf"; break;
+                            case "doc": case "docx": $icono = "fa-file-word"; break;
+                            case "ppt": case "pptx": $icono = "fa-file-powerpoint"; break;
+                            case "xls": case "xlsx": $icono = "fa-file-excel"; break;
+                            case "mp4": case "avi": case "mov": $icono = "fa-file-video"; break;
+                            default: $icono = "fa-file"; break;
                         }
-                        echo '</div>';
-                    } else {
-                        echo "<p>📭 No hay materiales disponibles para esta clase.</p>";
+                        echo "<div class='material-item'>";
+                        echo "<i class='fas $icono'></i> <strong>$titulo</strong><br>";
+                        if ($descripcion) {
+                            echo "<p>$descripcion</p>";
+                        }
+                        echo "<a href='$ruta' target='_blank'>📎 Descargar archivo: $archivo</a><br>";
+                        echo "<small>Subido el $fecha</small>";
+                        echo "</div>";
                     }
+                    echo '</div>';
+                } else {
+                    echo "<p>📭 No hay materiales disponibles para esta clase.</p>";
+                }
+            }
+            ?>
+        </section>
+        <section id="avisos" class="seccion" style="display: none;">
+            <h2 data-i18n="avisos">Avisos</h2>
+            <ul class="lista-avisos">
+                <?php
+                if (!empty($avisos)) {
+                    foreach ($avisos as $aviso) {
+                        echo "<li>";
+                        echo "<span>" . htmlspecialchars($aviso['titulo']) . "</span>";
+                        echo "<p>" . htmlspecialchars($aviso['descripcion']) . "</p>";
+                        echo "<small>Fecha: " . htmlspecialchars($aviso['fecha_subida']) . "</small>";
+                        echo "</li>";
+                    }
+                } else {
+                    echo "<li>No hay avisos registrados para esta clase.</li>";
                 }
                 ?>
-            </section>
-            <section id="avisos" class="seccion" style="display: none;">
-                <h2 data-i18n="avisos">Avisos</h2>
-                <ul class="lista-avisos">
-                    <?php
-                    if (!empty($avisos)) {
-                        foreach ($avisos as $aviso) {
-                            echo "<li>";
-                            echo "<span>" . htmlspecialchars($aviso['titulo']) . "</span>";
-                            echo "<p>" . htmlspecialchars($aviso['descripcion']) . "</p>";
-                            echo "<small>Fecha: " . htmlspecialchars($aviso['fecha_subida']) . "</small>";
-                            echo "</li>";
-                        }
-                    } else {
-                        echo "<li>No hay avisos registrados para esta clase.</li>";
-                    }
-                    ?>
-                </ul>
-            </section>
-            <section id="alumnos" class="seccion" style="display: none;">
-                <h2 data-i18n="lista">Lista de Alumnos</h2>
-                <ul class="lista-alumnos">
-                    <li>
-                        <i class="fas fa-user"></i>
-                        <span>Juan Pérez</span>
-                        <p>Número de estudiante: 001</p>
-                        <small>Correo electrónico: juan.perez@gmail.com</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-user"></i>
-                        <span>María López</span>
-                        <p>Número de estudiante: 002</p>
-                        <small>Correo electrónico: maria.lopez@gmail.com</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-user"></i>
-                        <span>Carlos Gómez</span>
-                        <p>Número de estudiante: 003</p>
-                        <small>Correo electrónico: carlos.gomez@gmail.com</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-user"></i>
-                        <span>Ana Ramírez</span>
-                        <p>Número de estudiante: 004</p>
-                        <small>Correo electrónico: ana.ramirez@gmail.com</small>
-                    </li>
-                </ul>
-            </section>
-            <div id="modalTarea" class="modal" style="display:none;">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2 id="modalTitulo">Título de la tarea</h2>
-                    <p id="modalDescripcion">Descripción de la tarea</p>
-                    <div class="modal-section">
-                        <label for="archivoSubir">Subir archivos:</label>
-                        <input type="file" id="archivoSubir" multiple>
-                        <ul id="listaArchivos"></ul>
-                    </div>
-                    <div class="modal-section">
-                        <label for="enlaceInput">Añadir enlace:</label>
-                        <input type="url" id="enlaceInput" placeholder="https://">
-                        <button id="agregarEnlace">Agregar enlace</button>
-                        <ul id="listaEnlaces"></ul>
-                    </div>
+            </ul>
+        </section>
+        <section id="alumnos" class="seccion" style="display: none;">
+            <h2 data-i18n="lista">Lista de Alumnos</h2>
+            <ul class="lista-alumnos">
+                <?php if (!empty($lista_alumnos)): ?>
+                    <?php foreach ($lista_alumnos as $alumno): ?>
+                        <li>
+                            <i class="fas fa-user"></i>
+                            <span><?php echo htmlspecialchars($alumno['nombre']); ?></span>
+                            <p>Número de estudiante: <?php echo htmlspecialchars($alumno['numero_estudiante']); ?></p>
+                            <small>Correo electrónico: <?php echo htmlspecialchars($alumno['email']); ?></small>
+                        </li>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <li>No hay alumnos inscritos en esta clase.</li>
+                <?php endif; ?>
+            </ul>
+        </section>
+        <div id="modalTarea" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="modalTitulo">Título de la tarea</h2>
+                <p id="modalDescripcion">Descripción de la tarea</p>
+                <div class="modal-section">
+                    <label for="archivoSubir">Subir archivos:</label>
+                    <input type="file" id="archivoSubir" multiple>
+                    <ul id="listaArchivos"></ul>
+                </div>
+                <div class="modal-section">
+                    <label for="enlaceInput">Añadir enlace:</label>
+                    <input type="url" id="enlaceInput" placeholder="https://">
+                    <button id="agregarEnlace">Agregar enlace</button>
+                    <ul id="listaEnlaces"></ul>
                 </div>
             </div>
-        </main>
+        </div>
+    </main>
     </div>
-    <script src="../materias/js/scriptMatematica.js"></script>
+    <script src="../materias/js/scriptLenguaje.js"></script>
 </body>
 </html>

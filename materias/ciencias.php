@@ -2,19 +2,39 @@
 session_start();
 require_once "../conexiones/conexion.php";
 
-// Valor por defecto para evitar error si no se define $nombre
-$nombre = "Nombre no disponible";
-
-// Verificar si el usuario está logueado como profesor o como estudiante
+// Verificar si el usuario está logueado como profesor o estudiante
 if (!isset($_SESSION['id']) && !isset($_SESSION['id_estudiante'])) {
     die("⚠️ Debes iniciar sesión como profesor o estudiante para acceder a esta materia.");
 }
 
+// Verifica que venga el id_clase por GET para ambos roles
+if (!isset($_GET['id_clase'])) {
+    die("⚠️ Clase no especificada.");
+}
+$id_clase = intval($_GET['id_clase']);
+
+// Obtener SIEMPRE el nombre del profesor y nombre de la clase
+$sql_prof = "SELECT c.nombre_clase, p.nombre AS nombre_profesor 
+             FROM clases c 
+             JOIN profesores p ON c.profesor_id = p.id 
+             WHERE c.id = ?";
+$stmt_prof = $conn->prepare($sql_prof);
+$stmt_prof->bind_param("i", $id_clase);
+$stmt_prof->execute();
+$result_prof = $stmt_prof->get_result();
+if ($result_prof->num_rows === 0) {
+    die("Clase no encontrada.");
+}
+$clase_info = $result_prof->fetch_assoc();
+$nombre_clase = $clase_info['nombre_clase'];
+$nombre_profesor = $clase_info['nombre_profesor'];
+
 // Lógica para estudiantes
 if (isset($_SESSION['id_estudiante'])) {
     $id_estudiante = $_SESSION['id_estudiante'];
-    $materia = 'ciencias';
+    $materia = 'lenguaje'; // Cambia aquí el nombre de la materia
 
+    // Obtener tareas que subió este estudiante en esta materia
     $sql = "SELECT nombre_archivo, ruta_archivo, fecha_subida FROM tareas WHERE id_estudiante = ? AND materia = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("is", $id_estudiante, $materia);
@@ -26,16 +46,7 @@ if (isset($_SESSION['id_estudiante'])) {
 if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
     $profesor_id = $_SESSION['id'];
 
-    if (!isset($_GET['id_clase'])) {
-        die("Clase no especificada.");
-    }
-
-    $id_clase = intval($_GET['id_clase']);
-
-    if (isset($_SESSION['nombre'])) {
-        $nombre = $_SESSION['nombre'];
-    }
-
+    // Verificar que la clase pertenezca al profesor
     $sql = "SELECT * FROM clases WHERE id = ? AND profesor_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ii", $id_clase, $profesor_id);
@@ -46,23 +57,44 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
         die("No tienes acceso a esta clase.");
     }
 
+    // Obtener tareas del profesor para esta clase
+
     $clase = $result_clase->fetch_assoc();
 }
 
-// Obtener tareas
+// Obtener tareas subidas por el profesor para esta clase
 $tareas_profesor = [];
-if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase)) {
-    $sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
-    $stmt_tareas = $conn->prepare($sql_tareas);
-    $stmt_tareas->bind_param("i", $id_clase);
-    $stmt_tareas->execute();
-    $resultado_tareas_profesor = $stmt_tareas->get_result();
-    while ($fila = $resultado_tareas_profesor->fetch_assoc()) {
-        $tareas_profesor[] = $fila;
-    }
+$sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
+$stmt_tareas = $conn->prepare($sql_tareas);
+$stmt_tareas->bind_param("i", $id_clase);
+$stmt_tareas->execute();
+$result_tareas = $stmt_tareas->get_result();
+while ($fila = $result_tareas->fetch_assoc()) {
+    $tareas_profesor[] = $fila;
 }
 
-// Materiales
+    // Obtener materiales de estudio para esta clase
+    $sql_materiales = "SELECT titulo, descripcion, archivo, ruta_archivo, fecha_subida 
+                    FROM materiales_estudio 
+                    WHERE id_clase = ? 
+                    ORDER BY fecha_subida DESC";
+    $stmt_materiales = $conn->prepare($sql_materiales);
+    $stmt_materiales->bind_param("i", $id_clase);
+    $stmt_materiales->execute();
+    $resultado_materiales = $stmt_materiales->get_result();
+
+    // Obtener avisos para esta clase
+    $sql_avisos = "SELECT titulo, descripcion, fecha_subida 
+                FROM avisos 
+                WHERE id_clase = ? 
+                ORDER BY fecha_subida DESC";
+    $stmt_avisos = $conn->prepare($sql_avisos);
+    $stmt_avisos->bind_param("i", $id_clase);
+    $stmt_avisos->execute();
+    $resultado_avisos = $stmt_avisos->get_result();
+
+
+// Obtener materiales subidos por el profesor para esta clase
 $materiales_clase = [];
 if (isset($id_clase)) {
     $sql_materiales = "SELECT * FROM materiales_estudio WHERE id_clase = ? ORDER BY fecha_subida DESC";
@@ -75,7 +107,22 @@ if (isset($id_clase)) {
     }
 }
 
-// Avisos
+//obtener alumnos
+$lista_alumnos = [];
+$sql_alumnos = "SELECT ce.id AS numero_estudiante, e.nombre, e.email
+                FROM clases_estudiantes ce
+                JOIN estudiantes e ON ce.id_estudiante = e.ID
+                WHERE ce.id_clase = ?
+                ORDER BY ce.id ASC";
+$stmt_alumnos = $conn->prepare($sql_alumnos);
+$stmt_alumnos->bind_param("i", $id_clase);
+$stmt_alumnos->execute();
+$resultado_alumnos = $stmt_alumnos->get_result();
+while($row = $resultado_alumnos->fetch_assoc()) {
+    $lista_alumnos[] = $row;
+}
+
+// Obtener avisos de la clase
 $avisos = [];
 if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase)) {
     $sql_avisos = "SELECT * FROM avisos WHERE id_clase = ? ORDER BY fecha_subida DESC";
@@ -161,7 +208,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                 <div class="content">
                     <div class="profesor">
                         <div class="avatar-modern"></div>
-                        <p>Profesor<br><strong><?php echo htmlspecialchars($nombre ?? ''); ?></strong></p>
+                        <p>Profesor<br><strong><?php echo htmlspecialchars($nombre_profesor ?? ''); ?></strong></p>
                     </div>
                     <div class="tablon-secciones">
                         <div class="tablon-section">
@@ -338,11 +385,22 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                 </ul>
             </section>
             <section id="alumnos" class="seccion" style="display: none;">
-                <h2>Lista de Alumnos</h2>
-                <ul class="lista-alumnos">
-                    <!-- Lista estática o dinámica -->
-                </ul>
-            </section>
+            <h2 data-i18n="lista">Lista de Alumnos</h2>
+            <ul class="lista-alumnos">
+                <?php if (!empty($lista_alumnos)): ?>
+                    <?php foreach ($lista_alumnos as $alumno): ?>
+                        <li>
+                            <i class="fas fa-user"></i>
+                            <span><?php echo htmlspecialchars($alumno['nombre']); ?></span>
+                            <p>Número de estudiante: <?php echo htmlspecialchars($alumno['numero_estudiante']); ?></p>
+                            <small>Correo electrónico: <?php echo htmlspecialchars($alumno['email']); ?></small>
+                        </li>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <li>No hay alumnos inscritos en esta clase.</li>
+                <?php endif; ?>
+            </ul>
+        </section>
             <div id="modalTarea" class="modal" style="display:none;">
                 <div class="modal-content">
                     <span class="close">&times;</span>

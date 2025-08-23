@@ -166,12 +166,11 @@
   </div>
 
 </div>
-
         <!-- Mensaje si no hay clases -->
         <?php
           require_once 'conexiones/conexion.php';
           $id_estudiante = $_SESSION['id_estudiante'];
-          $query = "SELECT c.nombre_clase, c.materia, p.nombre AS nombre_profesor 
+          $query = "SELECT c.id AS id_clase, c.nombre_clase, c.materia, p.nombre AS nombre_profesor 
                     FROM clases_estudiantes ce
                     JOIN clases c ON ce.id_clase = c.id
                     JOIN profesores p ON c.profesor_id = p.id
@@ -217,13 +216,11 @@
               <p class="card-title">
                 <?= htmlspecialchars($clases['materia']) ?> - Prof. <?= htmlspecialchars($clases['nombre_profesor']) ?>
               </p>
-              <a href="../materias/<?= htmlspecialchars($clases['materia']) ?>.php" class="btn">Más información</a>
+              <a href="../materias/<?php echo strtolower($clases['materia']); ?>.php?id_clase=<?php echo $clases['id_clase']; ?>" class="btn">Más información</a>
             </div>
           </div>
         <?php endforeach; ?>
 
-        <!-- Cards fijas -->
-  
       </div>
     </main>
   </div>
