@@ -449,13 +449,15 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                     <h2 data-i18n="lista">Lista de Alumnos</h2>
                     <ul class="lista-alumnos">
                         <?php if (!empty($lista_alumnos)): ?>
+                            <?php $contador = 1; ?>
                             <?php foreach ($lista_alumnos as $alumno): ?>
                                 <li>
                                     <i class="fas fa-user"></i>
                                     <span><?php echo htmlspecialchars($alumno['nombre']); ?></span>
-                                    <p>Número de estudiante: <?php echo htmlspecialchars($alumno['numero_estudiante']); ?></p>
+                                    <p>Número de estudiante: <?php echo$contador; ?></p>
                                     <small>Correo electrónico: <?php echo htmlspecialchars($alumno['email']); ?></small>
                                 </li>
+                                <?php $contador++; ?>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <li>No hay alumnos inscritos en esta clase.</li>

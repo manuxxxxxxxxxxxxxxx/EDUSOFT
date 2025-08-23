@@ -15,9 +15,9 @@ $id_clase = intval($_GET['id_clase']);
 
 // Obtener SIEMPRE el nombre del profesor y nombre de la clase
 $sql_prof = "SELECT c.nombre_clase, p.nombre AS nombre_profesor 
-            FROM clases c 
-            JOIN profesores p ON c.profesor_id = p.id 
-            WHERE c.id = ?";
+             FROM clases c 
+             JOIN profesores p ON c.profesor_id = p.id 
+             WHERE c.id = ?";
 $stmt_prof = $conn->prepare($sql_prof);
 $stmt_prof->bind_param("i", $id_clase);
 $stmt_prof->execute();
@@ -32,7 +32,7 @@ $nombre_profesor = $clase_info['nombre_profesor'];
 // Lógica para estudiantes
 if (isset($_SESSION['id_estudiante'])) {
     $id_estudiante = $_SESSION['id_estudiante'];
-    $materia = 'matematica'; // Cambia aquí el nombre de la materia si corresponde
+    $materia = 'lenguaje'; // Cambia aquí el nombre de la materia
 
     // Obtener tareas que subió este estudiante en esta materia
     $sql = "SELECT nombre_archivo, ruta_archivo, fecha_subida FROM tareas WHERE id_estudiante = ? AND materia = ?";
@@ -40,6 +40,41 @@ if (isset($_SESSION['id_estudiante'])) {
     $stmt->bind_param("is", $id_estudiante, $materia);
     $stmt->execute();
     $resultado_tareas = $stmt->get_result();
+}
+
+// Lógica para profesores
+$tareas_profesor = [];
+$materiales_clase = [];
+$avisos = [];
+
+if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
+    $profesor_id = $_SESSION['id'];
+
+    // Verificar que la clase pertenezca al profesor
+    $sql = "SELECT * FROM clases WHERE id = ? AND profesor_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $id_clase, $profesor_id);
+    $stmt->execute();
+    $result_clase = $stmt->get_result();
+
+    if ($result_clase->num_rows === 0) {
+        die("No tienes acceso a esta clase.");
+    }
+
+    // Obtener tareas del profesor para esta clase
+
+    $sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
+    $stmt_tareas = $conn->prepare($sql_tareas);
+    $stmt_tareas->bind_param("i", $id_clase);
+    $stmt_tareas->execute();
+    $resultado_tareas_profesor = $stmt_tareas->get_result();
+    while ($fila = $resultado_tareas_profesor->fetch_assoc()) {
+        $tareas_profesor[] = $fila;
+    }
+
+    // Obtener materiales de estudio para esta clase
+
+    $clase = $result_clase->fetch_assoc();
 }
 
 // Obtener tareas subidas por el profesor para esta clase
@@ -53,16 +88,28 @@ while ($fila = $result_tareas->fetch_assoc()) {
     $tareas_profesor[] = $fila;
 }
 
-// Obtener materiales de estudio para esta clase
-$materiales_clase = [];
-$sql_materiales = "SELECT * FROM materiales_estudio WHERE id_clase = ? ORDER BY fecha_subida DESC";
-$stmt_materiales = $conn->prepare($sql_materiales);
-$stmt_materiales->bind_param("i", $id_clase);
-$stmt_materiales->execute();
-$resultado_materiales = $stmt_materiales->get_result();
-while ($material = $resultado_materiales->fetch_assoc()) {
-    $materiales_clase[] = $material;
+$entregas_alumno = [];
+if (isset($_SESSION['id_estudiante'])) {
+    $id_estudiante = $_SESSION['id_estudiante'];
+    $sql = "SELECT * FROM tareas WHERE id_estudiante = ? AND materia = ? AND id_clase = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("isi", $id_estudiante, $materia, $id_clase);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $entregas_alumno[$row['id_tarea_profesor']] = $row; // index by tarea_profesor id
+    }
 }
+
+    // Obtener materiales de estudio para esta clase
+    $sql_materiales = "SELECT titulo, descripcion, archivo, ruta_archivo, fecha_subida 
+                    FROM materiales_estudio 
+                    WHERE id_clase = ? 
+                    ORDER BY fecha_subida DESC";
+    $stmt_materiales = $conn->prepare($sql_materiales);
+    $stmt_materiales->bind_param("i", $id_clase);
+    $stmt_materiales->execute();
+    $resultado_materiales = $stmt_materiales->get_result();
 
 // Obtener avisos de la clase (SIEMPRE, para cualquier usuario)
 $avisos = [];
@@ -74,6 +121,22 @@ $resultado_avisos = $stmt_avisos->get_result();
 while ($aviso = $resultado_avisos->fetch_assoc()) {
     $avisos[] = $aviso;
 }
+
+
+// Obtener materiales subidos por el profesor para esta clase
+$materiales_clase = [];
+if (isset($id_clase)) 
+
+    $sql_materiales = "SELECT * FROM materiales_estudio WHERE id_clase = ? ORDER BY fecha_subida DESC";
+    $stmt_materiales = $conn->prepare($sql_materiales);
+    $stmt_materiales->bind_param("i", $id_clase);
+    $stmt_materiales->execute();
+    $resultado_materiales = $stmt_materiales->get_result();
+    while ($material = $resultado_materiales->fetch_assoc()) {
+        $materiales_clase[] = $material;
+    }
+
+
 
 //obtener alumnos
 $lista_alumnos = [];
@@ -88,6 +151,20 @@ $stmt_alumnos->execute();
 $resultado_alumnos = $stmt_alumnos->get_result();
 while($row = $resultado_alumnos->fetch_assoc()) {
     $lista_alumnos[] = $row;
+}
+
+// Obtener avisos de la clase
+$avisos = [];
+if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase)) {
+
+    $sql_avisos = "SELECT * FROM avisos WHERE id_clase = ? ORDER BY fecha_subida DESC";
+    $stmt_avisos = $conn->prepare($sql_avisos);
+    $stmt_avisos->bind_param("i", $id_clase);
+    $stmt_avisos->execute();
+    $resultado_avisos = $stmt_avisos->get_result();
+    while ($aviso = $resultado_avisos->fetch_assoc()) {
+        $avisos[] = $aviso;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -486,24 +563,7 @@ while($row = $resultado_alumnos->fetch_assoc()) {
                 <?php endif; ?>
             </ul>
         </section>
-            <div id="modalTarea" class="modal" style="display:none;">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2 id="modalTitulo">Título de la tarea</h2>
-                    <p id="modalDescripcion">Descripción de la tarea</p>
-                    <div class="modal-section">
-                        <label for="archivoSubir">Subir archivos:</label>
-                        <input type="file" id="archivoSubir" multiple>
-                        <ul id="listaArchivos"></ul>
-                    </div>
-                    <div class="modal-section">
-                        <label for="enlaceInput">Añadir enlace:</label>
-                        <input type="url" id="enlaceInput" placeholder="https://">
-                        <button id="agregarEnlace">Agregar enlace</button>
-                        <ul id="listaEnlaces"></ul>
-                    </div>
-                </div>
-            </div>
+
         </main>
     </div>
     <script src="../materias/js/scriptMatematica.js"></script>

@@ -43,6 +43,10 @@ if (isset($_SESSION['id_estudiante'])) {
 }
 
 // Lógica para profesores
+$tareas_profesor = [];
+$materiales_clase = [];
+$avisos = [];
+
 if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
     $profesor_id = $_SESSION['id'];
 
@@ -59,6 +63,17 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
 
     // Obtener tareas del profesor para esta clase
 
+    $sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
+    $stmt_tareas = $conn->prepare($sql_tareas);
+    $stmt_tareas->bind_param("i", $id_clase);
+    $stmt_tareas->execute();
+    $resultado_tareas_profesor = $stmt_tareas->get_result();
+    while ($fila = $resultado_tareas_profesor->fetch_assoc()) {
+        $tareas_profesor[] = $fila;
+    }
+
+    // Obtener materiales de estudio para esta clase
+
     $clase = $result_clase->fetch_assoc();
 }
 
@@ -73,6 +88,19 @@ while ($fila = $result_tareas->fetch_assoc()) {
     $tareas_profesor[] = $fila;
 }
 
+$entregas_alumno = [];
+if (isset($_SESSION['id_estudiante'])) {
+    $id_estudiante = $_SESSION['id_estudiante'];
+    $sql = "SELECT * FROM tareas WHERE id_estudiante = ? AND materia = ? AND id_clase = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("isi", $id_estudiante, $materia, $id_clase);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $entregas_alumno[$row['id_tarea_profesor']] = $row; // index by tarea_profesor id
+    }
+}
+
     // Obtener materiales de estudio para esta clase
     $sql_materiales = "SELECT titulo, descripcion, archivo, ruta_archivo, fecha_subida 
                     FROM materiales_estudio 
@@ -82,6 +110,7 @@ while ($fila = $result_tareas->fetch_assoc()) {
     $stmt_materiales->bind_param("i", $id_clase);
     $stmt_materiales->execute();
     $resultado_materiales = $stmt_materiales->get_result();
+
 // Obtener avisos de la clase (SIEMPRE, para cualquier usuario)
 $avisos = [];
 $sql_avisos = "SELECT * FROM avisos WHERE id_clase = ? ORDER BY fecha_subida DESC";
@@ -96,7 +125,8 @@ while ($aviso = $resultado_avisos->fetch_assoc()) {
 
 // Obtener materiales subidos por el profesor para esta clase
 $materiales_clase = [];
-if (isset($id_clase)) {
+if (isset($id_clase)) 
+
     $sql_materiales = "SELECT * FROM materiales_estudio WHERE id_clase = ? ORDER BY fecha_subida DESC";
     $stmt_materiales = $conn->prepare($sql_materiales);
     $stmt_materiales->bind_param("i", $id_clase);
@@ -105,7 +135,8 @@ if (isset($id_clase)) {
     while ($material = $resultado_materiales->fetch_assoc()) {
         $materiales_clase[] = $material;
     }
-}
+
+
 
 //obtener alumnos
 $lista_alumnos = [];
@@ -122,6 +153,19 @@ while($row = $resultado_alumnos->fetch_assoc()) {
     $lista_alumnos[] = $row;
 }
 
+// Obtener avisos de la clase
+$avisos = [];
+if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase)) {
+
+    $sql_avisos = "SELECT * FROM avisos WHERE id_clase = ? ORDER BY fecha_subida DESC";
+    $stmt_avisos = $conn->prepare($sql_avisos);
+    $stmt_avisos->bind_param("i", $id_clase);
+    $stmt_avisos->execute();
+    $resultado_avisos = $stmt_avisos->get_result();
+    while ($aviso = $resultado_avisos->fetch_assoc()) {
+        $avisos[] = $aviso;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">

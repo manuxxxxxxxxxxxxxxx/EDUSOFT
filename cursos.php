@@ -193,13 +193,15 @@
 
       <!-- NUEVO: Contenedor solo para tarjetas -->
       <div class="container-cards">
+        
         <?php foreach ($clases_estudiantes as $clases): 
+        
           $materia = strtolower($clases['materia']);
           $imagenes = [
             'lenguaje' => '../img/lenguaje_cursos.jpg',
             'matemática' => '../img/mate_cursos.webp',
             'matematica' => '../img/mate_cursos.webp',
-            'ciencia' => '../img/ciencias_cursos.png',
+            'ciencias' => '../img/ciencias_cursos.png',
             'biología' => '../img/biologia.jpg',
             'biologia' => '../img/biologia.jpg',
             'química' => '../img/quimica.jpg',
