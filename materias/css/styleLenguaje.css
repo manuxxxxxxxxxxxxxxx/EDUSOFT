@@ -303,10 +303,12 @@ main {
     background-position: center;
 }
 
+
+/* Haz que el grid no cree demasiadas columnas en escritorio */
 .tareas-container {
     flex: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    width: 100%;
     gap: 24px;
 }
 
@@ -321,6 +323,8 @@ main {
     position: relative;
     backdrop-filter: blur(2px);
     animation: fadeInUp 0.6s;
+    width: 100%;
+    min-width: 0; /* evita que se desborde */
 }
 .tarea:hover {
     box-shadow: 0 8px 32px rgba(100,150,255,0.13);

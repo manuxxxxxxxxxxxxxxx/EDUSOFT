@@ -353,7 +353,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-document.getElementById("formSubirTarea").addEventListener("submit", function(e) {
+/*document.getElementById("formSubirTarea").addEventListener("submit", function(e) {
     e.preventDefault();
     
     const formData = new FormData(this);
@@ -371,4 +371,60 @@ document.getElementById("formSubirTarea").addEventListener("submit", function(e)
     .catch(err => {
         mensaje.innerHTML = "❌ Error en la conexión.";
     });
+});*/
+
+function eliminarArchivo(idArchivo) {
+    if (confirm("¿Seguro que deseas eliminar este archivo?")) {
+        fetch("eliminar_archivo_ajax.php", {
+            method: "POST",
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: "id_archivo=" + idArchivo
+        })
+        .then(resp => resp.text())
+        .then(msg => {
+            alert(msg);
+            location.reload();
+        });
+    }
+}
+
+function eliminarEntrega(idEntrega) {
+    if (confirm("¿Seguro que deseas eliminar toda la entrega?")) {
+        fetch("eliminar_entrega_ajax.php", {
+            method: "POST",
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: "id_entrega=" + idEntrega
+        })
+        .then(resp => resp.text())
+        .then(msg => {
+            alert(msg);
+            location.reload();
+        });
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    // ... (todo tu código sidebar, modal, partículas, etc) ...
+
+    // SUBIR TAREA CON ALERT DE MENSAJE
+    document.querySelectorAll('.formSubirTarea').forEach(form => {
+        form.onsubmit = function(e) {
+            e.preventDefault();
+            let formData = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                alert(data.mensaje); // <-- Sale el alert aquí
+                location.reload();   // Opcional: recarga la página para mostrar los nuevos archivos
+            })
+            .catch(err => {
+                alert("❌ Error en la conexión.");
+            });
+        };
+    });
+
+    // ... (el resto de tu código, funciones de eliminar, etc) ...
 });

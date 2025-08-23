@@ -274,58 +274,73 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                 </div>
             </section>
          <section id="tareas" class="seccion" style="display: none;">
-            <h2 data-i18n="tareas">Tareas</h2>
-            <!-- Mostrar tareas del profesor -->
-                <div class="tareas-container">
-                    <?php if (!empty($tareas_profesor)): ?>
-                        <?php foreach ($tareas_profesor as $tarea): ?>
-                            <div class="tarea">
-                                <i class="fas fa-book"></i>
-                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
-                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
-                                <small>Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
-                                <?php if (!empty($tarea['ruta_archivo'])): ?>
-                                    <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
-                                <?php endif; ?>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p>No se han asignado tareas aún.</p>
-                    <?php endif; ?>
+                <div class="section-card">
+                    <h2 data-i18n="tareas">Tareas</h2>
+                    <div class="tareas-container">
+                        <?php if (!empty($tareas_profesor)): ?>
+                            <?php foreach ($tareas_profesor as $tarea): ?>
+                                <div class="tarea">
+                                    <i class="fas fa-book"></i>
+                                    <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                                    <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                                    <small>
+                                        Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | 
+                                        Puntos: <?php echo $tarea['puntos']; ?>
+                                    </small>
+                                    <?php if (!empty($tarea['archivo_adjunto'])): ?>
+                                        <br><a href="<?php echo htmlspecialchars($tarea['archivo_adjunto']); ?>" target="_blank">📎 Ver archivo adjunto del profesor</a>
+                                    <?php endif; ?>
+                                    <?php if (isset($_SESSION['id_estudiante'])): ?>
+                                        <div class="entrega-alumno">
+                                            <?php
+                                            $entrega = $entregas_alumno[$tarea['id']] ?? null;
+                                            $archivos = [];
+                                            if ($entrega) {
+                                                $sql_archivos = "SELECT * FROM tareas_archivos WHERE id_tarea = ?";
+                                                $stmt_archivos = $conn->prepare($sql_archivos);
+                                                $stmt_archivos->bind_param("i", $entrega['id']);
+                                                $stmt_archivos->execute();
+                                                $result_archivos = $stmt_archivos->get_result();
+                                                while ($fila = $result_archivos->fetch_assoc()) {
+                                                    $archivos[] = $fila;
+                                                }
+                                            }
+                                            ?>
+                                            <?php if ($entrega && count($archivos) > 0): ?>
+                                                <div>
+                                                    <h5>Archivos subidos:</h5>
+                                                    <?php foreach ($archivos as $file): ?>
+                                                        <a href="<?php echo htmlspecialchars($file['ruta_archivo']); ?>" target="_blank">
+                                                            <?php echo htmlspecialchars($file['nombre_archivo']); ?>
+                                                        </a>
+                                                        <small>(<?php echo htmlspecialchars($file['fecha_subida']); ?>)</small>
+                                                        <button onclick="eliminarArchivo(<?php echo $file['id']; ?>)">❌ Eliminar archivo</button>
+                                                        <br>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                            <?php endif; ?>
+                                            <form class="formSubirTarea" action="subir_tarea_ajax.php" method="POST" enctype="multipart/form-data">
+                                                <input type="hidden" name="id_tarea_profesor" value="<?php echo $tarea['id']; ?>">
+                                                <input type="hidden" name="materia" value="lenguaje">
+                                                <input type="hidden" name="id_clase" value="<?php echo $id_clase; ?>">
+                                                <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>">
+                                                <?php if ($entrega): ?>
+                                                    <input type="hidden" name="id_entrega" value="<?php echo $entrega['id']; ?>">
+                                                <?php endif; ?>
+                                                <label for="archivo_<?php echo $tarea['id']; ?>" data-i18n="archivo2">Archivo(s):</label>
+                                                <input type="file" name="archivo[]" id="archivo_<?php echo $tarea['id']; ?>" multiple required><br>
+                                                <button type="submit" data-i18n="subir">Subir archivo(s)</button>
+                                            </form>
+                                            <div id="mensajeSubida_<?php echo $tarea['id']; ?>"></div>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p>No se han asignado tareas aún.</p>
+                        <?php endif; ?>
+                    </div>
                 </div>
-
-    <!-- Formulario para estudiantes subir tarea -->
-    <?php if (isset($_SESSION['id_estudiante'])): ?>
-        <h2 data-i18n="sube">Sube tu tarea</h2>
-        <form id="formSubirTarea" action="subir_tarea_ajax.php" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="materia" value="biologia">
-            <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>">
-            <label for="archivo" data-i18n="archivo2">Archivo (PDF, DOCX, JPG...):</label>
-            <input type="file" name="archivo" id="archivo" required><br><br>
-            <button type="submit" data-i18n="subir">Subir tarea</button>
-        </form>
-
-        <div id="mensajeSubida"></div>
-
-        <h3 data-i18n="subidas">Tareas subidas</h3>
-        <ul id="listaTareas" style="list-style-type: none; padding-left: 0;">
-            <?php if (isset($resultado_tareas) && $resultado_tareas->num_rows > 0): ?>
-                <?php while ($fila = $resultado_tareas->fetch_assoc()): ?>
-                    <li id="tarea_<?php echo $fila['id']; ?>">
-                        <a href="<?php echo htmlspecialchars($fila['ruta_archivo']); ?>" target="_blank">
-                            <?php echo htmlspecialchars($fila['nombre_archivo']); ?>
-                        </a>
-                        <small>(<?php echo htmlspecialchars($fila['fecha_subida']); ?>)</small>
-                        <button onclick="eliminarTarea(<?php echo $fila['id']; ?>)">❌ Eliminar</button>
-                    </li>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <li>No has subido tareas aún.</li>
-            <?php endif; ?>
-        </ul>
-    <?php else: ?>
-        <p>No tienes permisos para subir tareas.</p>
-    <?php endif; ?>
             </section>
             <section id="material" class="seccion" style="display: none;">
                 <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
