@@ -30,7 +30,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt = $conn->prepare("INSERT INTO avisos (id_clase, titulo, descripcion, fecha_subida) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("isss", $id_clase, $titulo, $descripcion, $fecha_subida);
         if ($stmt->execute()) {
-            $success = "Aviso creado correctamente.";
+            // Redirigir al panel del maestro automáticamente
+            header("Location: ../frontend_maestros/index.php?seccion=avisos");
+            exit;
         } else {
             $error = "Hubo un error al guardar el aviso.";
         }
@@ -44,13 +46,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta charset="UTF-8">
     <title>Crear aviso | Edusoft</title>
     <link rel="stylesheet" href="../frontend_maestros/crear_aviso.css">
-    
 </head>
 <body>
     <h2>Crear aviso</h2>
-    <?php if ($success): ?>
-        <p style="color:green;"><?= htmlspecialchars($success) ?></p>
-    <?php endif; ?>
     <?php if ($error): ?>
         <p style="color:red;"><?= htmlspecialchars($error) ?></p>
     <?php endif; ?>
@@ -75,7 +73,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <input type="date" name="fecha_subida" id="fecha_subida" value="<?= date('Y-m-d') ?>" required><br><br>
 
         <button type="submit">Crear aviso</button>
-        <a href="javascript:history.back()">Volver</a>
     </form>
 </body>
 </html>

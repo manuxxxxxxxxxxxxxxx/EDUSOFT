@@ -108,7 +108,6 @@
         </div>
     </div>
 
-    <!-- Resto del contenido existente -->
     <section class="contenedor-principal">
         <div class="fila">
             <div class="card grande">

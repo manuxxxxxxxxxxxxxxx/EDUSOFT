@@ -15,9 +15,9 @@ $id_clase = intval($_GET['id_clase']);
 
 // Obtener SIEMPRE el nombre del profesor y nombre de la clase
 $sql_prof = "SELECT c.nombre_clase, p.nombre AS nombre_profesor 
-             FROM clases c 
-             JOIN profesores p ON c.profesor_id = p.id 
-             WHERE c.id = ?";
+            FROM clases c 
+            JOIN profesores p ON c.profesor_id = p.id 
+            WHERE c.id = ?";
 $stmt_prof = $conn->prepare($sql_prof);
 $stmt_prof->bind_param("i", $id_clase);
 $stmt_prof->execute();
@@ -83,16 +83,16 @@ while ($fila = $result_tareas->fetch_assoc()) {
     $stmt_materiales->execute();
     $resultado_materiales = $stmt_materiales->get_result();
 
-    // Obtener avisos para esta clase
-    $sql_avisos = "SELECT titulo, descripcion, fecha_subida 
-                FROM avisos 
-                WHERE id_clase = ? 
-                ORDER BY fecha_subida DESC";
-    $stmt_avisos = $conn->prepare($sql_avisos);
-    $stmt_avisos->bind_param("i", $id_clase);
-    $stmt_avisos->execute();
-    $resultado_avisos = $stmt_avisos->get_result();
-
+// Obtener avisos de la clase (SIEMPRE, para cualquier usuario)
+$avisos = [];
+$sql_avisos = "SELECT * FROM avisos WHERE id_clase = ? ORDER BY fecha_subida DESC";
+$stmt_avisos = $conn->prepare($sql_avisos);
+$stmt_avisos->bind_param("i", $id_clase);
+$stmt_avisos->execute();
+$resultado_avisos = $stmt_avisos->get_result();
+while ($aviso = $resultado_avisos->fetch_assoc()) {
+    $avisos[] = $aviso;
+}
 
 // Obtener materiales subidos por el profesor para esta clase
 $materiales_clase = [];
@@ -120,19 +120,6 @@ $stmt_alumnos->execute();
 $resultado_alumnos = $stmt_alumnos->get_result();
 while($row = $resultado_alumnos->fetch_assoc()) {
     $lista_alumnos[] = $row;
-}
-
-// Obtener avisos de la clase
-$avisos = [];
-if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase)) {
-    $sql_avisos = "SELECT * FROM avisos WHERE id_clase = ? ORDER BY fecha_subida DESC";
-    $stmt_avisos = $conn->prepare($sql_avisos);
-    $stmt_avisos->bind_param("i", $id_clase);
-    $stmt_avisos->execute();
-    $resultado_avisos = $stmt_avisos->get_result();
-    while ($aviso = $resultado_avisos->fetch_assoc()) {
-        $avisos[] = $aviso;
-    }
 }
 ?>
 <!DOCTYPE html>

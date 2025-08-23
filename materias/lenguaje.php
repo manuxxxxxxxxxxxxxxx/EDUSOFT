@@ -111,15 +111,16 @@ if (isset($_SESSION['id_estudiante'])) {
     $stmt_materiales->execute();
     $resultado_materiales = $stmt_materiales->get_result();
 
-    // Obtener avisos para esta clase
-    $sql_avisos = "SELECT titulo, descripcion, fecha_subida 
-                FROM avisos 
-                WHERE id_clase = ? 
-                ORDER BY fecha_subida DESC";
-    $stmt_avisos = $conn->prepare($sql_avisos);
-    $stmt_avisos->bind_param("i", $id_clase);
-    $stmt_avisos->execute();
-    $resultado_avisos = $stmt_avisos->get_result();
+// Obtener avisos de la clase (SIEMPRE, para cualquier usuario)
+$avisos = [];
+$sql_avisos = "SELECT * FROM avisos WHERE id_clase = ? ORDER BY fecha_subida DESC";
+$stmt_avisos = $conn->prepare($sql_avisos);
+$stmt_avisos->bind_param("i", $id_clase);
+$stmt_avisos->execute();
+$resultado_avisos = $stmt_avisos->get_result();
+while ($aviso = $resultado_avisos->fetch_assoc()) {
+    $avisos[] = $aviso;
+}
 
 
 // Obtener materiales subidos por el profesor para esta clase
