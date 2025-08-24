@@ -43,6 +43,10 @@ if (isset($_SESSION['id_estudiante'])) {
 }
 
 // Lógica para profesores
+$tareas_profesor = [];
+$materiales_clase = [];
+$avisos = [];
+
 if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
     $profesor_id = $_SESSION['id'];
 
@@ -59,6 +63,17 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') {
 
     // Obtener tareas del profesor para esta clase
 
+    $sql_tareas = "SELECT * FROM tareas_profesor WHERE id_clase = ? ORDER BY fecha_creacion DESC";
+    $stmt_tareas = $conn->prepare($sql_tareas);
+    $stmt_tareas->bind_param("i", $id_clase);
+    $stmt_tareas->execute();
+    $resultado_tareas_profesor = $stmt_tareas->get_result();
+    while ($fila = $resultado_tareas_profesor->fetch_assoc()) {
+        $tareas_profesor[] = $fila;
+    }
+
+    // Obtener materiales de estudio para esta clase
+
     $clase = $result_clase->fetch_assoc();
 }
 
@@ -73,6 +88,19 @@ while ($fila = $result_tareas->fetch_assoc()) {
     $tareas_profesor[] = $fila;
 }
 
+$entregas_alumno = [];
+if (isset($_SESSION['id_estudiante'])) {
+    $id_estudiante = $_SESSION['id_estudiante'];
+    $sql = "SELECT * FROM tareas WHERE id_estudiante = ? AND materia = ? AND id_clase = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("isi", $id_estudiante, $materia, $id_clase);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $entregas_alumno[$row['id_tarea_profesor']] = $row; // index by tarea_profesor id
+    }
+}
+
     // Obtener materiales de estudio para esta clase
     $sql_materiales = "SELECT titulo, descripcion, archivo, ruta_archivo, fecha_subida 
                     FROM materiales_estudio 
@@ -83,20 +111,22 @@ while ($fila = $result_tareas->fetch_assoc()) {
     $stmt_materiales->execute();
     $resultado_materiales = $stmt_materiales->get_result();
 
-    // Obtener avisos para esta clase
-    $sql_avisos = "SELECT titulo, descripcion, fecha_subida 
-                FROM avisos 
-                WHERE id_clase = ? 
-                ORDER BY fecha_subida DESC";
-    $stmt_avisos = $conn->prepare($sql_avisos);
-    $stmt_avisos->bind_param("i", $id_clase);
-    $stmt_avisos->execute();
-    $resultado_avisos = $stmt_avisos->get_result();
+// Obtener avisos de la clase (SIEMPRE, para cualquier usuario)
+$avisos = [];
+$sql_avisos = "SELECT * FROM avisos WHERE id_clase = ? ORDER BY fecha_subida DESC";
+$stmt_avisos = $conn->prepare($sql_avisos);
+$stmt_avisos->bind_param("i", $id_clase);
+$stmt_avisos->execute();
+$resultado_avisos = $stmt_avisos->get_result();
+while ($aviso = $resultado_avisos->fetch_assoc()) {
+    $avisos[] = $aviso;
+}
 
 
 // Obtener materiales subidos por el profesor para esta clase
 $materiales_clase = [];
-if (isset($id_clase)) {
+if (isset($id_clase)) 
+
     $sql_materiales = "SELECT * FROM materiales_estudio WHERE id_clase = ? ORDER BY fecha_subida DESC";
     $stmt_materiales = $conn->prepare($sql_materiales);
     $stmt_materiales->bind_param("i", $id_clase);
@@ -105,7 +135,8 @@ if (isset($id_clase)) {
     while ($material = $resultado_materiales->fetch_assoc()) {
         $materiales_clase[] = $material;
     }
-}
+
+
 
 //obtener alumnos
 $lista_alumnos = [];
@@ -125,6 +156,7 @@ while($row = $resultado_alumnos->fetch_assoc()) {
 // Obtener avisos de la clase
 $avisos = [];
 if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase)) {
+
     $sql_avisos = "SELECT * FROM avisos WHERE id_clase = ? ORDER BY fecha_subida DESC";
     $stmt_avisos = $conn->prepare($sql_avisos);
     $stmt_avisos->bind_param("i", $id_clase);
@@ -178,6 +210,75 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
         showSection("tablon");
     });
     </script>
+    <style>
+        .tablon-secciones {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .tablon-section {
+            flex: 1 1 320px;
+            min-width: 320px;
+            max-width: 380px;
+            background: #f9f9fb;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(44,64,187,.09);
+            padding: 14px 18px 6px 18px;
+            margin-bottom: 10px;
+        }
+        .tablon-section h3 {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+        .tablon-card {
+            background: #f5f5f5;
+            border-radius: 5px;
+            margin: 12px 0;
+            padding: 14px 14px 10px 14px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+            transition: background 0.18s;
+            display: block;
+            text-decoration: none;
+            border-left: 5px solid #e4eaff;
+            min-height: 80px;
+        }
+        .tablon-card:hover {
+            background: #e4eaff;
+        }
+        .tablon-titulo {
+            font-size: 1.07em;
+            font-weight: bold;
+        }
+        .tablon-desc {
+            font-size: 0.97em;
+            color: #444;
+            margin: 4px 0 0 0;
+        }
+        .tablon-info {
+            font-size: 0.93em;
+            color: #888;
+            margin-top: 5px;
+            font-weight: normal;
+        }
+        .sidebar nav button.active {
+            background: #e4eaff;
+            color: #2d3483;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(44,64,187,.12);
+        }
+        @media (max-width: 1100px) {
+            .tablon-secciones { flex-direction: column; gap: 10px;}
+            .tablon-section { max-width: none; min-width: 0;}
+        }
+    </style>
 </head>
 <body>
     <div class="sidebar">
@@ -285,31 +386,81 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                 </div>
             </section>
          <section id="tareas" class="seccion" style="display: none;">
-            <h2 data-i18n="tareas">Tareas</h2>
-            <!-- Mostrar tareas del profesor -->
-                <div class="tareas-container">
-                    <?php if (!empty($tareas_profesor)): ?>
-                        <?php foreach ($tareas_profesor as $tarea): ?>
-                            <div class="tarea">
-                                <i class="fas fa-book"></i>
-                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
-                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
-                                <small>Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
-                                <?php if (!empty($tarea['ruta_archivo'])): ?>
-                                    <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
-                                <?php endif; ?>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p>No se han asignado tareas aún.</p>
-                    <?php endif; ?>
+                <div class="section-card">
+                    <h2 data-i18n="tareas">Tareas</h2>
+                    <div class="tareas-container">
+                        <?php if (!empty($tareas_profesor)): ?>
+                            <?php foreach ($tareas_profesor as $tarea): ?>
+                                <div class="tarea">
+                                    <i class="fas fa-book"></i>
+                                    <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                                    <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                                    <small>
+                                        Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | 
+                                        Puntos: <?php echo $tarea['puntos']; ?>
+                                    </small>
+                                    <?php if (!empty($tarea['archivo_adjunto'])): ?>
+                                        <br><a href="<?php echo htmlspecialchars($tarea['archivo_adjunto']); ?>" target="_blank">📎 Ver archivo adjunto del profesor</a>
+                                    <?php endif; ?>
+                                    <?php if (isset($_SESSION['id_estudiante'])): ?>
+                                        <div class="entrega-alumno">
+                                            <?php
+                                            $entrega = $entregas_alumno[$tarea['id']] ?? null;
+                                            $archivos = [];
+                                            if ($entrega) {
+                                                $sql_archivos = "SELECT * FROM tareas_archivos WHERE id_tarea = ?";
+                                                $stmt_archivos = $conn->prepare($sql_archivos);
+                                                $stmt_archivos->bind_param("i", $entrega['id']);
+                                                $stmt_archivos->execute();
+                                                $result_archivos = $stmt_archivos->get_result();
+                                                while ($fila = $result_archivos->fetch_assoc()) {
+                                                    $archivos[] = $fila;
+                                                }
+                                            }
+                                            ?>
+                                            <?php if ($entrega && count($archivos) > 0): ?>
+                                                <div>
+                                                    <h5>Archivos subidos:</h5>
+                                                    <?php foreach ($archivos as $file): ?>
+                                                        <a href="<?php echo htmlspecialchars($file['ruta_archivo']); ?>" target="_blank">
+                                                            <?php echo htmlspecialchars($file['nombre_archivo']); ?>
+                                                        </a>
+                                                        <small>(<?php echo htmlspecialchars($file['fecha_subida']); ?>)</small>
+                                                        <button onclick="eliminarArchivo(<?php echo $file['id']; ?>)">❌ Eliminar archivo</button>
+                                                        <br>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                            <?php endif; ?>
+                                            <form class="formSubirTarea" action="subir_tarea_ajax.php" method="POST" enctype="multipart/form-data">
+                                                <input type="hidden" name="id_tarea_profesor" value="<?php echo $tarea['id']; ?>">
+                                                <input type="hidden" name="materia" value="lenguaje">
+                                                <input type="hidden" name="id_clase" value="<?php echo $id_clase; ?>">
+                                                <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>">
+                                                <?php if ($entrega): ?>
+                                                    <input type="hidden" name="id_entrega" value="<?php echo $entrega['id']; ?>">
+                                                <?php endif; ?>
+                                                <label for="archivo_<?php echo $tarea['id']; ?>" data-i18n="archivo2">Archivo(s):</label>
+                                                <input type="file" name="archivo[]" id="archivo_<?php echo $tarea['id']; ?>" multiple required><br>
+                                                <button type="submit" data-i18n="subir">Subir archivo(s)</button>
+                                            </form>
+                                            <div id="mensajeSubida_<?php echo $tarea['id']; ?>"></div>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p>No se han asignado tareas aún.</p>
+                        <?php endif; ?>
+                    </div>
                 </div>
+            </section>
+
 
     <!-- Formulario para estudiantes subir tarea -->
     <?php if (isset($_SESSION['id_estudiante'])): ?>
         <h2 data-i18n="sube">Sube tu tarea</h2>
         <form id="formSubirTarea" action="subir_tarea_ajax.php" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="materia" value="biologia">
+            <input type="hidden" name="materia" value="matematica">
             <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>">
             <label for="archivo" data-i18n="archivo2">Archivo (PDF, DOCX, JPG...):</label>
             <input type="file" name="archivo" id="archivo" required><br><br>
@@ -338,7 +489,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
         <p>No tienes permisos para subir tareas.</p>
     <?php endif; ?>
         </section>
-            </section>
+
             <section id="material" class="seccion" style="display: none;">
                 <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
                 <?php
@@ -448,24 +599,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                 <?php endif; ?>
             </ul>
         </section>
-            <div id="modalTarea" class="modal" style="display:none;">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2 id="modalTitulo">Título de la tarea</h2>
-                    <p id="modalDescripcion">Descripción de la tarea</p>
-                    <div class="modal-section">
-                        <label for="archivoSubir">Subir archivos:</label>
-                        <input type="file" id="archivoSubir" multiple>
-                        <ul id="listaArchivos"></ul>
-                    </div>
-                    <div class="modal-section">
-                        <label for="enlaceInput">Añadir enlace:</label>
-                        <input type="url" id="enlaceInput" placeholder="https://">
-                        <button id="agregarEnlace">Agregar enlace</button>
-                        <ul id="listaEnlaces"></ul>
-                    </div>
-                </div>
-            </div>
+
         </main>
     </div>
     <script src="../materias/js/scriptMatematica.js"></script>

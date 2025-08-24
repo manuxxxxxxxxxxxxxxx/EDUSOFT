@@ -1,6 +1,11 @@
 <?php
-session_start();
-require_once '../conexiones/conexion.php';
+require_once "../conexiones/conexion.php";
+$id_tarea = $_POST['id_tarea'];
+$sql = "DELETE FROM tareas WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id_tarea);
+$stmt->execute();
+echo "Entrega eliminada.";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
     $id = intval($_POST['id']);

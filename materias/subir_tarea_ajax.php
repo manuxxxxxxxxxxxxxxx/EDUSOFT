@@ -1,56 +1,84 @@
 <?php
-date_default_timezone_set('America/El_Salvador');
 session_start();
-header("Content-Type: application/json");
-include '../conexiones/conexion.php';
+require_once "../conexiones/conexion.php";
 
-if (!isset($_SESSION['id_estudiante'])) {
-    echo json_encode(["success" => false, "mensaje" => "No autorizado"]);
-    exit;
-}
-
-$id_estudiante = $_SESSION['id_estudiante'];
+$id_tarea_profesor = $_POST['id_tarea_profesor'];
+$id_estudiante = $_POST['id_estudiante'];
+$id_clase = $_POST['id_clase'];
 $materia = $_POST['materia'];
+$id_entrega = isset($_POST['id_entrega']) ? $_POST['id_entrega'] : null;
 
-if (!isset($_FILES['archivo']) || $_FILES['archivo']['error'] != 0) {
-    echo json_encode(["success" => false, "mensaje" => "❌ Error al subir el archivo"]);
-    exit;
+// Si ya existe la entrega, usar ese ID. Si no, crear la entrega.
+if (!$id_entrega) {
+    $sql = "INSERT INTO tareas (id_tarea_profesor, materia, id_clase, id_estudiante, fecha_subida) VALUES (?, ?, ?, ?, NOW())";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("isii", $id_tarea_profesor, $materia, $id_clase, $id_estudiante);
+    $stmt->execute();
+    $id_entrega = $conn->insert_id;
 }
 
-// Ruta y nombre del archivo
-$nombreArchivo = basename($_FILES['archivo']['name']);
-$carpeta = "tareas_subidas/" . $materia . "/";
-if (!file_exists($carpeta)) {
+// Procesar archivos subidos
+$mensajes = [];
+foreach ($_FILES['archivo']['tmp_name'] as $i => $tmpName) {
+    if ($_FILES['archivo']['error'][$i] === UPLOAD_ERR_OK) {
+        $nombre = $_FILES['archivo']['name'][$i];
+        $ruta = "../uploads/" . uniqid() . "_" . basename($nombre);
+        move_uploaded_file($tmpName, $ruta);
+
+        $sql = "INSERT INTO tareas_archivos (id_tarea, nombre_archivo, ruta_archivo, fecha_subida) VALUES (?, ?, ?, NOW())";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("iss", $id_entrega, $nombre, $ruta);
+        $stmt->execute();
+
+        $mensajes[] = "$nombre subido correctamente.";
+    }
+}
+
+// Verifica si ya existe entrega
+$sql_check = "SELECT id FROM tareas WHERE id_estudiante = ? AND id_tarea_profesor = ?";
+$stmt_check = $conn->prepare($sql_check);
+$stmt_check->bind_param("ii", $id_estudiante, $id_tarea_profesor);
+$stmt_check->execute();
+$stmt_check->store_result();
+
+if ($stmt_check->num_rows > 0) {
+    // Ya tiene entrega, obtén el id
+    $stmt_check->bind_result($id_tarea);
+    $stmt_check->fetch();
+} else {
+    // Crea nueva entrega
+    $sql = "INSERT INTO tareas (id_estudiante, materia, id_clase, id_tarea_profesor, fecha_subida)
+            VALUES (?, ?, ?, ?, NOW())";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("isii", $id_estudiante, $materia, $id_clase, $id_tarea_profesor);
+    $stmt->execute();
+    $id_tarea = $stmt->insert_id;
+}
+
+// Procesa varios archivos
+$respuestas = [];
+$carpeta = "../tareas_subidas/" . $materia . "/";
+if (!is_dir($carpeta)) {
     mkdir($carpeta, 0777, true);
 }
 
-$nombreUnico = time() . "_" . preg_replace("/[^a-zA-Z0-9.]/", "_", $nombreArchivo);
-$rutaCompleta = $carpeta . $nombreUnico;
-
-if (move_uploaded_file($_FILES['archivo']['tmp_name'], $rutaCompleta)) {
-    $fecha = date("Y-m-d H:i:s");
-
-    // Guardar en BD
-    $stmt = $conn->prepare("INSERT INTO tareas (id_estudiante, materia, ruta_archivo, nombre_archivo, fecha_subida) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("issss", $id_estudiante, $materia, $rutaCompleta, $nombreArchivo, $fecha);
-    
-    if ($stmt->execute()) {
-        $id_insertado = $stmt->insert_id;
-
-        echo json_encode([
-            "success" => true,
-            "mensaje" => "✅ Tarea subida exitosamente.",
-            "archivo" => [
-                "id" => $id_insertado,
-                "nombre" => $nombreArchivo,
-                "ruta" => $rutaCompleta,
-                "fecha" => date("d/m/Y H:i:s", strtotime($fecha))
-            ]
-        ]);
-    } else {
-        echo json_encode(["success" => false, "mensaje" => "❌ Error al guardar en la base de datos."]);
+foreach ($_FILES['archivo']['name'] as $key => $archivo) {
+    $tmp = $_FILES['archivo']['tmp_name'][$key];
+    if ($archivo && $tmp) {
+        $ruta = $carpeta . time() . "_" . basename($archivo);
+        if (move_uploaded_file($tmp, $ruta)) {
+            // Guarda cada archivo
+            $sql_archivo = "INSERT INTO tareas_archivos (id_tarea, nombre_archivo, ruta_archivo) VALUES (?, ?, ?)";
+            $stmt_archivo = $conn->prepare($sql_archivo);
+            $stmt_archivo->bind_param("iss", $id_tarea, $archivo, $ruta);
+            $stmt_archivo->execute();
+            $respuestas[] = $archivo . " subido correctamente.";
+        } else {
+            $respuestas[] = "❌ Error al subir " . $archivo;
+        }
     }
-} else {
-    echo json_encode(["success" => false, "mensaje" => "❌ No se pudo mover el archivo."]);
 }
+
+echo json_encode(['mensaje' => 'Tu archivo se subió correctamente.']);
+exit;
 ?>
