@@ -185,23 +185,23 @@ foreach ($comentarios as $c) {
             </div>
         </div>
         <!-- CURSOS -->
-        <div id="seccion-cursos" class="seccion-panel" style="display:none;">
+                <div id="seccion-cursos" class="seccion-panel" style="display:none;">
             <div class="section">
-                <h3 data-i18n="maestro_panel_mis_cursos">Mis cursos</h3>
-                <input type="button" value="Crear curso" class="quick-action" onclick="window.location.href='../frontend_maestros/crear_curso.php'" data-i18n="maestro_panel_crear_curso">
+                <h3>Mis cursos</h3>
+                <input type="button" value="Crear curso" class="quick-action" onclick="window.location.href='../frontend_maestros/crear_curso.php'">
                 <ul class="cursos-lista">
                     <?php if (count($clases) > 0): ?>
                         <?php foreach ($clases as $clase): ?>
                             <li>
-                                <a class="curso-link" href="../materias/<?php echo $clase['materia']; ?>.php?id_clase=<?php echo $clase['id']; ?>" data-i18n="maestro_panel_link_curso">
+                                <a class="curso-link" href="../materias/<?php echo $clase['materia']; ?>.php?id_clase=<?php echo $clase['id']; ?>">
                                     <?= htmlspecialchars($clase['nombre_clase']); ?>
                                 </a>
-                                <span class="curso-materia" data-i18n="maestro_panel_materia_clase"> – <?= ucfirst($clase['materia']); ?></span><br>
-                                <span class="curso-codigo" data-i18n="maestro_panel_codigo_clase"><strong>Código de clase:</strong> <?= htmlspecialchars($clase['codigo_clase']); ?></span>
+                                <span class="curso-materia"> – <?= ucfirst($clase['materia']); ?></span><br>
+                                <span class="curso-codigo"><strong>Código de clase:</strong> <?= htmlspecialchars($clase['codigo_clase']); ?></span>
                             </li>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <li data-i18n="maestro_panel_no_clases">No has creado ninguna clase aún.</li>
+                        <li>No has creado ninguna clase aún.</li>
                     <?php endif; ?>
                 </ul>
             </div>
