@@ -449,9 +449,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                 <p>No se han asignado tareas aún.</p>
             <?php endif; ?>
         </div>
-
-
-
          <section id="tareas" class="seccion" style="display: none;">
             <h2 data-i18n="tareas">Tareas</h2>
             <!-- Mostrar tareas del profesor -->
@@ -474,6 +471,63 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
 
                 </div>
             </section>
+            <section id="comentarios" class="seccion">
+    <h2>Comentarios y dudas 
+        <?php
+        $pendientes = 0;
+        foreach ($comentarios as $c) {
+            if ($c['estado'] == 'pendiente') $pendientes++;
+        }
+        if ($pendientes > 0) echo "<span class='badge' style='background:#e65100;color:white;padding:2px 9px;border-radius:11px;'>$pendientes pendientes</span>";
+        ?>
+    </h2>
+    <?php if (isset($_SESSION['id_estudiante']) || (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor')): ?>
+    <form method="POST" class="form-nuevo-comentario">
+    <label for="nuevo_comentario">Enviar nuevo comentario:</label>
+    <textarea name="nuevo_comentario" id="nuevo_comentario" class="textarea-nuevo-comentario" rows="3" placeholder="Escribe tu duda o comentario..." required></textarea>
+    <button type="submit" class="btn-nuevo-comentario">Enviar comentario</button>
+</form>
+    <?php endif; ?>
+    <ul style="list-style:none;padding-left:0;">
+        <?php foreach ($comentarios as $c): ?>
+            <li id="comentario-<?= $c['id'] ?>" style="margin-bottom:15px;border-bottom:1px solid #93a3ddff;padding-bottom:8px;">
+                <b><?= htmlspecialchars($c['nombre_alumno'] ?? $c['nombre_profesor'] ?? 'Usuario') ?>:</b>
+                <?= htmlspecialchars($c['comentario']) ?>
+                <small style="color:#888;">(<?= date("d/m/Y H:i", strtotime($c['fecha'])) ?>)</small>
+                <!-- RESPUESTAS MULTIHILO -->
+                <?php
+                $respuestas = [];
+                $stmt_resp = $conn->prepare("SELECT * FROM respuestas_comentario WHERE id_comentario = ? ORDER BY fecha ASC");
+                $stmt_resp->bind_param("i", $c['id']);
+                $stmt_resp->execute();
+                $result_resp = $stmt_resp->get_result();
+                while ($row_resp = $result_resp->fetch_assoc()) {
+                    $respuestas[] = $row_resp;
+                }
+                $stmt_resp->close();
+                ?>
+                <?php foreach ($respuestas as $r): ?>
+                    <div class="respuesta-hilo <?= $r['tipo_usuario'] == 'profesor' ? 'resp-prof' : 'resp-alum' ?>">
+                        <b><?= $r['tipo_usuario'] == 'profesor' ? 'Profesor' : 'Alumno' ?>:</b>
+                        <?= htmlspecialchars($r['respuesta']) ?>
+                        <small style="color:#888;"><?= date("d/m/Y H:i", strtotime($r['fecha'])) ?></small>
+                    </div>
+                <?php endforeach; ?>
+                <!-- FORMULARIO DE RESPUESTA MULTIHILO -->
+                <?php if (isset($_SESSION['id_estudiante']) || (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor')): ?>
+                <form method="POST" class="form-resp-comentario">
+                    <input type="hidden" name="id_comentario_resp" value="<?= $c['id'] ?>">
+                    <textarea name="texto_respuesta" rows="2" class="textarea-respuesta" placeholder="Responder al comentario..." required></textarea>
+                    <button type="submit" class="btn-respuesta">Responder</button>
+                </form>
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+        <?php if (empty($comentarios)): ?>
+            <li>No hay comentarios aún.</li>
+        <?php endif; ?>
+    </ul>
+</section>
             <!-- Material -->
             <section id="material" class="seccion" style="display: none;">
                 <div class="section-card">
