@@ -15,9 +15,9 @@ $id_clase = intval($_GET['id_clase']);
 
 // Obtener SIEMPRE el nombre del profesor y nombre de la clase
 $sql_prof = "SELECT c.nombre_clase, p.nombre AS nombre_profesor 
-             FROM clases c 
-             JOIN profesores p ON c.profesor_id = p.id 
-             WHERE c.id = ?";
+            FROM clases c 
+            JOIN profesores p ON c.profesor_id = p.id 
+            WHERE c.id = ?";
 $stmt_prof = $conn->prepare($sql_prof);
 $stmt_prof->bind_param("i", $id_clase);
 $stmt_prof->execute();
@@ -166,6 +166,50 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
         $avisos[] = $aviso;
     }
 }
+// RESPUESTAS MÚLTIPLES EN COMENTARIOS (ALUMNO O PROFESOR)
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['id_comentario_resp'], $_POST['texto_respuesta'])) {
+    $id_comentario_resp = intval($_POST['id_comentario_resp']);
+    $texto_respuesta = trim($_POST['texto_respuesta']);
+    $tipo_usuario = (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') ? 'profesor' : 'alumno';
+    $id_usuario = isset($_SESSION['id']) ? $_SESSION['id'] : (isset($_SESSION['id_estudiante']) ? $_SESSION['id_estudiante'] : null);
+    if ($texto_respuesta && $id_comentario_resp && $id_usuario) {
+        $stmt_insert = $conn->prepare("INSERT INTO respuestas_comentario (id_comentario, id_usuario, tipo_usuario, respuesta) VALUES (?, ?, ?, ?)");
+        $stmt_insert->bind_param("iiss", $id_comentario_resp, $id_usuario, $tipo_usuario, $texto_respuesta);
+        $stmt_insert->execute();
+        $stmt_insert->close();
+        header("Location: ".$_SERVER['REQUEST_URI']."#comentario-".$id_comentario_resp);
+        exit;
+    }
+}
+$comentarios = [];
+$sql_comentarios = "SELECT c.*, e.nombre AS nombre_alumno, p.nombre AS nombre_profesor
+    FROM comentarios_clase c
+    LEFT JOIN estudiantes e ON c.id_estudiante = e.ID
+    LEFT JOIN profesores p ON c.id_profesor = p.id
+    WHERE c.id_clase = ?
+    ORDER BY c.fecha DESC";
+$stmt_coment = $conn->prepare($sql_comentarios);
+$stmt_coment->bind_param("i", $id_clase);
+$stmt_coment->execute();
+$res_coment = $stmt_coment->get_result();
+while ($row = $res_coment->fetch_assoc()) {
+    $comentarios[] = $row;
+}
+$stmt_coment->close();
+
+// Procesar comentario nuevo del alumno
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) && isset($_SESSION['id_estudiante'])) {
+    $comentario = trim($_POST['nuevo_comentario']);
+    $id_estudiante = $_SESSION['id_estudiante'];
+    if ($comentario) {
+        $stmt_add = $conn->prepare("INSERT INTO comentarios_clase (id_clase, id_estudiante, comentario) VALUES (?, ?, ?)");
+        $stmt_add->bind_param("iis", $id_clase, $id_estudiante, $comentario);
+        $stmt_add->execute();
+        $stmt_add->close();
+        header("Location: matematica.php?id_clase=$id_clase#comentarios");
+        exit;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -210,75 +254,6 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
         showSection("tablon");
     });
     </script>
-    <style>
-        .tablon-secciones {
-            display: flex;
-            gap: 28px;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-        .tablon-section {
-            flex: 1 1 320px;
-            min-width: 320px;
-            max-width: 380px;
-            background: #f9f9fb;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(44,64,187,.09);
-            padding: 14px 18px 6px 18px;
-            margin-bottom: 10px;
-        }
-        .tablon-section h3 {
-            font-size: 1.2em;
-            font-weight: bold;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 9px;
-        }
-        .tablon-card {
-            background: #f5f5f5;
-            border-radius: 5px;
-            margin: 12px 0;
-            padding: 14px 14px 10px 14px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-            font-weight: 500;
-            color: #333;
-            cursor: pointer;
-            transition: background 0.18s;
-            display: block;
-            text-decoration: none;
-            border-left: 5px solid #e4eaff;
-            min-height: 80px;
-        }
-        .tablon-card:hover {
-            background: #e4eaff;
-        }
-        .tablon-titulo {
-            font-size: 1.07em;
-            font-weight: bold;
-        }
-        .tablon-desc {
-            font-size: 0.97em;
-            color: #444;
-            margin: 4px 0 0 0;
-        }
-        .tablon-info {
-            font-size: 0.93em;
-            color: #888;
-            margin-top: 5px;
-            font-weight: normal;
-        }
-        .sidebar nav button.active {
-            background: #e4eaff;
-            color: #2d3483;
-            font-weight: bold;
-            box-shadow: 0 2px 8px rgba(44,64,187,.12);
-        }
-        @media (max-width: 1100px) {
-            .tablon-secciones { flex-direction: column; gap: 10px;}
-            .tablon-section { max-width: none; min-width: 0;}
-        }
-    </style>
 </head>
 <body>
     <div class="sidebar">

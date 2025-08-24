@@ -363,4 +363,240 @@ body {
             color: #888;
         }
 
-        
+#seccion-mensajes .section {
+background: linear-gradient(120deg, #fafdff 85%, #e3f0ff 100%);
+border-radius: 18px;
+box-shadow: 0 2px 12px rgba(100,150,255,0.07);
+padding: 32px 30px 26px 30px;
+max-width: 1000px;
+margin: 0 auto 32px auto;
+color: #223a51;
+}
+
+#seccion-mensajes .section h3 {
+font-size: 1.18em;
+font-weight: 700;
+color: #223a51;
+margin-bottom: 18px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+#seccion-mensajes .section .badge {
+background: #e65100;
+color: #fff;
+padding: 2px 10px;
+border-radius: 12px;
+font-size: 0.98em;
+margin-left: 8px;
+}
+
+#seccion-mensajes ul {
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+#seccion-mensajes ul > li {
+margin-bottom: 19px;
+border-bottom: 1px solid #edf2fa;
+padding-bottom: 10px;
+display: block;
+background: #fff;
+border-radius: 8px;
+box-shadow: 0 1px 6px rgba(100,150,255,0.04);
+padding-top: 8px;
+}
+
+#seccion-mensajes ul > li b {
+color: #1976d2;
+font-weight: 600;
+font-size: 1em;
+margin-right: 4px;
+}
+#seccion-mensajes ul > li small {
+color: #8fa3c4;
+font-size: 0.93em;
+margin-left: 7px;
+}
+#seccion-mensajes ul > li span {
+font-weight: 400;
+color: #888;
+font-size: 0.97em;
+}
+
+/* Respuestas multihilo diferenciadas */
+.respuesta-hilo {
+margin: 7px 0 2px 18px;
+padding: 8px 13px;
+border-radius: 8px;
+font-size: 14px;
+background: #f7fbff;
+color: #234567;
+border-left: 3px solid #90caf9;
+}
+.resp-prof {
+background: #e0f7fa;
+border-left: 3px solid #1976d2;
+}
+.resp-alum {
+background: #fffde7;
+border-left: 3px solid #fbc02d;
+}
+
+/* Formulario de respuesta: compacto y diferenciado */
+.form-resp-comentario {
+margin: 7px 0 0 18px;
+display: flex;
+gap: 7px;
+align-items: center;
+background: #f7faff;
+border-radius: 8px;
+padding: 7px 11px;
+box-shadow: 0 0px 4px rgba(100,150,255,0.04);
+border: 1px solid #e3e8f0;
+}
+
+.textarea-respuesta {
+width: 100%;
+min-height: 26px;
+max-width: 260px;
+padding: 6px 10px;
+border: 1.2px solid #c7dbfa;
+border-radius: 7px;
+background: #fff;
+font-size: 13px;
+resize: vertical;
+transition: border-color 0.13s;
+outline: none;
+}
+
+.textarea-respuesta:focus {
+border-color: #1976d2;
+background: #f6fbff;
+}
+
+.btn-respuesta {
+padding: 6px 15px;
+background: #e3e8f0;
+color: #1976d2;
+border: none;
+border-radius: 7px;
+font-weight: 500;
+font-size: 13px;
+cursor: pointer;
+transition: background 0.13s, color 0.13s;
+}
+.btn-respuesta:hover {
+background: #90caf9;
+color: #fff;
+}
+
+@media (max-width: 700px) {
+#seccion-mensajes .section {
+    padding: 13px 2vw 10px 2vw;
+    max-width: 99vw;
+}
+.form-resp-comentario {
+    padding: 7px 2vw;
+}
+.textarea-respuesta {
+    font-size: 13px;
+    padding: 7px 8px;
+}
+.respuesta-hilo {
+    margin-left: 3vw;
+}
+}        
+.alumnos-section {
+    background: linear-gradient(120deg, #fafdff 85%, #e3f0ff 100%);
+    border-radius: 13px;
+    box-shadow: 0 2px 12px #0001;
+    padding: 26px 18px 18px 18px;
+    max-width: 600px;
+    margin: 0 auto 32px auto;
+}
+
+.select-clase {
+    width: 100%;
+    padding: 7px 12px;
+    border-radius: 8px;
+    border: 1px solid #e3eafc;
+    margin-bottom: 13px;
+    font-size: 1em;
+    background: #fafdff;
+    color: #223a51;
+}
+
+.alumnos-buscar {
+    width: 95%;
+    border-radius: 8px;
+    border: 1px solid #e3eafc;
+    padding: 7px 12px;
+    margin-bottom: 8px;
+    font-size: 1em;
+    background: #fcfcfc;
+    color: #223a51;
+}
+
+.lista-alumnos {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    min-height: 44px;
+}
+
+.lista-alumnos li {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px #0001;
+    padding: 10px 14px;
+    margin-bottom: 9px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    align-items: center;
+    font-size: 1em;
+    transition: box-shadow 0.2s;
+}
+.lista-alumnos li:hover {
+    box-shadow: 0 3px 14px #0002;
+}
+
+.alumnos-vacio {
+    color: #999;
+    font-size: 0.98em;
+    background: none !important;
+    box-shadow: none !important;
+}
+
+.alumno-nombre {
+    font-weight: 500;
+    color: #1976d2;
+    margin-right: 11px;
+}
+.alumno-num {
+    background: #e3eafc;
+    color: #223a51;
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 0.93em;
+    margin-right: 9px;
+}
+.alumno-email {
+    color: #888;
+    font-size: 0.95em;
+}
+
+@media (max-width: 700px) {
+    .alumnos-section {
+        padding: 8px 4vw 8px 4vw;
+        max-width: 99vw;
+    }
+    .lista-alumnos li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+}

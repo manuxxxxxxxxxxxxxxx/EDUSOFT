@@ -15,9 +15,9 @@ $id_clase = intval($_GET['id_clase']);
 
 // Obtener SIEMPRE el nombre del profesor y nombre de la clase
 $sql_prof = "SELECT c.nombre_clase, p.nombre AS nombre_profesor 
-             FROM clases c 
-             JOIN profesores p ON c.profesor_id = p.id 
-             WHERE c.id = ?";
+            FROM clases c 
+            JOIN profesores p ON c.profesor_id = p.id 
+            WHERE c.id = ?";
 $stmt_prof = $conn->prepare($sql_prof);
 $stmt_prof->bind_param("i", $id_clase);
 $stmt_prof->execute();
@@ -164,6 +164,50 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
     $resultado_avisos = $stmt_avisos->get_result();
     while ($aviso = $resultado_avisos->fetch_assoc()) {
         $avisos[] = $aviso;
+    }
+}
+// RESPUESTAS MÚLTIPLES EN COMENTARIOS (ALUMNO O PROFESOR)
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['id_comentario_resp'], $_POST['texto_respuesta'])) {
+    $id_comentario_resp = intval($_POST['id_comentario_resp']);
+    $texto_respuesta = trim($_POST['texto_respuesta']);
+    $tipo_usuario = (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') ? 'profesor' : 'alumno';
+    $id_usuario = isset($_SESSION['id']) ? $_SESSION['id'] : (isset($_SESSION['id_estudiante']) ? $_SESSION['id_estudiante'] : null);
+    if ($texto_respuesta && $id_comentario_resp && $id_usuario) {
+        $stmt_insert = $conn->prepare("INSERT INTO respuestas_comentario (id_comentario, id_usuario, tipo_usuario, respuesta) VALUES (?, ?, ?, ?)");
+        $stmt_insert->bind_param("iiss", $id_comentario_resp, $id_usuario, $tipo_usuario, $texto_respuesta);
+        $stmt_insert->execute();
+        $stmt_insert->close();
+        header("Location: ".$_SERVER['REQUEST_URI']."#comentario-".$id_comentario_resp);
+        exit;
+    }
+}
+$comentarios = [];
+$sql_comentarios = "SELECT c.*, e.nombre AS nombre_alumno, p.nombre AS nombre_profesor
+    FROM comentarios_clase c
+    LEFT JOIN estudiantes e ON c.id_estudiante = e.ID
+    LEFT JOIN profesores p ON c.id_profesor = p.id
+    WHERE c.id_clase = ?
+    ORDER BY c.fecha DESC";
+$stmt_coment = $conn->prepare($sql_comentarios);
+$stmt_coment->bind_param("i", $id_clase);
+$stmt_coment->execute();
+$res_coment = $stmt_coment->get_result();
+while ($row = $res_coment->fetch_assoc()) {
+    $comentarios[] = $row;
+}
+$stmt_coment->close();
+
+// Procesar comentario nuevo del alumno
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) && isset($_SESSION['id_estudiante'])) {
+    $comentario = trim($_POST['nuevo_comentario']);
+    $id_estudiante = $_SESSION['id_estudiante'];
+    if ($comentario) {
+        $stmt_add = $conn->prepare("INSERT INTO comentarios_clase (id_clase, id_estudiante, comentario) VALUES (?, ?, ?)");
+        $stmt_add->bind_param("iis", $id_clase, $id_estudiante, $comentario);
+        $stmt_add->execute();
+        $stmt_add->close();
+        header("Location: biologia.php?id_clase=$id_clase#comentarios");
+        exit;
     }
 }
 ?>
@@ -396,31 +440,64 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                     }
                     ?>
                 </ul>
-            </section>
-             <section id="comentarios" class="seccion" style="display: none;">
-                <h2><i class="fas fa-comments"></i> Comentarios</h2>
-                <ul class="lista-comentarios">
-                    <li>
-                        <i class="fas fa-user"></i>
-                        <span>Juan Pérez</span>
-                        <p>¿El informe debe incluir imágenes?</p>
-                        <small>22/08/2025 - 14:10</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-user"></i>
-                        <span>María Gómez</span>
-                        <p>¡Muy útil el material, gracias profe!</p>
-                        <small>22/08/2025 - 19:45</small>
-                    </li>
-                    <li>
-                        <i class="fas fa-user"></i>
-                        <span>Cristofer Alfaro</span>
-                        <p>¡Recuerden que el informe debe entregarse en PDF!</p>
-                        <small>23/08/2025 - 09:02</small>
-                    </li>
-                </ul>
-            </section>
-
+</section>
+<section id="comentarios" class="seccion">
+    <h2>Comentarios y dudas 
+        <?php
+        $pendientes = 0;
+        foreach ($comentarios as $c) {
+            if ($c['estado'] == 'pendiente') $pendientes++;
+        }
+        if ($pendientes > 0) echo "<span class='badge' style='background:#e65100;color:white;padding:2px 9px;border-radius:11px;'>$pendientes pendientes</span>";
+        ?>
+    </h2>
+    <?php if (isset($_SESSION['id_estudiante']) || (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor')): ?>
+    <form method="POST" class="form-nuevo-comentario">
+    <label for="nuevo_comentario">Enviar nuevo comentario:</label>
+    <textarea name="nuevo_comentario" id="nuevo_comentario" class="textarea-nuevo-comentario" rows="3" placeholder="Escribe tu duda o comentario..." required></textarea>
+    <button type="submit" class="btn-nuevo-comentario">Enviar comentario</button>
+</form>
+    <?php endif; ?>
+    <ul style="list-style:none;padding-left:0;">
+        <?php foreach ($comentarios as $c): ?>
+            <li id="comentario-<?= $c['id'] ?>" style="margin-bottom:15px;border-bottom:1px solid #93a3ddff;padding-bottom:8px;">
+                <b><?= htmlspecialchars($c['nombre_alumno'] ?? $c['nombre_profesor'] ?? 'Usuario') ?>:</b>
+                <?= htmlspecialchars($c['comentario']) ?>
+                <small style="color:#888;">(<?= date("d/m/Y H:i", strtotime($c['fecha'])) ?>)</small>
+                <!-- RESPUESTAS MULTIHILO -->
+                <?php
+                $respuestas = [];
+                $stmt_resp = $conn->prepare("SELECT * FROM respuestas_comentario WHERE id_comentario = ? ORDER BY fecha ASC");
+                $stmt_resp->bind_param("i", $c['id']);
+                $stmt_resp->execute();
+                $result_resp = $stmt_resp->get_result();
+                while ($row_resp = $result_resp->fetch_assoc()) {
+                    $respuestas[] = $row_resp;
+                }
+                $stmt_resp->close();
+                ?>
+                <?php foreach ($respuestas as $r): ?>
+                    <div class="respuesta-hilo <?= $r['tipo_usuario'] == 'profesor' ? 'resp-prof' : 'resp-alum' ?>">
+                        <b><?= $r['tipo_usuario'] == 'profesor' ? 'Profesor' : 'Alumno' ?>:</b>
+                        <?= htmlspecialchars($r['respuesta']) ?>
+                        <small style="color:#888;"><?= date("d/m/Y H:i", strtotime($r['fecha'])) ?></small>
+                    </div>
+                <?php endforeach; ?>
+                <!-- FORMULARIO DE RESPUESTA MULTIHILO -->
+                <?php if (isset($_SESSION['id_estudiante']) || (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor')): ?>
+                <form method="POST" class="form-resp-comentario">
+                    <input type="hidden" name="id_comentario_resp" value="<?= $c['id'] ?>">
+                    <textarea name="texto_respuesta" rows="2" class="textarea-respuesta" placeholder="Responder al comentario..." required></textarea>
+                    <button type="submit" class="btn-respuesta">Responder</button>
+                </form>
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+        <?php if (empty($comentarios)): ?>
+            <li>No hay comentarios aún.</li>
+        <?php endif; ?>
+    </ul>
+</section>
             <section id="material" class="seccion" style="display: none;">
                 <div class="section-card">
                     <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
@@ -462,7 +539,6 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                     ?>
                 </div>
             </section>
-           
 
             <section id="alumnos" class="seccion" style="display: none;">
             <h2 data-i18n="lista">Lista de Alumnos</h2>
