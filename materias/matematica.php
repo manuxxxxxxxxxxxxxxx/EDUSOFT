@@ -571,13 +571,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
             </section>
 
 
-
-
-
-
-
-
-
             <section id="alumnos" class="seccion" style="display: none;">
             <h2 data-i18n="lista">Lista de Alumnos</h2>
             <ul class="lista-alumnos">
