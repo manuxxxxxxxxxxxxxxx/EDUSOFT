@@ -440,7 +440,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                     }
                     ?>
                 </ul>
-
+</section>
 <section id="comentarios" class="seccion">
     <h2>Comentarios y dudas 
         <?php
