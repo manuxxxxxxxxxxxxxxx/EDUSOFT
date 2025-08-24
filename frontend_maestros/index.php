@@ -97,6 +97,20 @@ $pendientes = 0;
 foreach ($comentarios as $c) {
     if ($c['estado'] === 'pendiente') $pendientes++;
 }
+// Conteo único de alumnos
+$alumno_ids = [];
+foreach ($clases as $clase) {
+    $sql = "SELECT e.ID FROM clases_estudiantes ce JOIN estudiantes e ON ce.id_estudiante = e.ID WHERE ce.id_clase = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $clase['id']);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    while ($row = $res->fetch_assoc()) {
+        $alumno_ids[$row['ID']] = true; // solo un id por alumno
+    }
+    $stmt->close();
+}
+$total_alumnos_unicos = count($alumno_ids);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -146,38 +160,106 @@ foreach ($comentarios as $c) {
         </nav>
     </div>
     <div class="main-content">
-        <!-- INICIO -->
+       <!-- INICIO DINÁMICO -->
         <div id="seccion-inicio" class="seccion-panel">
             <div class="dashboard-cards">
                 <div class="card">
                     <i class="fas fa-book fa-2x icon-green"></i>
-                    <h3>3</h3>
+                    <h3><?= count($clases) ?></h3>
                     <p>Cursos asignados</p>
                     <button class="quick-action" onclick="location.reload()">Ver cursos</button>
                 </div>
                 <div class="card">
                     <i class="fas fa-users fa-2x icon-blue"></i>
-                    <h3>9</h3>
+                    <h3>
+                        <?php
+                        // Total de alumnos únicos en todas las clases
+                        $alumno_ids = [];
+                        foreach ($clases as $clase) {
+                            $sql = "SELECT e.ID FROM clases_estudiantes ce JOIN estudiantes e ON ce.id_estudiante = e.ID WHERE ce.id_clase = ?";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bind_param("i", $clase['id']);
+                            $stmt->execute();
+                            $res = $stmt->get_result();
+                            while ($row = $res->fetch_assoc()) {
+                                $alumno_ids[$row['ID']] = true; // solo cuenta una vez si está en varias clases
+                            }
+                            $stmt->close();
+                        }
+                        echo count($alumno_ids);
+                        ?>
+                    </h3>
                     <p>Alumnos</p>
                     <button class="quick-action" onclick="location.reload()">Ver alumnos</button>
                 </div>
                 <div class="card">
                     <i class="fas fa-tasks fa-2x icon-orange"></i>
-                    <h3>3</h3>
-                    <p>Tareas pendientes</p>
+                    <h3>
+                        <?php
+                        // Tareas pendientes (por clase)
+                        $tareas_pendientes = 0;
+                        if ($id_clase) {
+                            $sql = "SELECT COUNT(*) AS total FROM tareas_profesor WHERE id_clase = ?";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bind_param("i", $id_clase);
+                            $stmt->execute();
+                            $res = $stmt->get_result();
+                            $row = $res->fetch_assoc();
+                            $tareas_pendientes = intval($row['total']);
+                            $stmt->close();
+                        } else {
+                            foreach ($clases as $clase) {
+                                $sql = "SELECT COUNT(*) AS total FROM tareas_profesor WHERE id_clase = ?";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bind_param("i", $clase['id']);
+                                $stmt->execute();
+                                $res = $stmt->get_result();
+                                $row = $res->fetch_assoc();
+                                $tareas_pendientes += intval($row['total']);
+                                $stmt->close();
+                            }
+                        }
+                        echo $tareas_pendientes;
+                        ?>
+                    </h3>
+                    <p>Tareas registradas</p>
                     <button class="quick-action" onclick="location.reload()">Ver tareas</button>
                 </div>
             </div>
             <div class="section">
-                <h2>Bienvenido, <span id="welcome-name">Docente <?php echo htmlspecialchars($nombre); ?></span></h2>
+                <h2>Bienvenido, <span id="welcome-name">Docente <?= htmlspecialchars($nombre ?? '') ?></span></h2>
                 <p>Desde este panel puedes gestionar tus cursos, tareas, materiales, avisos y comunicarte con tus alumnos.</p>
             </div>
             <div class="section">
                 <h3>Notificaciones recientes</h3>
                 <ul class="notificaciones">
-                    <li><i class="fas fa-check-circle icon-green"></i> Juan Pérez entregó la tarea <b>"Ensayo de Historia"</b>.</li>
-                    <li><i class="fas fa-envelope icon-blue"></i> Nuevo mensaje de <b>Ana López</b>.</li>
-                    <li><i class="fas fa-bullhorn icon-orange"></i> Se publicó un aviso en el curso <b>"Matemáticas 2"</b>.</li>
+                    <?php
+                    // Ejemplo de notificaciones dinámicas (últimos 3 comentarios, tareas o avisos)
+                    $notificaciones = [];
+                    // Últimos comentarios
+                    $sql = "SELECT c.comentario, e.nombre AS nombre_alumno, c.fecha FROM comentarios_clase c LEFT JOIN estudiantes e ON c.id_estudiante = e.ID ORDER BY c.fecha DESC LIMIT 1";
+                    $res = $conn->query($sql);
+                    if ($row = $res->fetch_assoc()) {
+                        $notificaciones[] = '<i class="fas fa-envelope icon-blue"></i> <span style="margin-left:14px;">Nuevo comentario de <b>' . htmlspecialchars($row['nombre_alumno'] ?? 'Alumno') . '</b></span>: <span style="margin-left:14px;">"' . htmlspecialchars($row['comentario'] ?? '') . '"</span>';
+                    }
+                    // Última tarea registrada
+                    $sql = "SELECT t.titulo, t.fecha_entrega FROM tareas_profesor t ORDER BY t.fecha_entrega DESC LIMIT 1";
+                    $res = $conn->query($sql);
+                    if ($row = $res->fetch_assoc()) {
+                        $notificaciones[] = '<i class="fas fa-check-circle icon-green"></i> <span style="margin-left:14px;">Última tarea registrada</span>: <span style="margin-left:14px;"><b>' . htmlspecialchars($row['titulo'] ?? '') . '</b></span> <span style="margin-left:14px;">(' . htmlspecialchars($row['fecha_entrega'] ?? '') . ')</span>';
+                    }
+                    // Último aviso publicado
+                    $sql = "SELECT titulo, fecha_subida FROM avisos ORDER BY fecha_subida DESC LIMIT 1";
+                    $res = $conn->query($sql);
+                    if ($row = $res->fetch_assoc()) {
+                        $notificaciones[] = '<i class="fas fa-bullhorn icon-orange"></i> <span style="margin-left:14px;">Último aviso publicado</span>: <span style="margin-left:14px;"><b>' . htmlspecialchars($row['titulo'] ?? '') . '</b></span> <span style="margin-left:14px;">(' . htmlspecialchars($row['fecha_subida'] ?? '') . ')</span>';
+                    }
+                    if (count($notificaciones) == 0) {
+                        echo '<li>No hay notificaciones recientes.</li>';
+                    } else {
+                        foreach ($notificaciones as $n) echo '<li>' . $n . '</li>';
+                    }
+                    ?>
                 </ul>
             </div>
         </div>
