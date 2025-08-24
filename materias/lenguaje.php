@@ -450,29 +450,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
             <?php endif; ?>
         </div>
 
-
-
-         <section id="tareas" class="seccion" style="display: none;">
-            <h2 data-i18n="tareas">Tareas</h2>
-            <!-- Mostrar tareas del profesor -->
-                <div class="tareas-container">
-                    <?php if (!empty($tareas_profesor)): ?>
-                        <?php foreach ($tareas_profesor as $tarea): ?>
-                            <div class="tarea">
-                                <i class="fas fa-book"></i>
-                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
-                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
-                                <small>Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
-                                <?php if (!empty($tarea['ruta_archivo'])): ?>
-                                    <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
-                                <?php endif; ?>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p>No se han asignado tareas aún.</p>
-                    <?php endif; ?>
-
-                </div>
             </section>
             <!-- Material -->
             <section id="material" class="seccion" style="display: none;">

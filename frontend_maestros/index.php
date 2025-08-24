@@ -182,15 +182,6 @@ foreach ($comentarios as $c) {
             </div>
         </div>
         <!-- CURSOS -->
-                <div id="seccion-cursos" class="seccion-panel" style="display:none;">
-            <div class="section">
-                <h3>Mis cursos</h3>
-                <input type="button" value="Crear curso" class="quick-action" onclick="window.location.href='../frontend_maestros/crear_curso.php'">
-                <ul class="cursos-lista">
-                    <?php if (count($clases) > 0): ?>
-                        <?php foreach ($clases as $clase): ?>
-                            <li>
-
         <div id="seccion-cursos" class="seccion-panel">
             <div class="section">
                 <h3>Mis cursos</h3>

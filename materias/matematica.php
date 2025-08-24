@@ -428,41 +428,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                         <?php endif; ?>
                     </div>
                 </div>
-            </section>
-
-
-    <!-- Formulario para estudiantes subir tarea -->
-    <?php if (isset($_SESSION['id_estudiante'])): ?>
-        <h2 data-i18n="sube">Sube tu tarea</h2>
-        <form id="formSubirTarea" action="subir_tarea_ajax.php" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="materia" value="matematica">
-            <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>">
-            <label for="archivo" data-i18n="archivo2">Archivo (PDF, DOCX, JPG...):</label>
-            <input type="file" name="archivo" id="archivo" required><br><br>
-            <button type="submit" data-i18n="subir">Subir tarea</button>
-        </form>
-
-        <div id="mensajeSubida"></div>
-
-        <h3 data-i18n="subidas">Tareas subidas</h3>
-        <ul id="listaTareas" style="list-style-type: none; padding-left: 0;">
-            <?php if (isset($resultado_tareas) && $resultado_tareas->num_rows > 0): ?>
-                <?php while ($fila = $resultado_tareas->fetch_assoc()): ?>
-                    <li id="tarea_<?php echo $fila['id']; ?>">
-                        <a href="<?php echo htmlspecialchars($fila['ruta_archivo']); ?>" target="_blank">
-                            <?php echo htmlspecialchars($fila['nombre_archivo']); ?>
-                        </a>
-                        <small>(<?php echo htmlspecialchars($fila['fecha_subida']); ?>)</small>
-                        <button onclick="eliminarTarea(<?php echo $fila['id']; ?>)">❌ Eliminar</button>
-                    </li>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <li>No has subido tareas aún.</li>
-            <?php endif; ?>
-        </ul>
-    <?php else: ?>
-        <p>No tienes permisos para subir tareas.</p>
-    <?php endif; ?>
         </section>
 
             <section id="material" class="seccion" style="display: none;">

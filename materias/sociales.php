@@ -258,9 +258,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
         <nav>
             <button id="tablon-btn" class="active"><i class="fas fa-th-large"></i> Tablón</button>
             <button id="tareas-btn"><i class="fas fa-tasks"></i> Tareas</button>
+            <button id="material-btn"><i class="fas fa-folder-open"></i> Material</button>
             <button id="alumnos-btn"><i class="fas fa-users"></i> Alumnos</button>
             <button id="avisos-btn"><i class="fas fa-bell"></i> Avisos</button>
-            <button id="material-btn"><i class="fas fa-folder-open"></i> Material</button>
             <button data-i18n="comentarios" id="comentarios-btn"><i class="fas fa-comments"></i>Comentarios</button>
         </nav>
     </div>
@@ -478,8 +478,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                 </ul>
             </section>
 
-
-
              <section id="comentarios" class="seccion" style="display: none;">
                 <h2><i class="fas fa-comments"></i> Comentarios</h2>
                 <ul class="lista-comentarios">
@@ -505,15 +503,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
             </section>
 
 
-
-
-
-
-
-
-
-
-
             <section id="alumnos" class="seccion" style="display: none;">
             <h2 data-i18n="lista">Lista de Alumnos</h2>
             <ul class="lista-alumnos">
@@ -531,24 +520,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                 <?php endif; ?>
             </ul>
         </section>
-            <div id="modalTarea" class="modal" style="display:none;">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2 id="modalTitulo">Título de la tarea</h2>
-                    <p id="modalDescripcion">Descripción de la tarea</p>
-                    <div class="modal-section">
-                        <label for="archivoSubir">Subir archivos:</label>
-                        <input type="file" id="archivoSubir" multiple>
-                        <ul id="listaArchivos"></ul>
-                    </div>
-                    <div class="modal-section">
-                        <label for="enlaceInput">Añadir enlace:</label>
-                        <input type="url" id="enlaceInput" placeholder="https://">
-                        <button id="agregarEnlace">Agregar enlace</button>
-                        <ul id="listaEnlaces"></ul>
-                    </div>
-                </div>
-            </div>
+           
         </main>
     </div>
     <script src="../materias/js/scriptMatematica.js"></script>
