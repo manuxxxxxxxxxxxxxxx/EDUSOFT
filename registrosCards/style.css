@@ -309,18 +309,23 @@ body {
   box-shadow: var(--shadow-md);
 }
 
-/* Área de selección con 3 tarjetas */
-.selection-grid-three {
+.selection-grid-two {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 40px;
   align-items: start;
   margin-bottom: 130px;
-  max-width: 1200px;
+  max-width: 760px;      /* Antes: 800px */
   margin-left: auto;
   margin-right: auto;
 }
-
+@media (max-width: 1200px) {
+  .selection-grid-two {
+    grid-template-columns: 1fr;
+    gap: 60px;
+    max-width: 500px;
+  }
+}
 .user-card {
   background: var(--primary-white);
   border: 1px solid var(--light-gray);
