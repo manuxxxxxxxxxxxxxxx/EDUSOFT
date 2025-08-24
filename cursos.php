@@ -193,7 +193,21 @@
 
       <!-- NUEVO: Contenedor solo para tarjetas -->
       <div class="container-cards">
-        
+        <?php
+                    $slug_archivo = [
+            'lenguaje'   => 'lenguaje',
+            'matemática' => 'matematica',
+            'matematica' => 'matematica',
+            'ciencias'   => 'ciencias',
+            'ciencia'    => 'ciencias',
+            'biología'   => 'biologia',
+            'biologia'   => 'biologia',
+            'química'    => 'quimica',
+            'quimica'    => 'quimica',
+            'ingles'     => 'ingles',
+            'sociales'   => 'sociales',
+          ];
+        ?>
         <?php foreach ($clases_estudiantes as $clases): 
         
           $materia = strtolower($clases['materia']);
@@ -208,6 +222,7 @@
             'quimica' => '../img/quimica.jpg',
           ];
           $img = $imagenes[$materia] ?? '../img/default.jpg';
+          $materia_slug = $slug_archivo[$materia] ?? $materia;
         ?>
           <div class="card bg-green">
             <div class="card-image-container">
@@ -218,7 +233,15 @@
               <p class="card-title">
                 <?= htmlspecialchars($clases['materia']) ?> - Prof. <?= htmlspecialchars($clases['nombre_profesor']) ?>
               </p>
-              <a href="../materias/<?php echo strtolower($clases['materia']); ?>.php?id_clase=<?php echo $clases['id_clase']; ?>" class="btn">Más información</a>
+              <?php
+                $materia_slug = $slug_archivo[strtolower($clases['materia'])] ?? strtolower($clases['materia']);
+              ?>
+                <a href="../materias/<?php echo $materia_slug; ?>.php?id_clase=<?php echo $clases['id_clase']; ?>" class="btn">Más información</a>
+
+                <form method="POST" action="salir_clase.php" style="display:inline;">
+                  <input type="hidden" name="id_clase" value="<?php echo $clases['id_clase']; ?>">
+                  <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro que quieres salir de esta clase?');">Salir de la clase</button>
+                </form>
             </div>
           </div>
         <?php endforeach; ?>
