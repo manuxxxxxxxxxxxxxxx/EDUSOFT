@@ -559,14 +559,14 @@ foreach ($comentarios as $c) {
                     <?php foreach ($comentarios as $c): ?>
                         <li id="comentario-<?= $c['id'] ?>" style="margin-bottom:15px;border-bottom:1px solid #93a3ddff;padding-bottom:8px;">
                             <b>
-                                <?= htmlspecialchars($c['nombre_alumno'] ?? 'Alumno') ?>
+                                <?= htmlspecialchars(($c['nombre_alumno'] ?? '') ?: '') ?>
                                 <?php if (!$id_clase): ?>
-                                    <span style="color:#888;">(<?= htmlspecialchars($c['nombre_clase'] ?? '') ?> - <?= htmlspecialchars($c['materia'] ?? '') ?>)</span>
+                                    <span style="color:#888;">(<?= htmlspecialchars(($c['nombre_clase'] ?? '') ?: '') ?> - <?= htmlspecialchars(($c['materia'] ?? '') ?: '') ?>)</span>
                                 <?php endif; ?>
                             </b>
                             <br>
-                            <?= htmlspecialchars($c['comentario']) ?>
-                            <small style="color:#888;">(<?= date("d/m/Y H:i", strtotime($c['fecha'])) ?>)</small>
+                            <?= htmlspecialchars(($c['comentario'] ?? '') ?: '') ?>
+                            <small style="color:#888;">(<?= isset($c['fecha']) ? date("d/m/Y H:i", strtotime($c['fecha'])) : '' ?>)</small>
                             <?php
                             $respuestas = [];
                             $stmt_resp = $conn->prepare("SELECT * FROM respuestas_comentario WHERE id_comentario = ? ORDER BY fecha ASC");
@@ -579,13 +579,13 @@ foreach ($comentarios as $c) {
                             $stmt_resp->close();
                             ?>
                             <?php foreach ($respuestas as $r): ?>
-                                <div class="respuesta-hilo <?= $r['tipo_usuario'] == 'profesor' ? 'resp-prof' : 'resp-alum' ?>">
-                                    <b><?= $r['tipo_usuario'] == 'profesor' ? 'Profesor' : 'Alumno' ?>:</b>
-                                    <?= htmlspecialchars($r['respuesta']) ?>
-                                    <small style="color:#888;"><?= date("d/m/Y H:i", strtotime($r['fecha'])) ?></small>
+                                <div class="respuesta-hilo <?= ($r['tipo_usuario'] ?? '') == 'profesor' ? 'resp-prof' : 'resp-alum' ?>">
+                                    <b><?= (($r['tipo_usuario'] ?? '') == 'profesor') ? 'Profesor' : 'Alumno' ?>:</b>
+                                    <?= htmlspecialchars(($r['respuesta'] ?? '') ?: '') ?>
+                                    <small style="color:#888;"><?= isset($r['fecha']) ? date("d/m/Y H:i", strtotime($r['fecha'])) : '' ?></small>
                                 </div>
                             <?php endforeach; ?>
-                            <form method="POST" class="form-resp-comentario" action="index.php?id_clase=<?= htmlspecialchars($id_clase) ?>">
+                            <form method="POST" class="form-resp-comentario" action="index.php?id_clase=<?= htmlspecialchars($id_clase ?? '') ?>">
                                 <input type="hidden" name="id_comentario_resp" value="<?= $c['id'] ?>">
                                 <textarea name="texto_respuesta" rows="2" class="textarea-respuesta" placeholder="Responder al comentario..." required></textarea>
                                 <button type="submit" class="btn-respuesta">Responder</button>
