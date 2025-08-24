@@ -389,7 +389,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                     ?>
                 </ul>
             </section>
-                 <section id="comentarios" class="seccion" style="display: none;">
+             <section id="comentarios" class="seccion" style="display: none;">
                 <h2><i class="fas fa-comments"></i> Comentarios</h2>
                 <ul class="lista-comentarios">
                     <li>

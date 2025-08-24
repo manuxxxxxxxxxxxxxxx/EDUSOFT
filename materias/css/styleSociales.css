@@ -601,3 +601,43 @@ ul li {
             .tablon-secciones { flex-direction: column; gap: 10px;}
             .tablon-section { max-width: none; min-width: 0;}
         }
+.lista-comentarios {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.lista-comentarios li {
+    background: rgba(255,255,255,0.7);
+    border-radius: 12px;
+    box-shadow: 0 1px 6px rgba(100,150,255,0.07);
+    padding: 22px 18px;
+    margin-bottom: 18px;
+    border-left: 5px solid #0077b6;
+    position: relative;
+    transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
+    backdrop-filter: blur(1.5px);
+    display: flex;
+    flex-direction: column;
+    animation: fadeInUp 0.7s;
+}
+.lista-comentarios i {
+    color: #0077b6;
+    margin-right: 8px;
+    font-size: 1.2em;
+    vertical-align: middle;
+}
+.lista-comentarios span {
+    font-weight: bold;
+    color: #234567;
+    font-size: 1.05em;
+}
+.lista-comentarios p {
+    margin: 8px 0 0 0;
+    color: #444;
+    font-size: 0.98em;
+}
+.lista-comentarios small {
+    color: #888;
+    font-size: 0.93em;
+    margin-top: 8px;
+}

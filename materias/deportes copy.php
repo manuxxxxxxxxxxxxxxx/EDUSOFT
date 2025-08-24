@@ -90,6 +90,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
         <button id="material-btn"><i class="fas fa-folder-open"></i> <span data-i18n="material_texto">Material</span></button>
         <button data-i18n="alumnos" id="alumnos-btn"><i class="fas fa-users"></i> <span data-i18n="alumnos_texto">Alumnos</span></button>
         <button data-i18n="avisos" id="avisos-btn"><i class="fas fa-bell"></i> <span data-i18n="avisos_texto">Avisos</span></button>
+        <button data-i18n="comentarios" id="comentarios-btn"><i class="fas fa-comments"></i>Comentarios</button>
     </nav>
 </div>
 
@@ -206,6 +207,36 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                 <!-- Lista estática o dinámica de avisos -->
             </ul>
         </section>
+        
+        
+        <section id="comentarios" class="seccion" style="display: none;">
+                <h2><i class="fas fa-comments"></i> Comentarios</h2>
+                <ul class="lista-comentarios">
+                    <li>
+                        <i class="fas fa-user"></i>
+                        <span>Juan Pérez</span>
+                        <p>¿El informe debe incluir imágenes?</p>
+                        <small>22/08/2025 - 14:10</small>
+                    </li>
+                    <li>
+                        <i class="fas fa-user"></i>
+                        <span>María Gómez</span>
+                        <p>¡Muy útil el material, gracias profe!</p>
+                        <small>22/08/2025 - 19:45</small>
+                    </li>
+                    <li>
+                        <i class="fas fa-user"></i>
+                        <span>Cristofer Alfaro</span>
+                        <p>¡Recuerden que el informe debe entregarse en PDF!</p>
+                        <small>23/08/2025 - 09:02</small>
+                    </li>
+                </ul>
+         </section>
+
+
+
+
+
 
         <section id="material" class="seccion" style="display: none;">
             <h2><i class="fas fa-folder-open"></i> <span data-i18n="material_materia">Material de la materia</span></h2>
