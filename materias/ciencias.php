@@ -4,20 +4,20 @@ require_once "../conexiones/conexion.php";
 
 // Verificar si el usuario está logueado como profesor o estudiante
 if (!isset($_SESSION['id']) && !isset($_SESSION['id_estudiante'])) {
-    die("⚠️ Debes iniciar sesión como profesor o estudiante para acceder a esta materia.");
+    die("Debes iniciar sesión como profesor o estudiante para acceder a esta materia.");
 }
 
 // Verifica que venga el id_clase por GET para ambos roles
 if (!isset($_GET['id_clase'])) {
-    die("⚠️ Clase no especificada.");
+    die(" Clase no especificada.");
 }
 $id_clase = intval($_GET['id_clase']);
 
 // Obtener SIEMPRE el nombre del profesor y nombre de la clase
 $sql_prof = "SELECT c.nombre_clase, p.nombre AS nombre_profesor 
-             FROM clases c 
-             JOIN profesores p ON c.profesor_id = p.id 
-             WHERE c.id = ?";
+            FROM clases c 
+            JOIN profesores p ON c.profesor_id = p.id 
+            WHERE c.id = ?";
 $stmt_prof = $conn->prepare($sql_prof);
 $stmt_prof->bind_param("i", $id_clase);
 $stmt_prof->execute();
@@ -166,6 +166,50 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
         $avisos[] = $aviso;
     }
 }
+// RESPUESTAS MÚLTIPLES EN COMENTARIOS (ALUMNO O PROFESOR)
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['id_comentario_resp'], $_POST['texto_respuesta'])) {
+    $id_comentario_resp = intval($_POST['id_comentario_resp']);
+    $texto_respuesta = trim($_POST['texto_respuesta']);
+    $tipo_usuario = (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor') ? 'profesor' : 'alumno';
+    $id_usuario = isset($_SESSION['id']) ? $_SESSION['id'] : (isset($_SESSION['id_estudiante']) ? $_SESSION['id_estudiante'] : null);
+    if ($texto_respuesta && $id_comentario_resp && $id_usuario) {
+        $stmt_insert = $conn->prepare("INSERT INTO respuestas_comentario (id_comentario, id_usuario, tipo_usuario, respuesta) VALUES (?, ?, ?, ?)");
+        $stmt_insert->bind_param("iiss", $id_comentario_resp, $id_usuario, $tipo_usuario, $texto_respuesta);
+        $stmt_insert->execute();
+        $stmt_insert->close();
+        header("Location: ".$_SERVER['REQUEST_URI']."#comentario-".$id_comentario_resp);
+        exit;
+    }
+}
+$comentarios = [];
+$sql_comentarios = "SELECT c.*, e.nombre AS nombre_alumno, p.nombre AS nombre_profesor
+    FROM comentarios_clase c
+    LEFT JOIN estudiantes e ON c.id_estudiante = e.ID
+    LEFT JOIN profesores p ON c.id_profesor = p.id
+    WHERE c.id_clase = ?
+    ORDER BY c.fecha DESC";
+$stmt_coment = $conn->prepare($sql_comentarios);
+$stmt_coment->bind_param("i", $id_clase);
+$stmt_coment->execute();
+$res_coment = $stmt_coment->get_result();
+while ($row = $res_coment->fetch_assoc()) {
+    $comentarios[] = $row;
+}
+$stmt_coment->close();
+
+// Procesar comentario nuevo del alumno
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) && isset($_SESSION['id_estudiante'])) {
+    $comentario = trim($_POST['nuevo_comentario']);
+    $id_estudiante = $_SESSION['id_estudiante'];
+    if ($comentario) {
+        $stmt_add = $conn->prepare("INSERT INTO comentarios_clase (id_clase, id_estudiante, comentario) VALUES (?, ?, ?)");
+        $stmt_add->bind_param("iis", $id_clase, $id_estudiante, $comentario);
+        $stmt_add->execute();
+        $stmt_add->close();
+        header("Location: ciencias.php?id_clase=$id_clase#comentarios");
+        exit;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -307,7 +351,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                     </div>
                 </div>
             </section>
-         <section id="tareas" class="seccion" style="display: none;">
+        <section id="tareas" class="seccion" style="display: none;">
                 <div class="section-card">
                     <h2 data-i18n="tareas">Tareas</h2>
                     <div class="tareas-container">
@@ -380,7 +424,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                 <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
                 <?php
                 if (!$id_clase) {
-                    echo "<p>⚠️ Clase no especificada.</p>";
+                    echo "<p>Clase no especificada.</p>";
                 } else {
                     if (count($materiales_clase) > 0) {
                         echo '<div class="materiales-container">';

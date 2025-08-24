@@ -33,6 +33,72 @@ if ($id_clase) {
     }
     $stmt_clase->close();
 }
+
+// -------------------- RESPUESTAS MÚLTIPLES EN COMENTARIOS --------------------
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['id_comentario_resp'], $_POST['texto_respuesta'])) {
+    $id_comentario_resp = intval($_POST['id_comentario_resp']);
+    $texto_respuesta = trim($_POST['texto_respuesta']);
+    $tipo_usuario = 'profesor';
+    $id_usuario = $profesor_id;
+    if ($texto_respuesta && $id_comentario_resp && $id_usuario) {
+        $stmt_insert = $conn->prepare("INSERT INTO respuestas_comentario (id_comentario, id_usuario, tipo_usuario, respuesta) VALUES (?, ?, ?, ?)");
+        $stmt_insert->bind_param("iiss", $id_comentario_resp, $id_usuario, $tipo_usuario, $texto_respuesta);
+        $stmt_insert->execute();
+        $stmt_insert->close();
+        header("Location: ".$_SERVER['REQUEST_URI']."#comentario-".$id_comentario_resp);
+        exit;
+    }
+}
+// Procesar respuesta de comentario del profesor
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['respuesta_comentario'])) {
+    $respuesta = trim($_POST['respuesta_comentario']);
+    $comentario_id = intval($_POST['comentario_id']);
+    if ($respuesta && $comentario_id) {
+        $stmt_resp = $conn->prepare("UPDATE comentarios_clase SET respuesta = ?, id_profesor = ?, fecha_respuesta = NOW(), estado = 'respondido' WHERE id = ?");
+        $stmt_resp->bind_param("sii", $respuesta, $profesor_id, $comentario_id);
+        $stmt_resp->execute();
+        $stmt_resp->close();
+        header("Location: index.php?id_clase=$id_clase#seccion-comentarios");
+        exit;
+    }
+}
+
+// Cargar comentarios de alumnos
+$comentarios = [];
+if ($id_clase) {
+    $sql_comentarios = "SELECT c.*, e.nombre AS nombre_alumno FROM comentarios_clase c
+        LEFT JOIN estudiantes e ON c.id_estudiante = e.ID
+        WHERE c.id_clase = ?
+        ORDER BY c.estado DESC, c.fecha DESC";
+    $stmt_coment = $conn->prepare($sql_comentarios);
+    $stmt_coment->bind_param("i", $id_clase);
+    $stmt_coment->execute();
+    $res_coment = $stmt_coment->get_result();
+    while ($row = $res_coment->fetch_assoc()) {
+        $comentarios[] = $row;
+    }
+    $stmt_coment->close();
+} else {
+    $sql_comentarios = "SELECT c.*, e.nombre AS nombre_alumno, cl.nombre_clase, cl.materia
+        FROM comentarios_clase c
+        LEFT JOIN estudiantes e ON c.id_estudiante = e.ID
+        INNER JOIN clases cl ON c.id_clase = cl.id
+        WHERE cl.profesor_id = ?
+        ORDER BY c.estado DESC, c.fecha DESC";
+    $stmt_coment = $conn->prepare($sql_comentarios);
+    $stmt_coment->bind_param("i", $profesor_id);
+    $stmt_coment->execute();
+    $res_coment = $stmt_coment->get_result();
+    while ($row = $res_coment->fetch_assoc()) {
+        $comentarios[] = $row;
+    }
+    $stmt_coment->close();
+}
+// Contador de comentarios pendientes
+$pendientes = 0;
+foreach ($comentarios as $c) {
+    if ($c['estado'] === 'pendiente') $pendientes++;
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -56,6 +122,14 @@ if ($id_clase) {
         return true;
     }
     </script>
+    <script>
+    document.getElementById('search-student').addEventListener('input', function() {
+    var filtro = this.value.toLowerCase();
+    document.querySelectorAll('#student-list li[data-nombre]').forEach(function(li){
+        li.style.display = li.getAttribute('data-nombre').includes(filtro) ? '' : 'none';
+    });
+});
+</script>
 </head>
 <body>
     <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Abrir menú">
@@ -135,23 +209,51 @@ if ($id_clase) {
             </div>
         </div>
         <!-- ALUMNOS -->
-        <div id="seccion-alumnos" class="seccion-panel" style="display:none;">
-            <div class="section">
-                <h3>Alumnos</h3>
-                <input type="text" id="search-student" placeholder="Buscar alumno..." style="width:90%;margin-top:10px;" oninput="searchStudent()">
-                <ul id="student-list" style="text-align:left;margin-top:10px;max-height:180px;overflow:auto;">
-                    <li>Juan Pérez</li>
-                    <li>Ana López</li>
-                    <li>Carlos Ruiz</li>
-                    <li>María Torres</li>
-                    <li>Lucía Díaz</li>
-                    <li>Sofía Romero</li>
-                    <li>Miguel Ángel</li>
-                    <li>Luis Gómez</li>
-                    <li>Pedro Sánchez</li>
-                </ul>
-            </div>
-        </div>
+<div id="seccion-alumnos" class="seccion-panel" style="display:none;">
+    <div class="section alumnos-section">
+        <h3>Alumnos</h3>
+        <form method="get" action="index.php#seccion-alumnos">
+            <select id="select-clase" name="id_clase" class="select-clase" onchange="this.form.submit()">
+                <option value="">Selecciona una clase</option>
+                <?php foreach ($clases as $clase): ?>
+                    <option value="<?= $clase['id'] ?>" <?= ($id_clase == $clase['id']) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($clase['nombre_clase']) ?> – <?= htmlspecialchars($clase['materia']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </form>
+        <input type="text" id="search-student" placeholder="Buscar alumno..." class="alumnos-buscar" <?= empty($id_clase) ? 'disabled' : '' ?>>
+        <ul id="student-list" class="lista-alumnos">
+        <?php
+        if ($id_clase) {
+            $sql = "SELECT ce.id AS numero_estudiante, e.nombre, e.email
+                    FROM clases_estudiantes ce
+                    JOIN estudiantes e ON ce.id_estudiante = e.ID
+                    WHERE ce.id_clase = ?
+                    ORDER BY ce.id ASC";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $id_clase);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                while($alumno = $result->fetch_assoc()) {
+                    echo "<li data-nombre='".strtolower($alumno['nombre'])." ".strtolower($alumno['email'])."'>
+                            <span class='alumno-nombre'>".htmlspecialchars($alumno['nombre'])."</span>
+                            <span class='alumno-num'>".htmlspecialchars($alumno['numero_estudiante'])."</span>
+                            <span class='alumno-email'>".htmlspecialchars($alumno['email'])."</span>
+                        </li>";
+                }
+            } else {
+                echo "<li class='alumnos-vacio'>No hay alumnos inscritos en esta clase.</li>";
+            }
+            $stmt->close();
+        } else {
+            echo "<li class='alumnos-vacio'>Selecciona una clase para ver los alumnos.</li>";
+        }
+        ?>
+        </ul>
+    </div>
+</div>
         <!-- TAREAS -->
         <div id="seccion-tareas" class="seccion-panel" style="display:none;">
             <div class="section">
@@ -176,10 +278,10 @@ if ($id_clase) {
                     <?php
                     if ($id_clase) {
                         $sqlTareas = "SELECT t.id, t.titulo, t.fecha_entrega, t.descripcion, c.materia 
-                                      FROM tareas_profesor t
-                                      INNER JOIN clases c ON t.id_clase = c.id
-                                      WHERE t.id_clase = ?
-                                      ORDER BY t.fecha_entrega DESC";
+                                    FROM tareas_profesor t
+                                    INNER JOIN clases c ON t.id_clase = c.id
+                                    WHERE t.id_clase = ?
+                                    ORDER BY t.fecha_entrega DESC";
                         $stmtTareas = $conn->prepare($sqlTareas);
                         $stmtTareas->bind_param("i", $id_clase);
                         $stmtTareas->execute();
@@ -390,10 +492,10 @@ if ($id_clase) {
                 // Mostrar avisos según filtro
                 if ($id_clase) {
                     $sqlAvisos = "SELECT a.id, a.titulo, a.descripcion, a.fecha_subida, c.materia 
-                                  FROM avisos a
-                                  INNER JOIN clases c ON a.id_clase = c.id
-                                  WHERE a.id_clase = ?
-                                  ORDER BY a.fecha_subida DESC";
+                                FROM avisos a
+                                INNER JOIN clases c ON a.id_clase = c.id
+                                WHERE a.id_clase = ?
+                                ORDER BY a.fecha_subida DESC";
                     $stmtAvisos = $conn->prepare($sqlAvisos);
                     $stmtAvisos->bind_param("i", $id_clase);
                     $stmtAvisos->execute();
@@ -403,8 +505,8 @@ if ($id_clase) {
                         while ($aviso = $resultadoAvisos->fetch_assoc()): ?>
                             <li>
                                 <b><?= htmlspecialchars($aviso['titulo']); ?></b>
-                                 – <?= ucfirst(htmlspecialchars($aviso['materia'])); ?> 
-                                 – <span>Fecha: <?= htmlspecialchars($aviso['fecha_subida']); ?></span><br>
+                                – <?= ucfirst(htmlspecialchars($aviso['materia'])); ?> 
+                                – <span>Fecha: <?= htmlspecialchars($aviso['fecha_subida']); ?></span><br>
                                 <small><?= htmlspecialchars($aviso['descripcion']); ?></small>
                                 <form action="../frontend_maestros/eliminar_tarea.php" method="POST" style="display:inline;" onsubmit="return confirmEliminar('aviso');">
                                     <input type="hidden" name="accion" value="eliminar_aviso">
@@ -466,20 +568,59 @@ if ($id_clase) {
                 </form>
             </div>
         </div>
-        <!-- MENSAJES -->
+    <!-- COMENTARIOS MULTIHILO -->
         <div id="seccion-mensajes" class="seccion-panel" style="display:none;">
             <div class="section">
-                <h3>Mensajes recientes</h3>
-                <div class="avisos-timeline">
-                    <div class="aviso-card">
-                        <i class="fas fa-envelope icon-blue"></i>
-                        <span>Mensaje de Ana López: "¿Cuándo es la entrega?"</span>
-                    </div>
-                    <div class="aviso-card">
-                        <i class="fas fa-envelope icon-blue"></i>
-                        <span>Mensaje de Juan Pérez: "No entiendo la tarea".</span>
-                    </div>
-                </div>
+                <h3>Comentarios/dudas de alumnos 
+                    <?php if ($pendientes > 0): ?>
+                        <span class="badge" style="background:#e65100;color:white;padding:2px 9px;border-radius:11px;">
+                            <?= $pendientes ?> pendientes
+                        </span>
+                    <?php endif; ?>
+                </h3>
+                <ul style="list-style:none;padding-left:0;">
+                    <?php foreach ($comentarios as $c): ?>
+                        <li id="comentario-<?= $c['id'] ?>" style="margin-bottom:15px;border-bottom:1px solid #93a3ddff;padding-bottom:8px;">
+                            <b>
+                                <?= htmlspecialchars($c['nombre_alumno'] ?? 'Alumno') ?>
+                                <?php if (!$id_clase): ?>
+                                    <span style="color:#888;">(<?= htmlspecialchars($c['nombre_clase'] ?? '') ?> - <?= htmlspecialchars($c['materia'] ?? '') ?>)</span>
+                                <?php endif; ?>
+                            </b>
+                            <br>
+                            <?= htmlspecialchars($c['comentario']) ?>
+                            <small style="color:#888;">(<?= date("d/m/Y H:i", strtotime($c['fecha'])) ?>)</small>
+                            <!-- RESPUESTAS MULTIHILO -->
+                            <?php
+                            $respuestas = [];
+                            $stmt_resp = $conn->prepare("SELECT * FROM respuestas_comentario WHERE id_comentario = ? ORDER BY fecha ASC");
+                            $stmt_resp->bind_param("i", $c['id']);
+                            $stmt_resp->execute();
+                            $result_resp = $stmt_resp->get_result();
+                            while ($row_resp = $result_resp->fetch_assoc()) {
+                                $respuestas[] = $row_resp;
+                            }
+                            $stmt_resp->close();
+                            ?>
+                            <?php foreach ($respuestas as $r): ?>
+                                <div class="respuesta-hilo <?= $r['tipo_usuario'] == 'profesor' ? 'resp-prof' : 'resp-alum' ?>">
+                                    <b><?= $r['tipo_usuario'] == 'profesor' ? 'Profesor' : 'Alumno' ?>:</b>
+                                    <?= htmlspecialchars($r['respuesta']) ?>
+                                    <small style="color:#888;"><?= date("d/m/Y H:i", strtotime($r['fecha'])) ?></small>
+                                </div>
+                            <?php endforeach; ?>
+                            <!-- FORMULARIO DE RESPUESTA MULTIHILO -->
+                            <form method="POST" class="form-resp-comentario">
+                                <input type="hidden" name="id_comentario_resp" value="<?= $c['id'] ?>">
+                                <textarea name="texto_respuesta" rows="2" class="textarea-respuesta" placeholder="Responder al comentario..." required></textarea>
+                                <button type="submit" class="btn-respuesta">Responder</button>
+                            </form>
+                        </li>
+                    <?php endforeach; ?>
+                    <?php if (empty($comentarios)): ?>
+                        <li>No hay comentarios/dudas aún.</li>
+                    <?php endif; ?>
+                </ul>
             </div>
         </div>
         <!-- PERFIL -->
@@ -492,5 +633,6 @@ if ($id_clase) {
             </div>
         </div>
     </div>
+    
 </body>
 </html>
