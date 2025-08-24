@@ -207,7 +207,7 @@ foreach ($comentarios as $c) {
             </div>
         </div>
         <!-- ALUMNOS -->
-<<<<<<< HEAD
+
         <div id="seccion-alumnos" class="seccion-panel" style="display:none;">
             <div class="section">
                 <h3 data-i18n="maestro_panel_titulo_alumnos">Alumnos</h3>
@@ -225,7 +225,7 @@ foreach ($comentarios as $c) {
                 </ul>
             </div>
         </div>
-=======
+
 <div id="seccion-alumnos" class="seccion-panel" style="display:none;">
     <div class="section alumnos-section">
         <h3>Alumnos</h3>
@@ -271,7 +271,7 @@ foreach ($comentarios as $c) {
         </ul>
     </div>
 </div>
->>>>>>> 57be137ec42579f3ead0e75f539a1f8eb873c977
+
         <!-- TAREAS -->
         <div id="seccion-tareas" class="seccion-panel" style="display:none;">
             <div class="section">
@@ -502,13 +502,13 @@ foreach ($comentarios as $c) {
                         while ($aviso = $resultadoAvisos->fetch_assoc()): ?>
                             <li>
                                 <b data-i18n="maestro_panel_aviso_titulo"><?= htmlspecialchars($aviso['titulo']); ?></b>
-                                 – <span data-i18n="maestro_panel_aviso_materia"><?= ucfirst(htmlspecialchars($aviso['materia'])); ?></span> 
-                                 – <span data-i18n="maestro_panel_aviso_fecha">Fecha:</span> <?= htmlspecialchars($aviso['fecha_subida']); ?><br>
+                                  <span data-i18n="maestro_panel_aviso_materia"><?= ucfirst(htmlspecialchars($aviso['materia'])); ?></span> 
+                                 <span data-i18n="maestro_panel_aviso_fecha">Fecha:</span> <?= htmlspecialchars($aviso['fecha_subida']); ?><br>
                                 <small data-i18n="maestro_panel_aviso_descripcion"><?= htmlspecialchars($aviso['descripcion']); ?></small>
-=======
+
                                 <b><?= htmlspecialchars($aviso['titulo']); ?></b>
-                                – <?= ucfirst(htmlspecialchars($aviso['materia'])); ?> 
-                                – <span>Fecha: <?= htmlspecialchars($aviso['fecha_subida']); ?></span><br>
+                                 <?= ucfirst(htmlspecialchars($aviso['materia'])); ?> 
+                                 <span>Fecha: <?= htmlspecialchars($aviso['fecha_subida']); ?></span><br>
                                 <small><?= htmlspecialchars($aviso['descripcion']); ?></small>
                                 <form action="../frontend_maestros/eliminar_tarea.php" method="POST" style="display:inline;" onsubmit="return confirmEliminar('aviso');">
                                     <input type="hidden" name="accion" value="eliminar_aviso">
@@ -573,7 +573,6 @@ foreach ($comentarios as $c) {
     <!-- COMENTARIOS MULTIHILO -->
         <div id="seccion-mensajes" class="seccion-panel" style="display:none;">
             <div class="section">
-<<<<<<< HEAD
                 <h3 data-i18n="maestro_panel_titulo_mensajes">Mensajes recientes</h3>
                 <div class="avisos-timeline">
                     <div class="aviso-card">
@@ -585,7 +584,7 @@ foreach ($comentarios as $c) {
                         <span data-i18n="maestro_panel_mensaje2">Mensaje de Juan Pérez: "No entiendo la tarea".</span>
                     </div>
                 </div>
-=======
+
                 <h3>Comentarios/dudas de alumnos 
                     <?php if ($pendientes > 0): ?>
                         <span class="badge" style="background:#e65100;color:white;padding:2px 9px;border-radius:11px;">
@@ -636,7 +635,6 @@ foreach ($comentarios as $c) {
                         <li>No hay comentarios/dudas aún.</li>
                     <?php endif; ?>
                 </ul>
->>>>>>> 57be137ec42579f3ead0e75f539a1f8eb873c977
             </div>
         </div>
         <!-- PERFIL -->

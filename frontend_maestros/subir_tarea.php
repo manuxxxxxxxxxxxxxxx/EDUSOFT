@@ -71,48 +71,49 @@ while ($fila = $resultado->fetch_assoc()) {
 <body>
   <div class="task-modal">
     <div class="task-header">
-      <span class="task-title">Tarea</span>
-      <button class="task-close" onclick="cerrarModal()">✕</button>
+      <span class="task-title" data-i18n="maestro_panel_titulo_tareas">Tarea</span>
+      <button class="task-close" onclick="cerrarModal()" aria-label="Cerrar" data-i18n="maestro_panel_cerrar">✕</button>
     </div>
     <form class="task-form" action="procesar_tarea.php" method="POST" enctype="multipart/form-data">
-<div class="task-row">
-  <label for="id_clase">Selecciona una clase:</label>
-  <select name="id_clase" id="id_clase" required>
-    <option value="">-- Selecciona una clase --</option>
-    <?php foreach ($clases as $clase): ?>
-      <option value="<?php echo $clase['id']; ?>">
-        <?php echo htmlspecialchars($clase['nombre_clase']) . " – " . ucfirst($clase['materia']); ?>
-      </option>
-    <?php endforeach; ?>
-  </select>
-</div>      <div class="task-row">
-        <label for="titulo">Título</label>
-        <input type="text" id="titulo" name="titulo" placeholder="#001 Exponentes" required>
+      <div class="task-row">
+        <label for="id_clase" data-i18n="maestro_panel_tarea_label_clase">Selecciona una clase:</label>
+        <select name="id_clase" id="id_clase" required data-i18n="maestro_panel_tarea_select_clase">
+          <option value="" data-i18n="maestro_panel_tarea_option_default">-- Selecciona una clase --</option>
+          <?php foreach ($clases as $clase): ?>
+            <option value="<?php echo $clase['id']; ?>" data-i18n="maestro_panel_tarea_option_clase">
+              <?php echo htmlspecialchars($clase['nombre_clase']) . " – " . ucfirst($clase['materia']); ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
       </div>
       <div class="task-row">
-        <label for="descripcion">Descripción </label>
-        <textarea id="descripcion" name="descripcion" rows="3"></textarea>
+        <label for="titulo" data-i18n="maestro_panel_tarea_label_titulo">Título</label>
+        <input type="text" id="titulo" name="titulo" placeholder="#001 Exponentes" required data-i18n="maestro_panel_tarea_input_titulo">
+      </div>
+      <div class="task-row">
+        <label for="descripcion" data-i18n="maestro_panel_tarea_label_descripcion">Descripción</label>
+        <textarea id="descripcion" name="descripcion" rows="3" data-i18n="maestro_panel_tarea_textarea_descripcion"></textarea>
       </div>
       <div class="task-row task-meta">
         <div>
-          <label>Puntos</label>
-          <input type="number" min="0" max="100" value="20" name="puntos">
+          <label data-i18n="maestro_panel_tarea_label_puntos">Puntos</label>
+          <input type="number" min="0" max="100" value="20" name="puntos" data-i18n="maestro_panel_tarea_input_puntos">
         </div>
         <div>
-          <label>Fecha de entrega</label>
-          <input type="date" name="fecha_entrega">
+          <label data-i18n="maestro_panel_tarea_label_fecha_entrega">Fecha de entrega</label>
+          <input type="date" name="fecha_entrega" data-i18n="maestro_panel_tarea_input_fecha_entrega">
         </div>
         <div>
-          <label>Tema</label>
-          <input type="text" name="tema" value="Tarea">
+          <label data-i18n="maestro_panel_tarea_label_tema">Tema</label>
+          <input type="text" name="tema" value="Tarea" data-i18n="maestro_panel_tarea_input_tema">
         </div>
       </div>
       <div class="task-row task-material">
-        <label>Material</label>
-        <input type="file" name="material[]" multiple>
+        <label data-i18n="maestro_panel_tarea_label_material">Material</label>
+        <input type="file" name="material[]" multiple data-i18n="maestro_panel_tarea_input_material">
       </div>
       <div class="task-row task-actions">
-        <button type="submit" class="btn submit-btn">Asignar</button>
+        <button type="submit" class="btn submit-btn" data-i18n="maestro_panel_tarea_btn_submit">Asignar</button>
       </div>
     </form>
   </div>
@@ -121,5 +122,7 @@ while ($fila = $resultado->fetch_assoc()) {
       document.querySelector('.task-modal').style.display = 'none';
     }
   </script>
+    <script src="../principal/lang.js"></script>
+  <script src="../principal/idioma.js"></script>
 </body>
 </html>
