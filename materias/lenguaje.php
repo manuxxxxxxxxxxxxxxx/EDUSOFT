@@ -216,6 +216,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
             <button data-i18n="material" id="material-btn"><i class="fas fa-folder-open"></i>Material</button> 
             <button data-i18n="alumnos" id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
             <button data-i18n="avisos" id="avisos-btn"><i class="fas fa-bell"></i>Avisos</button>
+            <button data-i18n="comentarios" id="comentarios-btn"><i class="fas fa-comments"></i>Comentarios</button>
         </nav>
     </div>
     <div class="main-content">
@@ -309,8 +310,34 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                         </div>
                     </div>
                 </div>
+            </section> 
+
+
+
+             <section id="comentarios" class="seccion" style="display: none;">
+                <h2><i class="fas fa-comments"></i> Comentarios</h2>
+                <ul class="lista-comentarios">
+                    <li>
+                        <i class="fas fa-user"></i>
+                        <span>Juan Pérez</span>
+                        <p>¿El informe debe incluir imágenes?</p>
+                        <small>22/08/2025 - 14:10</small>
+                    </li>
+                    <li>
+                        <i class="fas fa-user"></i>
+                        <span>María Gómez</span>
+                        <p>¡Muy útil el material, gracias profe!</p>
+                        <small>22/08/2025 - 19:45</small>
+                    </li>
+                    <li>
+                        <i class="fas fa-user"></i>
+                        <span>Cristofer Alfaro</span>
+                        <p>¡Recuerden que el informe debe entregarse en PDF!</p>
+                        <small>23/08/2025 - 09:02</small>
+                    </li>
+                </ul>
             </section>
-            <!-- Tareas -->
+   <!-- Tareas -->
             <section id="tareas" class="seccion" style="display: none;">
                 <div class="section-card">
                     <h2 data-i18n="tareas">Tareas</h2>
@@ -378,6 +405,32 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                             <p>No se han asignado tareas aún.</p>
                         <?php endif; ?>
                     </div>
+
+
+
+
+
+
+         <section id="tareas" class="seccion" style="display: none;">
+            <h2 data-i18n="tareas">Tareas</h2>
+            <!-- Mostrar tareas del profesor -->
+                <div class="tareas-container">
+                    <?php if (!empty($tareas_profesor)): ?>
+                        <?php foreach ($tareas_profesor as $tarea): ?>
+                            <div class="tarea">
+                                <i class="fas fa-book"></i>
+                                <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                                <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                                <small>Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | Puntos: <?php echo $tarea['puntos']; ?></small>
+                                <?php if (!empty($tarea['ruta_archivo'])): ?>
+                                    <br><a href="<?php echo htmlspecialchars($tarea['ruta_archivo']); ?>" target="_blank">📎 Ver archivo adjunto</a>
+                                <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>No se han asignado tareas aún.</p>
+                    <?php endif; ?>
+
                 </div>
             </section>
             <!-- Material -->
