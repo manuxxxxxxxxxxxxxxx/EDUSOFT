@@ -1,53 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="registro.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <title>EduSoft</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - ELEFANTE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="prueba.css">
 </head>
 <body>
-<div class="container-form register">
-        <div class="information">
-            <div class="info-childs">
-                <h2 data-i18n="bienvenidaE">Bienvenido estudiante</h2>
-                <br>
-                <img src="../img/2.png" alt="" height="200px" weight="220px">
-            </div>
+  <!-- Marca de agua: Elefante SVG -->
+  <div class="elephant-watermark">
+    <!-- Puedes reemplazar el SVG por una imagen si prefieres -->
+    <img src="../img/ELEFANTE.png" alt="">
+      <path d="M100 700 Q230 400 340 400 Q400 390 450 250 Q480 170 600 150 Q730 130 700 270 Q660 410 550 370 Q360 300 420 450 Q470 560 200 550 Q90 540 100 700 Z"
+        stroke="#5398ed" stroke-width="20" fill="none" opacity="0.8"/>
+      <!-- Dibuja tu elefante aquí, o reemplaza por imagen si lo prefieres -->
+       
+    </svg>
+  </div>
+  <div class="main-center-card">
+    <div class="card-form-side">
+      <div class="logo-elefante">
+        <img src="../img/ELEFANTE.png" alt="Logo Elefante" style="height: 28px; vertical-align: middle;">
+        <span class="brand">EDUSOFT</span>
+      </div>
+      <h2>Registro</h2>
+      <form action="../conexiones/registroAlumno.php" method="post">
+        <div class="form-group">
+            <i class='bx bxs-user'></i>
+           <input data-i18n="nombre_usuario" type="text" name="Nombre" placeholder="Nombre Usuario"  >
         </div>
-        <div class="form-information">
-            <div class="form-information-childs">
-                <h2 data-i18n="cuentaD">Crear una Cuenta</h2>
-                <form action="../conexiones/registroAlumno.php" method="post" class="form form-register">
-                    <div>
-                        <label >
-                            <i class='bx bxs-user'></i>
-                            <input data-i18n="nombre_usuario" type="text" name="Nombre" placeholder="Nombre Usuario"  >
-                        </label>
-                    </div>
-                    <div>
-                        <label >
-                            <i class='bx bxs-envelope' ></i>
-                            <input data-i18n="correo"  type="email" name="Email" placeholder="Correo Electronico"  >
-                        </label>
-                    </div>
-                   <div>
-                        <label>
-                            <i class='bx bxs-lock-alt' ></i>
-                            <input data-i18n="contraseña" type="password" name="Pass" placeholder="Contraseña" >
-                        </label>
-                   </div>
-                   
-                    <input data-i18n="registrar" type="submit" value="Registrarse">
-                    <div class="alerta-error" data-i18n="campos">Todos los campos son obligatorios</div>
-                    <div class="alerta-exito" data-i18n="correcion">Te registraste correctamente</div>
-                </form>
-            </div>
+        <div class="form-group">
+            <i class='bx bxs-envelope' ></i>
+          <input data-i18n="correo"  type="email" name="Email" placeholder="Correo Electronico"  >
         </div>
+        <div class="form-group">
+            <i class='bx bxs-lock-alt' ></i>
+         <input data-i18n="contraseña" type="password" name="Pass" placeholder="Contraseña" >
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-submit">
+            Registrarse
+          </button>
+        </div>
+      </form>
+      <div class="form-footer">
+        <a href="#">¿Ya tienes cuenta? Inicia sesión</a>
+      </div>
     </div>
-      <script src="../principal/lang.js"></script>
-      <script src="../principal/idioma.js"></script>
-</body>
+    <div class="card-image-side">
+      <img src="../img/imagen4.jpg" alt="Imagen lateral">
+    </div>
+  </div>
+  <script>
+    // Animación elegante del elefante
+    const card = document.querySelector('.main-center-card');
+    const watermark = document.querySelector('.elephant-watermark');
+    card.addEventListener('mouseenter', () => {
+      watermark.style.opacity = '0.16';
+      watermark.style.filter = 'blur(0.5px)';
+    });
+    card.addEventListener('mouseleave', () => {
+      watermark.style.opacity = '0.08';
+      watermark.style.filter = 'blur(2px)';
+    });
+  </script>
 </body>
 </html>
