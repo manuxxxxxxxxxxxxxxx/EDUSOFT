@@ -847,3 +847,33 @@ body {
     box-shadow: 0 0px 12px #e6510022;
     background: linear-gradient(90deg,#fff4e3 96%,#fafdff 100%);
 }
+
+  .entregas-section {
+        background: #f8f9fa;
+        padding: 18px 22px;
+        border-radius: 10px;
+        margin: 18px 0;
+        box-shadow: 0 2px 8px #0001;
+    }
+    .entrega-item {
+        border-bottom: 1px solid #c4c4c4;
+        padding: 10px 0;
+        margin-bottom: 10px;
+    }
+    .entrega-item:last-child {
+        border-bottom: none;
+    }
+    .btn-ver-entregas {
+        margin-left: 8px;
+        background: #3c68bb;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 0.95em;
+        transition: background 0.2s;
+    }
+    .btn-ver-entregas:hover {
+        background: #234281;
+    }

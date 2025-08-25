@@ -332,7 +332,7 @@ $total_alumnos_unicos = count($alumno_ids);
                 </ul>
             </div>
         </div>
-        <!-- TAREAS -->
+   <!-- TAREAS -->
         <div id="seccion-tareas" class="seccion-panel">
             <div class="section">
                 <h3>Tareas</h3>
@@ -348,17 +348,29 @@ $total_alumnos_unicos = count($alumno_ids);
                 </form>
                 <ul id="tareas-lista">
                     <?php
+                    // Si reviso tareas entregadas, fuerza el filtro solo a la clase de esa tarea
+                    if (isset($_GET['ver_entregas']) && isset($_GET['id_tarea_profesor'])) {
+                        $stmtClaseTarea = $conn->prepare("SELECT id_clase FROM tareas_profesor WHERE id = ?");
+                        $stmtClaseTarea->bind_param("i", $_GET['id_tarea_profesor']);
+                        $stmtClaseTarea->execute();
+                        $resClaseTarea = $stmtClaseTarea->get_result();
+                        if ($rowClaseTarea = $resClaseTarea->fetch_assoc()) {
+                            $id_clase = $rowClaseTarea['id_clase'];
+                        }
+                        $stmtClaseTarea->close();
+                    }
+
                     if ($id_clase) {
+                        // Tareas de la clase seleccionada
                         $sqlTareas = "SELECT t.id, t.titulo, t.fecha_entrega, t.descripcion, c.materia 
-                                    FROM tareas_profesor t
-                                    INNER JOIN clases c ON t.id_clase = c.id
-                                    WHERE t.id_clase = ?
-                                    ORDER BY t.fecha_entrega DESC";
+                                      FROM tareas_profesor t
+                                      INNER JOIN clases c ON t.id_clase = c.id
+                                      WHERE t.id_clase = ?
+                                      ORDER BY t.fecha_entrega DESC";
                         $stmtTareas = $conn->prepare($sqlTareas);
                         $stmtTareas->bind_param("i", $id_clase);
                         $stmtTareas->execute();
                         $resultadoTareas = $stmtTareas->get_result();
-
                         if ($resultadoTareas->num_rows > 0):
                             while ($tarea = $resultadoTareas->fetch_assoc()): ?>
                                 <li>
@@ -372,6 +384,12 @@ $total_alumnos_unicos = count($alumno_ids);
                                         <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase); ?>">
                                         <button type="submit" class="btn-eliminar">Eliminar</button>
                                     </form>
+                                    <form action="index.php" method="get" style="display:inline;">
+                                        <input type="hidden" name="ver_entregas" value="1">
+                                        <input type="hidden" name="id_tarea_profesor" value="<?= $tarea['id'] ?>">
+                                        <input type="hidden" name="id_clase" value="<?= $id_clase ?>">
+                                        <button type="submit" class="btn-ver-entregas">Tareas entregadas</button>
+                                    </form>
                                 </li>
                             <?php endwhile;
                         else: ?>
@@ -379,11 +397,12 @@ $total_alumnos_unicos = count($alumno_ids);
                         <?php endif;
                         $stmtTareas->close();
                     } else {
+                        // Mostrar tareas de todas las clases
                         $sqlTareas = "SELECT t.id, t.titulo, t.fecha_entrega, t.descripcion, c.materia, c.nombre_clase, t.id_clase
-                                    FROM tareas_profesor t
-                                    INNER JOIN clases c ON t.id_clase = c.id
-                                    WHERE c.profesor_id = ?
-                                    ORDER BY c.nombre_clase, t.fecha_entrega DESC";
+                                      FROM tareas_profesor t
+                                      INNER JOIN clases c ON t.id_clase = c.id
+                                      WHERE c.profesor_id = ?
+                                      ORDER BY c.nombre_clase, t.fecha_entrega DESC";
                         $stmtTareas = $conn->prepare($sqlTareas);
                         $stmtTareas->bind_param("i", $profesor_id);
                         $stmtTareas->execute();
@@ -409,6 +428,12 @@ $total_alumnos_unicos = count($alumno_ids);
                                     echo "<input type='hidden' name='id_clase' value='" . htmlspecialchars($idClase) . "'>";
                                     echo "<button type='submit' class='btn-eliminar'>Eliminar</button>";
                                     echo "</form>";
+                                    echo "<form action='index.php' method='get' style='display:inline;'>";
+                                    echo "<input type='hidden' name='ver_entregas' value='1'>";
+                                    echo "<input type='hidden' name='id_tarea_profesor' value='" . $tarea['id'] . "'>";
+                                    echo "<input type='hidden' name='id_clase' value='" . $idClase . "'>";
+                                    echo "<button type='submit' class='btn-ver-entregas'>Tareas entregadas</button>";
+                                    echo "</form>";
                                     echo "</li>";
                                 }
                                 echo "</ul></li>";
@@ -420,10 +445,75 @@ $total_alumnos_unicos = count($alumno_ids);
                     }
                     ?>
                 </ul>
-                <form action="../frontend_maestros/subir_tarea.php" method="get">
-                    <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase ?? '') ?>">
-                    <button type="submit" class="quick-action">Crear tarea</button>
-                </form>
+                <!-- BLOQUE DE TAREAS ENTREGADAS Y ARCHIVOS DE ALUMNOS -->
+                <?php
+                if (isset($_GET['ver_entregas']) && isset($_GET['id_tarea_profesor'])): 
+                    $id_tarea_profesor = intval($_GET['id_tarea_profesor']);
+                    $sql = "SELECT t.id, t.id_estudiante, t.fecha_subida, t.calificacion, t.retroalimentacion, e.nombre
+                            FROM tareas t
+                            JOIN estudiantes e ON t.id_estudiante = e.ID
+                            WHERE t.id_tarea_profesor = ?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("i", $id_tarea_profesor);
+                    $stmt->execute();
+                    $res = $stmt->get_result();
+                    ?>
+                    <div class="entregas-section">
+                    <h3>Tareas entregadas por alumnos</h3>
+                    <?php
+                    if ($res->num_rows == 0) {
+                        echo "<p>No hay entregas aún.</p>";
+                    } else {
+                        while ($entrega = $res->fetch_assoc()) {
+                            ?>
+                            <div class="entrega-item">
+                                <b><?= htmlspecialchars($entrega['nombre']) ?></b>
+                                <span>Fecha entrega: <?= htmlspecialchars($entrega['fecha_subida']) ?></span>
+                                <?php
+                                // Mostrar todos los archivos subidos por el alumno para esta entrega
+                                $sqlArchivos = "SELECT nombre_archivo, ruta_archivo FROM tareas_archivos WHERE id_tarea = ?";
+                                $stmtArchivos = $conn->prepare($sqlArchivos);
+                                $stmtArchivos->bind_param("i", $entrega['id']);
+                                $stmtArchivos->execute();
+                                $resArchivos = $stmtArchivos->get_result();
+                                if ($resArchivos->num_rows > 0) {
+                                    echo "<ul>";
+                                    while ($archivo = $resArchivos->fetch_assoc()) {
+                                        echo '<li><a href="' . htmlspecialchars($archivo['ruta_archivo']) . '" target="_blank">Descargar: ' . htmlspecialchars($archivo['nombre_archivo']) . '</a></li>';
+                                    }
+                                    echo "</ul>";
+                                } else {
+                                    echo "<span>No hay archivos subidos.</span>";
+                                }
+                                $stmtArchivos->close();
+                                ?>
+                                <form method="POST" action="calificar_tarea.php" style="margin-top:5px;">
+                                    <input type="hidden" name="id_tarea" value="<?= $entrega['id'] ?>">
+                                    <label>Calificación:</label>
+                                    <select name="calificacion" required>
+                                        <?php for($i=1;$i<=10;$i++): ?>
+                                            <option value="<?= $i ?>"<?= ($entrega['calificacion']==$i)?" selected":"" ?>><?= $i ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                    <input type="text" name="retroalimentacion" placeholder="Retroalimentación" value="<?= htmlspecialchars($entrega['retroalimentacion'] ?? '') ?>">
+                                    <button type="submit">Guardar</button>
+                                </form>
+                                <?php if ($entrega['calificacion'] !== null): ?>
+                                    <div>
+                                        <strong>Calificación actual:</strong> <?= $entrega['calificacion'] ?>
+                                        <?php if ($entrega['retroalimentacion']): ?>
+                                            <br><small><b>Retroalimentación:</b> <?= htmlspecialchars($entrega['retroalimentacion']) ?></small>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <?php
+                        }
+                    }
+                    $stmt->close();
+                    ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
         <!-- MATERIALES -->

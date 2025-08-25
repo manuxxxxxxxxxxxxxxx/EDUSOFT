@@ -349,7 +349,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                     </div>
                 </div>
             </section>
-         <section id="tareas" class="seccion" style="display: none;">
+        <section id="tareas" class="seccion" style="display: none;">
                 <div class="section-card">
                     <h2 data-i18n="tareas">Tareas</h2>
                     <div class="tareas-container">
@@ -395,6 +395,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                                                     <?php endforeach; ?>
                                                 </div>
                                             <?php endif; ?>
+                                            <!-- MOSTRAR NOTA Y RETROALIMENTACIÓN DEL PROFESOR -->
+                                            <?php if ($entrega && isset($entrega['calificacion'])): ?>
+                                                <div class="nota-alumno">
+                                                    <strong>Nota del profesor:</strong> 
+                                                    <?php echo ($entrega['calificacion'] !== null) ? htmlspecialchars($entrega['calificacion']) : 'Sin calificar aún'; ?>
+                                                    <?php if (!empty($entrega['retroalimentacion'])): ?>
+                                                        <br><small><b>Retroalimentación:</b> <?php echo htmlspecialchars($entrega['retroalimentacion']); ?></small>
+                                                    <?php endif; ?>
+                                                </div>
+                                            <?php endif; ?>
                                             <form class="formSubirTarea" action="subir_tarea_ajax.php" method="POST" enctype="multipart/form-data">
                                                 <input type="hidden" name="id_tarea_profesor" value="<?php echo $tarea['id']; ?>">
                                                 <input type="hidden" name="materia" value="lenguaje">
@@ -417,7 +427,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                         <?php endif; ?>
                     </div>
                 </div>
-            </section>
+        </section>
             <section id="comentarios" class="seccion">
     <h2>Comentarios y dudas 
         <?php
