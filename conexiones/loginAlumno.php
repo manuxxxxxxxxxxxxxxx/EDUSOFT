@@ -42,7 +42,9 @@ if ($stmt->num_rows === 1) {
         $_SESSION["nombre"] = $db_nombre;
         $_SESSION["rol"] = "estudiante"; 
         // Contraseña nunca se almacena en la sesión ni se muestra
-        echo "<script>alert('¡Bienvenido, $db_nombre!'); window.location.href='../cursos.php';</script>";
+
+        // SOLO redirige a cursos.php con el nombre
+        header("Location: ../cursos.php?bienvenido=" . urlencode($db_nombre));
         exit;
     } else {
         echo "<script>alert('❌ Contraseña incorrecta.'); window.history.back();</script>";

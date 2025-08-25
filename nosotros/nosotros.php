@@ -23,8 +23,8 @@
       </div>
       
       <ul class="sidebar-menu">
-        <li class="sidebar-item active">
-          <a href="#" class="sidebar-link" title="Inicio">
+        <li class="sidebar-item has-submenu">
+          <a href="../cursos.php" class="sidebar-link" title="Inicio">
             <i class="fas fa-home"></i>
             <span data-i18n="inicioN">Inicio</span>
           </a>

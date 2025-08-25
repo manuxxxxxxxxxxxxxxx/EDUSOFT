@@ -8,18 +8,13 @@ if (!isset($_SESSION['id_estudiante']) || $_SESSION['rol'] !== 'estudiante') {
     exit;
 }
 
-// Función para redirigir con toast
-function redirectToast($msg, $type = 'info') {
-    header("Location: cursos.php?toast=" . urlencode($msg) . "&toast_type=" . urlencode($type));
-    exit;
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $codigo = $_POST['codigo_clase'] ?? '';
     $estudiante_id = $_SESSION['id_estudiante'];
 
     if (empty($codigo)) {
-        redirectToast("Por favor, ingresa un código de clase.", "warning");
+        echo "<script>alert('Por favor, ingresa un código de clase.'); window.location.href='cursos.php';</script>";
+        exit;
     }
 
     if (!isset($_POST['codigo_clase']) || empty($_POST['codigo_clase'])) {
@@ -32,7 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $resultado = $stmt->get_result();
 
     if ($resultado->num_rows === 0) {
-        redirectToast("Código de clase no válido.", "error");
+        echo "<script>alert('Código de clase no válido.'); window.location.href='cursos.php';</script>";
+        exit;
     }
 
     $clase = $resultado->fetch_assoc();
@@ -45,7 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result_check = $stmt_check->get_result();
 
     if ($result_check->num_rows > 0) {
-        redirectToast("Ya estás inscrito en esta clase.", "info");
+        echo "<script>alert('Ya estás inscrito en esta clase.'); window.location.href='cursos.php';</script>";
+        exit;
     }
 
     // Insertar en tabla intermedia
@@ -53,9 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt_insert->bind_param("ii", $clase_id, $estudiante_id);
 
     if ($stmt_insert->execute()) {
-        redirectToast("¡Te has unido a la clase exitosamente!", "success");
+        echo "<script>alert('Te has unido a la clase exitosamente.'); window.location.href='cursos.php';</script>";
     } else {
-        redirectToast("Ocurrió un error al intentar unirse a la clase.", "error");
+        echo "<script>alert('Ocurrió un error al intentar unirse a la clase.'); window.location.href='cursos.php';</script>";
     }
 
     $stmt->close();

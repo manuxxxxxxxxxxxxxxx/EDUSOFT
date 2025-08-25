@@ -1,101 +1,39 @@
 <?php
-session_start();
-if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "estudiante") {
-    echo "<script>alert('Debes iniciar sesión como estudiante.'); window.location.href='loginAlumno.php';</script>";
-    exit;
-}
-
-// BLOQUE UNIVERSAL MODERN BOOTSTRAP TOAST MULTITIPO CON ICONOS PERSONALIZADOS
-if (isset($_GET['toast'])) {
-    $mensaje = htmlspecialchars($_GET['toast']);
-    $tipo = $_GET['toast_type'] ?? 'info';
-
-    // ICONOS SVG PERSONALIZADOS
-    $toastConfig = [
-        'success' => [
-            'class' => 'toast-success',
-            // Icono de éxito (check-circle)
-            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="white" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM7 11.5l-3-3L5.5 7l1.5 1.5L10.5 5l1.5 1.5-4 5z"/></svg>',
-        ],
-        'error' => [
-            'class' => 'toast-error',
-            // Icono moderno de error/advertencia (octagon con signo de exclamación)
-            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="white" viewBox="0 0 16 16"><path d="M7.001 1.002a2 2 0 0 1 1.998 0l5.999 3.464a2 2 0 0 1 .998 1.732v6.604a2 2 0 0 1-.998 1.732l-5.999 3.464a2 2 0 0 1-1.998 0l-5.999-3.464A2 2 0 0 1 .003 12.802V6.198a2 2 0 0 1 .998-1.732l5.999-3.464zm.999 3.998a1 1 0 1 0-2 0v4a1 1 0 1 0 2 0v-4zm-1 6a1 1 0 1 0 2 0 1 1 0 0 0-2 0z"/></svg>',
-        ],
-        'warning' => [
-            'class' => 'toast-warning',
-            // Icono de advertencia (triángulo)
-            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="white" viewBox="0 0 16 16"><path d="M7.938 2.016a.13.13 0 0 1 .124 0l6.857 11.856c.03.052.035.11.015.164a.13.13 0 0 1-.124.075H1.19a.13.13 0 0 1-.124-.075.13.13 0 0 1 .015-.164L7.938 2.016zM8 4.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 1 0v-3A.5.5 0 0 0 8 4.5zm-.5 6.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0z"/></svg>',
-        ],
-        'info' => [
-            'class' => 'toast-info',
-            // Icono de usuario con check (para "ya inscrito")
-            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="white" viewBox="0 0 16 16"><path d="M15.854 5.854a.5.5 0 0 0-.708-.708L13.5 6.793l-1.146-1.147a.5.5 0 0 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l2-2z"/><path d="M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm-3 4a5.978 5.978 0 0 0-4.468 2.096.5.5 0 0 0 .374.854h10.188a.5.5 0 0 0 .374-.854A5.978 5.978 0 0 0 6 10z"/></svg>',
-        ],
-    ];
-    $cfg = $toastConfig[$tipo] ?? $toastConfig['info'];
-
-    echo '
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-      .toast-success { background: #43a047 !important; color: #fff !important; }
-      .toast-error   { background: #e53935 !important; color: #fff !important; }
-      .toast-warning { background: #fbc02d !important; color: #fff !important; }
-      .toast-info    { background: #1976d2 !important; color: #fff !important; }
-      .toast { font-weight: 500; }
-      .toast .btn-close { filter: invert(1); }
-      @media (max-width: 600px) {
-        .custom-toast-pos { left: 50%!important; transform: translateX(-50%)!important; width: 90%!important; }
-      }
-    </style>
-    <div class="position-fixed bottom-0 start-50 translate-middle-x custom-toast-pos p-3" style="z-index:1300;">
-      <div id="toastUniversal" class="toast show align-items-center ' . $cfg['class'] . ' border-0 shadow-lg rounded-4" role="alert" aria-live="polite" aria-atomic="true">
-        <div class="d-flex">
-          <div class="toast-body d-flex align-items-center fw-semibold fs-5">
-            '.$cfg['icon'].'
-            <span>'.$mensaje.'</span>
-          </div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
-        </div>
-      </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      setTimeout(function() {
-        var toastEl = document.getElementById("toastUniversal");
-        var toast = bootstrap.Toast.getOrCreateInstance(toastEl);
-        toast.hide();
-      }, 3500);
-    </script>
-    ';
-}
-
-// NOTIFICACIÓN DE BIENVENIDA (opcional, si usas parámetro bienvenido)
 if (isset($_GET['bienvenido'])) {
     $nombre = htmlspecialchars($_GET['bienvenido']);
-    echo '
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index:1300;">
-      <div id="toastBienvenida" class="toast show align-items-center text-bg-success border-0 shadow-lg rounded-4" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-          <div class="toast-body d-flex align-items-center fw-semibold fs-5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-person-check me-2" viewBox="0 0 16 16"><path d="M15.854 5.854a.5.5 0 0 0-.708-.708L13.5 6.793l-1.146-1.147a.5.5 0 0 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l2-2z"/><path d="M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm-3 4a5.978 5.978 0 0 0-4.468 2.096.5.5 0 0 0 .374.854h10.188a.5.5 0 0 0 .374-.854A5.978 5.978 0 0 0 6 10z"/></svg>
-            <span>¡Bienvenido, ' . $nombre . '!</span>
-          </div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
-        </div>
-      </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    echo "
+    <div id='toast' style='
+        position: fixed;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #262235;
+        color: #fff;
+        padding: 28px 40px;
+        border-radius: 16px;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 9999;
+        transition: opacity 0.8s;
+    '>¡Bienvenido, $nombre!</div>
     <script>
-      setTimeout(function() {
-        var toastEl = document.getElementById("toastBienvenida");
-        var toast = bootstrap.Toast.getOrCreateInstance(toastEl);
-        toast.hide();
-      }, 3000);
+        const toast = document.getElementById('toast');
+        setTimeout(() => {
+            toast.style.opacity = 1;
+        }, 100);
+        setTimeout(() => {
+            toast.style.opacity = 0;
+        }, 2200);
     </script>
-    ';
+    ";
 }
+    session_start();
+    if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "estudiante") {
+        echo "<script>alert('Debes iniciar sesión como estudiante.'); window.location.href='loginAlumno.php';</script>";
+        exit;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -106,8 +44,6 @@ if (isset($_GET['bienvenido'])) {
   <link rel="stylesheet" href="styleCursos.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Bootstrap CSS solo si no está ya incluido arriba -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
   <div class="layout">
@@ -345,6 +281,7 @@ if (isset($_GET['bienvenido'])) {
   </div>
 
   <!-- Footer -->
+ <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">

@@ -109,7 +109,7 @@
 <body>
   <nav class="navbar navbar-expand-lg bg-white shadow-sm mb-4">
     <div class="container">
-      <a class="navbar-brand" href="#"><i class="bi bi-calendar-week"></i> EDUSOFT Calendario</a>
+      <a class="navbar-brand" href="#"><img src="../img/ELEFANTE.png" alt="Logo" style="width: 60px; height: 60px;"> EduSoft Calendario</a>
     </div>
   </nav>
   <div class="calendar-container">
