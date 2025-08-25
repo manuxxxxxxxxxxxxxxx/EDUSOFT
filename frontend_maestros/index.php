@@ -9,6 +9,50 @@ if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "profesor") {
 $profesor_id = $_SESSION['id'];
 $nombre = $_SESSION['nombre'];
 
+// Procesar subida de foto de perfil
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['guardar_foto'])) {
+    // Si se sube archivo
+    if (!empty($_FILES['foto_file']['name'])) {
+        $target_dir = "../uploads/profesores/";
+        if (!is_dir($target_dir)) mkdir($target_dir, 0777, true); // crea carpeta si no existe
+        $nombre_archivo = "profesor_" . $profesor_id . "_" . time() . "_" . basename($_FILES["foto_file"]["name"]);
+        $target_file = $target_dir . $nombre_archivo;
+        $tipo = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $esImagen = in_array($tipo, ["jpg", "jpeg", "png", "gif"]);
+        if ($esImagen && move_uploaded_file($_FILES["foto_file"]["tmp_name"], $target_file)) {
+            $ruta_guardar = "uploads/profesores/" . $nombre_archivo; // ruta relativa para mostrar
+            $stmtFoto = $conn->prepare("UPDATE profesores SET foto = ? WHERE id = ?");
+            $stmtFoto->bind_param("si", $ruta_guardar, $profesor_id);
+            $stmtFoto->execute();
+            $stmtFoto->close();
+            $_SESSION['foto'] = $ruta_guardar;
+            header("Location: index.php");
+            exit;
+        } else {
+            $error = "Solo se permiten imágenes jpg, png, gif";
+        }
+    }
+    // Si se pone URL manual
+    elseif (!empty($_POST['foto_url'])) {
+        $nueva_foto = trim($_POST['foto_url']);
+        $stmtFoto = $conn->prepare("UPDATE profesores SET foto = ? WHERE id = ?");
+        $stmtFoto->bind_param("si", $nueva_foto, $profesor_id);
+        $stmtFoto->execute();
+        $stmtFoto->close();
+        $_SESSION['foto'] = $nueva_foto;
+        header("Location: index.php");
+        exit;
+    }
+}
+
+$stmtFoto = $conn->prepare("SELECT foto FROM profesores WHERE id = ?");
+$stmtFoto->bind_param("i", $profesor_id);
+$stmtFoto->execute();
+$stmtFoto->bind_result($foto_url);
+$stmtFoto->fetch();
+$stmtFoto->close();
+$_SESSION['foto'] = $foto_url ?: 'https://ui-avatars.com/api/?name=Maestro+Ejemplo';
+
 // Consulta para traer las clases del profesor para los select
 $sql = "SELECT id, nombre_clase, materia, codigo_clase FROM clases WHERE profesor_id = ?";
 $stmt = $conn->prepare($sql);
@@ -145,7 +189,7 @@ $total_alumnos_unicos = count($alumno_ids);
         <i class="fas fa-bars"></i>
     </button>
     <div class="sidebar">
-        <img id="profile-img" src="https://ui-avatars.com/api/?name=Maestro+Ejemplo" alt="Foto de perfil del Maestro Ejemplo">
+        <img id="profile-img" src="/<?= htmlspecialchars($_SESSION['foto'] ?? 'https://ui-avatars.com/api/?name=Maestro+Ejemplo') ?>" alt="Foto de perfil del Maestro Ejemplo">
         <h2 id="profile-name">Docente <?php echo htmlspecialchars($nombre); ?></h2>
         <nav>
             <a href="#"><i class="fas fa-home"></i>Inicio</a>
@@ -774,11 +818,24 @@ $total_alumnos_unicos = count($alumno_ids);
         <div id="seccion-perfil" class="seccion-panel">
             <div class="section">
                 <h3>Perfil</h3>
-                <input type="text" id="edit-name" placeholder="Nombre" value="<?= htmlspecialchars($nombre) ?>" disabled>
-                <input type="text" id="edit-img" placeholder="URL de foto" value="https://ui-avatars.com/api/?name=Maestro+Ejemplo" disabled>
-                <button disabled>Guardar cambios</button>
+                <form method="POST" action="index.php" enctype="multipart/form-data">
+                    <label for="edit-name">Nombre</label>
+                    <input type="text" id="edit-name" value="<?= htmlspecialchars($nombre) ?>" disabled>
+                    
+                    <label for="edit-img">Subir foto de perfil</label>
+                    <input type="file" name="foto_file" id="edit-img" accept="image/*">
+
+                    <label for="foto_url">o URL de foto</label>
+                    <input type="text" name="foto_url" id="foto_url" placeholder="URL de foto" value="<?= htmlspecialchars($_SESSION['foto']) ?>">
+                    
+                    <button type="submit" name="guardar_foto">Guardar cambios</button>
+                    <?php if (!empty($error)): ?>
+                        <div style="color:red"><?= htmlspecialchars($error) ?></div>
+                    <?php endif; ?>
+                </form>
             </div>
         </div>
+
     </div>
     <script src="../nosotros/cursos.js"></script>
     <script src="../principal/lang.js"></script>
