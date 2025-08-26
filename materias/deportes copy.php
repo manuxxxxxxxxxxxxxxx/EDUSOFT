@@ -29,6 +29,19 @@ $clase_info = $result_prof->fetch_assoc();
 $nombre_clase = $clase_info['nombre_clase'];
 $nombre_profesor = $clase_info['nombre_profesor'];
 
+$imagen_alumno = "";
+
+// Solo si el usuario es alumno
+if (isset($_SESSION['id_estudiante'])) {
+    $id_alumno = $_SESSION['id_estudiante'];
+    $stmt = $conn->prepare("SELECT imagen FROM estudiantes WHERE ID = ?");
+    $stmt->bind_param("i", $id_alumno);
+    $stmt->execute();
+    $stmt->bind_result($imagen_alumno);
+    $stmt->fetch();
+    $stmt->close();
+}
+
 // Lógica para estudiantes
 if (isset($_SESSION['id_estudiante'])) {
     $id_estudiante = $_SESSION['id_estudiante'];
@@ -197,14 +210,26 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
 
 <div class="main-content">
     <header>
-        <a href="../extracurriculares.php" class="logo modern-back">
-            <span class="back-btn"><i class="fas fa-arrow-left"></i></span>
-            <span data-i18n="segundo" class="header-title"><span data-i18n="segundo_texto">Segundo año B</span> <span class="header-materia" data-i18n="deportesN">Deportes</span></span>
-        </a>
-        <div class="icons">
-            <span class="settings" data-i18n="settings"><i class="fas fa-cog"></i></span>
-            <span class="profile" data-i18n="profile"><i class="fas fa-user-circle"></i></span>
-        </div>
+            <a href="../cursos.php" class="logo modern-back">
+                <span class="back-btn"><i class="fas fa-arrow-left"></i></span>
+                <span class="header-title" data-i18n="segundo">Segundo año B <span class="header-materia">Deportes</span></span>
+            </a>
+            <div class="icons">
+               <span class="profile">
+                <a href="configuracion_alumno.php?id_clase=<?= $id_clase ?>&origen=<?= urlencode(basename($_SERVER['PHP_SELF'])) ?>" title="Ajustes">
+                    <i class="fas fa-cog"></i>
+                </a>
+                <?php if (!empty($imagen_alumno)): ?>
+                    <img src="<?= (filter_var($imagen_alumno, FILTER_VALIDATE_URL) ? $imagen_alumno : "../" . htmlspecialchars($imagen_alumno)) ?>"
+                        alt="Foto de perfil"
+                        style="width:54px;height:54px;border-radius:50%;object-fit:cover;">
+                <?php else: ?>
+                    <img src="https://ui-avatars.com/api/?name=Alumno&background=cccccc&color=555555"
+                        alt="Avatar alumno" style="width:34px;height:34px;border-radius:50%;object-fit:cover;">
+                <?php endif; ?>
+                </a>
+                </span>
+            </div>
     </header>
 
     <main>

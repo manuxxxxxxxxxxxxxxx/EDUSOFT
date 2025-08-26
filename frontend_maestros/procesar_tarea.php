@@ -54,7 +54,7 @@ $stmt = $conn->prepare($sql_insert);
 $stmt->bind_param("ississs", $id_clase, $titulo, $descripcion, $puntos, $fecha_entrega, $tema, $archivo_adjunto);
 $stmt->execute();
 
-// Redireccionar dinámicamente a la materia
-header("Location: ../materias/$materia.php?id_clase=$id_clase");
+// Redireccionar a subir_tarea.php con modal de éxito
+header("Location: ../frontend_maestros/subir_tarea.php?id_clase=$id_clase&exito=1");
 exit;
 ?>

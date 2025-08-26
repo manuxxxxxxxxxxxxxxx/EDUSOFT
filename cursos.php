@@ -5,6 +5,35 @@ if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "estudiante") {
     exit;
 }
 
+require_once 'conexiones/conexion.php';
+
+$id_alumno = $_SESSION['id_estudiante'] ?? null;
+$imagenAlumno = '';
+
+if ($id_alumno) {
+    $stmt = $conn->prepare("SELECT imagen, nombre FROM estudiantes WHERE ID = ?");
+    $stmt->bind_param("i", $id_alumno);
+    $stmt->execute();
+    $stmt->bind_result($imagen, $nombreAlumno);
+    $stmt->fetch();
+    $stmt->close();
+
+    // Muestra avatar por defecto si no tiene imagen
+    if ($imagen) {
+        // Si es una URL externa
+        if (filter_var($imagen, FILTER_VALIDATE_URL)) {
+            $imagenAlumno = $imagen;
+        } else {
+            // Si es una ruta interna
+            $imagenAlumno = "../" . htmlspecialchars($imagen);
+        }
+    } else {
+        // Avatar por defecto usando nombre
+        $imagenAlumno = "https://ui-avatars.com/api/?name=" . urlencode($nombreAlumno ?? $_SESSION['nombre'] ?? "Alumno") . "&background=cccccc&color=555555";
+    }
+} else {
+    $imagenAlumno = "https://ui-avatars.com/api/?name=Alumno&background=cccccc&color=555555";
+}
 // BLOQUE UNIVERSAL MODERN BOOTSTRAP TOAST MULTITIPO CON ICONOS PERSONALIZADOS
 if (isset($_GET['toast'])) {
     $mensaje = htmlspecialchars($_GET['toast']);
@@ -210,9 +239,9 @@ if (isset($_GET['bienvenido'])) {
           <i class="fas fa-bars"></i>
         </button>
         <div class="user-info">
-          <span data-i18n="bienvenido">Bienvenido</span>
-          <span><?= isset($_SESSION['nombre']) ? htmlspecialchars($_SESSION['nombre']) : 'estudiante'; ?></span>
-          <a href="#" class="user-link"><i class="fas fa-user-circle"></i></a>
+            <span data-i18n="bienvenido">Bienvenido</span>
+            <span><?= isset($_SESSION['nombre']) ? htmlspecialchars($_SESSION['nombre']) :'estudiante'; ?></span>
+            <img src="<?= $imagenAlumno ?>" alt="Foto perfil" class="user-img" style="width:65px; height:65px; border-radius:50%; object-fit:cover; margin-left:10px; box-shadow:0 1px 6px rgba(0,0,0,0.10); border:2px solid #e8eaf6;">
         </div>
       </header>
 

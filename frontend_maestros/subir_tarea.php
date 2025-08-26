@@ -117,12 +117,31 @@ while ($fila = $resultado->fetch_assoc()) {
       </div>
     </form>
   </div>
-  <script>
-    function cerrarModal() {
-      document.querySelector('.task-modal').style.display = 'none';
+<!-- Modal bonito de éxito para tarea con letras naranjas -->
+    <div id="modalExitoTarea" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:9999;">
+        <div style="background-color:white; padding:30px; max-width:400px; margin:100px auto; border-radius:8px; text-align:center; box-shadow:0 5px 15px rgba(0,0,0,0.3);">
+            <h2 data-i18n="crear_tarea_modal_exito" style="color:orange;">✅ Tarea creada con éxito</h2>
+            <p data-i18n="crear_tarea_modal_exito_desc" style="color:orange;">Tu tarea ha sido registrada correctamente.</p>
+            <button onclick="cerrarModalTarea()" style="padding:8px 16px; margin-top:10px; background-color:#FF9800; color:white; border:none; border-radius:4px;" data-i18n="crear_tarea_modal_aceptar">Aceptar</button>
+        </div>
+    </div>
+
+    <script>
+    function validarFormularioTarea() {
+        // Puedes agregar validaciones JS si lo necesitas
+        return true;
     }
-  </script>
-    <script src="../principal/lang.js"></script>
-  <script src="../principal/idioma.js"></script>
+    function cerrarModalTarea() {
+        // Redirige a la sección de tareas del panel con el id_clase
+        var id_clase = "<?= htmlspecialchars($id_clase ?? '') ?>";
+        window.location.href = "../frontend_maestros/index.php?id_clase=" + encodeURIComponent(id_clase) + "#seccion-tareas";
+    }
+    window.onload = function () {
+        var params = new URLSearchParams(window.location.search);
+        if (params.get("exito") === "1") {
+            document.getElementById("modalExitoTarea").style.display = "block";
+        }
+    }
+    </script>
 </body>
 </html>

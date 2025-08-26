@@ -1,3 +1,14 @@
+.user-img {
+    width: 70px;   /* Cambia a lo que quieras: 60px, 80px, 100px... */
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-left: 10px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.10);
+    border: 2px solid #e8eaf6;
+    vertical-align: middle;
+}
+
 /* Estilos base */
 * {
   margin: 0;
