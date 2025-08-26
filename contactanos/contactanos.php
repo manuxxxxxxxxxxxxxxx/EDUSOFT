@@ -6,8 +6,16 @@
     <title>Contact Page | Living Code</title>
     <link rel="stylesheet" href="../contactanos/contactanos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* Si tu .container tiene position: relative puedes quitar position: absolute de .back-arrow */
+    </style>
 </head>
 <body>
+    <!-- Flecha para volver atrás -->
+    <a href="javascript:history.back()" class="back-arrow" title="Volver atrás">
+    <i class="fa-solid fa-arrow-left"></i>
+</a>
+
     <div class="container">
         <div class="box-info">
             <h1 data-i18n="contacto">CONTÁCTATE CON NOSOTROS</h1>
@@ -44,6 +52,6 @@
     </div>
 
     <script src="../principal/lang.js"></script>
-  <script src="../principal/idioma.js"></script>
+    <script src="../principal/idioma.js"></script>
 </body>
 </html>

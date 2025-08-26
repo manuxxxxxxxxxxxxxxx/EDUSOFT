@@ -59,6 +59,18 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.logo-back {
+  display: inline-block;
+  border-radius: 50%;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.logo-back:hover {
+  box-shadow: rgba(0,0,0,0.18);
+  transform: scale(1.08);
+}
+.logo-back img {
+  cursor: pointer;
+}
 
 /* Elementos decorativos estáticos */
 .background-elements {
