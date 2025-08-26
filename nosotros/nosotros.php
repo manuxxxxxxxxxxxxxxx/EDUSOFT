@@ -10,108 +10,78 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <div class="layout">
-    <!-- Navbar Vertical -->
- <!-- Navbar Vertical -->
-    <nav class="sidebar collapsed">
-      <div class="sidebar-header">
-        <img src="../img/ELEFANTE.png" alt="Logo Colegio Balbuena" class="logo">
-        <h2>EDUSOFT</h2>
-        <button id="collapse-toggle" class="collapse-toggle">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-      </div>
-      
-      <ul class="sidebar-menu">
-        <li class="sidebar-item has-submenu">
-          <a href="../cursos.php" class="sidebar-link" title="Inicio">
-            <i class="fas fa-home"></i>
-            <span data-i18n="inicioN">Inicio</span>
-          </a>
-        </li>
-        
-        <li class="sidebar-item has-submenu">
-          <a href="#" class="sidebar-link" title="Programas Académicos">
-            <i class="fas fa-book"></i>
-            <span data-i18n="ProgramasN">Programas Académicos</span>
-            <i class="fas fa-chevron-down arrow"></i>
-          </a>
-          <ul class="submenu">
-            <li><a href="#" data-i18n="ActividadesN">Actividades extrarriculares</a></li>
-            <li><a href="#" data-i18n="Primaria">Primaria</a></li>
-            <li><a href="#" data-i18n="secundaria">Secundaria</a></li>
-            <li><a href="#" data-i18n="bachillerato">Bachillerato</a></li>
-          </ul>
-        </li>
-        
-        <li class="sidebar-item has-submenu">
-          <a href="#" class="sidebar-link" title="Cursos">
-            <i class="fas fa-graduation-cap"></i>
-            <span data-i18n="cursosN">Cursos</span>
-            <i class="fas fa-chevron-down arrow"></i>
-          </a>
-          <ul class="submenu">
-            <li><a href="#" data-i18n="biologiaN">Biología</a></li>
-            <li><a href="#" data-i18n="lenguajeN">Lenguaje</a></li>
-            <li><a href="#" data-i18n="cienciasN">Ciencia</a></li>
-            <li><a href="#" data-i18n="matematicasN">Matemática</a></li>
-            <li><a href="#" data-i18n="quimicaN">Química</a></li>
-            <li><a href="#" data-i18n="Ciencias_socialesN">Ciencias Sociales</a></li>
-          </ul>
-        </li>
-        
-        <li class="sidebar-item">
-          <a href="../calendario/calendario.php" class="sidebar-link" title="Calendario">
-            <i class="fas fa-calendar-alt"></i>
-            <span data-i18n="calendario">Calendario</span>
-          </a>
-        </li>
+  
+      <!-- Navbar mejorado -->
+        <header class="navbar">
+            <nav class="nav-container">
+                <!-- Logo y marca -->
+                <div class="nav-brand">
+                    <a href="#" class="brand-link">
+                        <img src="../img/EDUSOFT2.png" alt="EDUSOFT Logo" class="brand-logo">
+                    </a>
+                </div>
 
-        <li class="sidebar-item active">
-          <a href="../nosotros/nosotros.php" class="sidebar-link" title="Nosotros">
-            <i class="fas fa-users"></i>
-            <span data-i18n="nosotros">Nosotros</span>
-          </a>
-        </li>
-        
-        
-        <li class="sidebar-item has-submenu">
-          <a href="#" class="sidebar-link" title="Comunidad">
-            <i class="fas fa-users"></i>
-            <span data-i18n="comunidadN">Comunidad</span>
-            <i class="fas fa-chevron-down arrow"></i>
-          </a>
-          <ul class="submenu">
-            <li><a href="#" data-i18n="profesoresN">Profesores</a></li>
-            <li><a href="#" data-i18n="alumnosN">Alumnos</a></li>
-            <li><a href="#" data-i18n="padresN">Padres</a></li>
-            <li><a href="#" data-i18n="exalumnosN">Ex-alumnos</a></li>
-          </ul>
-        </li>
-        
-        <li class="sidebar-item">
-          <a href="#" class="sidebar-link" title="Noticias">
-            <i class="fas fa-newspaper"></i>
-            <span data-i18n="noticiasN">Noticias</span>
-          </a>
-        </li>
-        
-        <li class="sidebar-item">
-          <a href="../contactanos/contactanos.php" class="sidebar-link" title="Contacto">
-            <i class="fas fa-envelope"></i>
-            <span data-i18n="contactoN">Contacto</span>
-          </a>
-        </li>
-      </ul>
-      
-      <div class="sidebar-footer">
-        <a href="../conexiones/logout.php" class="sidebar-link" title="Cerrar sesión">
-          <i class="fas fa-sign-in-alt"></i>
-          <span data-i18n="cerrarN">Cerrar sesion</span>
-        </a>
-      </div>
-    </nav>
-    
+                <!-- Enlaces de navegación -->
+                <div class="nav-links" id="navLinks">
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a href="../principal/index.php" class="nav-link">
+                                <i class="fas fa-home"></i>
+                                <span data-i18n="inicioV">Inicio</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../nosotros/nosotros.php" class="nav-link active">
+                                <i class="fas fa-users"></i>
+                                <span data-i18n="nosotrosV">Nosotros</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../contactanos/contactanos.php" class="nav-link">
+                                <i class="fas fa-envelope"></i>
+                                <span data-i18n="contactoV">Contacto</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="nav-actions">
+                    <a data-i18n="iniciarS" href="../registrosCards/Inicio.php" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Iniciar Sesión
+                    </a>
+                    <a data-i18n="unete" href="../registrosCards/registro.php" class="btn-register">
+                        <i class="fas fa-user-plus"></i>
+                        Únete
+                    </a>
+                </div>
+  <div class="layout"> 
+
+<div class="language-dropdown">
+  <button class="lang-dropdown-btn" id="langDropdownBtn">
+    <img id="currentLangFlag" src="/img/mexico.png" alt="Idioma actual" width="18">
+    <span id="currentLangText">Español</span>
+    <i class="fas fa-chevron-down"></i>
+  </button>
+  <div class="lang-dropdown-list" id="langDropdownList">
+    <button class="lang-option" data-lang="es">
+      <img src="/img/mexico.png" alt="Español" width="18"> Español
+    </button>
+    <button class="lang-option" data-lang="en">
+      <img src="/img/estados.png" alt="English" width="18"> English
+    </button>
+  </div>
+</div>
+
+                <!-- Botón hamburguesa para móvil -->
+                <button class="nav-toggle" id="navToggle">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </nav>
+        </header>
     <!-- Contenido Principal -->
     <main class="main-content">
       <header class="top-header">

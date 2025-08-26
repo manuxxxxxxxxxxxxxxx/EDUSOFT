@@ -1,3 +1,32 @@
+// ===== FUNCIONES MODALES (DEBEN ESTAR FUERA DEL DOMContentLoaded) =====
+function openModal(modalId) {
+  document.getElementById(modalId).style.display = "block"
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).style.display = "none"
+}
+
+// Cerrar modal al hacer clic fuera
+window.onclick = (event) => {
+  if (event.target.classList.contains("modal")) {
+    event.target.style.display = "none"
+  }
+}
+
+// Cerrar modal con tecla Escape
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    const modals = document.querySelectorAll(".modal")
+    modals.forEach((modal) => {
+      if (modal.style.display === "block") {
+        modal.style.display = "none"
+      }
+    })
+  }
+})
+
+// ===== TODO EL RESTO DEL CÓDIGO DENTRO DEL DOMContentLoaded =====
 document.addEventListener("DOMContentLoaded", () => {
   const navToggle = document.getElementById("navToggle")
   const navLinks = document.getElementById("navLinks")
@@ -180,4 +209,45 @@ document.addEventListener("DOMContentLoaded", () => {
       sliderInterval = setInterval(nextSlide, 4000)
     }
   }
+
+  // ===== FUNCIONALIDAD FAQ ACORDEÓN =====
+  document.querySelectorAll(".faq-question").forEach((question) => {
+    question.addEventListener("click", function () {
+      const faqItem = this.parentElement
+      const isActive = faqItem.classList.contains("active")
+
+      // Cerrar todos los otros items
+      document.querySelectorAll(".faq-item").forEach((item) => {
+        item.classList.remove("active")
+      })
+
+      // Abrir el item clickeado si no estaba activo
+      if (!isActive) {
+        faqItem.classList.add("active")
+      }
+    })
+  })
+  function toggleFAQ(element) {
+  const faqItem = element.parentElement
+  const answer = faqItem.querySelector(".faq-answer")
+  const arrow = element.querySelector(".faq-arrow")
+
+  if (answer.style.display === "block") {
+    answer.style.display = "none"
+    arrow.textContent = "▼"
+    faqItem.classList.remove("active")
+  } else {
+    // Cerrar otros FAQs abiertos
+    document.querySelectorAll(".faq-item.active").forEach((item) => {
+      item.querySelector(".faq-answer").style.display = "none"
+      item.querySelector(".faq-arrow").textContent = "▼"
+      item.classList.remove("active")
+    })
+
+    answer.style.display = "block"
+    arrow.textContent = "▲"
+    faqItem.classList.add("active")
+  }
+}
+
 })

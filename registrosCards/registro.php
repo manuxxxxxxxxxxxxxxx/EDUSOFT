@@ -27,9 +27,11 @@
       <div class="header-content">
         <div class="logo-section">
           <div class="logo-container">
-            <img src="../img/ELEFANTE.png" alt="Logo Colegio Balbuena" class="logo">
-            <div class="logo-pulse"></div>
-          </div>
+  <a href="javascript:history.back()" class="logo-back" title="Volver atrás">
+    <img src="../img/ELEFANTE.png" alt="" class="logo">
+  </a>
+  <div class="logo-pulse"></div>
+</div>
           <div class="logo-text">
             <h1>EDUSOFT</h1>
             <p data-i18n="innovacion">Innovación Educativa Digital</p>

@@ -194,13 +194,6 @@ if (isset($_GET['bienvenido'])) {
             <span data-i18n="calendario">Calendario</span>
           </a>
         </li>
-
-        <li class="sidebar-item active">
-          <a href="../nosotros/nosotros.php" class="sidebar-link" title="Nosotros">
-            <i class="fas fa-users"></i>
-            <span data-i18n="nosotros">Nosotros</span>
-          </a>
-        </li>
         
         
         <li class="sidebar-item has-submenu">
