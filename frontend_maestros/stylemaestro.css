@@ -1,3 +1,25 @@
+.curso-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 8px 0;
+}
+
+.curso-info {
+    flex: 1;
+}
+
+.curso-imagen-form {
+    min-width: 140px;
+    text-align: right;
+}
+
+/* Opcional: Estilo para el botón */
+.curso-imagen-form .btn {
+    margin-left: 10px;
+}
+
 /* ======== DISEÑO PRINCIPAL AZUL (BASE) ======== */
 body {
     font-family: 'Segoe UI', Arial, sans-serif;

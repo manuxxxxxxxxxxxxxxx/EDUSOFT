@@ -183,6 +183,39 @@ $total_alumnos_unicos = count($alumno_ids);
         }
     });
 
+    //NUEVO BOTON IMAGEN MODIFICAR PROFE
+    document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.form-imagen-materia').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+      // Busca los inputs dentro del formulario actual
+      const archivo = form.querySelector('.imagen_materia').files[0];
+      const enlace = form.querySelector('.enlace_imagen').value.trim();
+
+      if (!archivo && !enlace) {
+        alert('Debes subir una imagen o poner el enlace.');
+        e.preventDefault();
+        return false;
+      }
+
+      if (enlace) {
+        if (!/^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/i.test(enlace)) {
+          alert('El enlace debe ser una URL válida de imagen (jpg, png, webp, gif).');
+          e.preventDefault();
+          return false;
+        }
+      }
+
+      if (archivo) {
+        const permitidas = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+        if (!permitidas.includes(archivo.type)) {
+          alert('El archivo debe ser una imagen jpg, png, webp o gif.');
+          e.preventDefault();
+          return false;
+        }
+      }
+    });
+  });
+});
     </script>
 </head>
 <body>
@@ -324,13 +357,26 @@ $total_alumnos_unicos = count($alumno_ids);
                 <ul class="cursos-lista" id="cursos-lista">
                     <?php if (count($clases) > 0): ?>
                         <?php foreach ($clases as $clase): ?>
-                            <li>
-                                <!-- NO TOCAR APARTADO MATERIAS -->
-                                <a class="curso-link" href="../materias/<?php echo $clase['materia']; ?>.php?id_clase=<?php echo $clase['id']; ?>">
-                                    <?= htmlspecialchars($clase['nombre_clase']); ?>
-                                </a>
-                                <span class="curso-materia"> – <?= ucfirst($clase['materia']); ?></span><br>
-                                <span class="curso-codigo"><strong>Código de clase:</strong> <?= htmlspecialchars($clase['codigo_clase']); ?></span>
+                            <li class="curso-item">
+                                <div class="curso-info">
+                                    <a class="curso-link" href="../materias/<?php echo $clase['materia']; ?>.php?id_clase=<?php echo $clase['id']; ?>">
+                                        <?= htmlspecialchars($clase['nombre_clase']); ?>
+                                    </a>
+                                    <span class="curso-materia"> – <?= ucfirst($clase['materia']); ?></span><br>
+                                    <span class="curso-codigo"><strong>Código de clase:</strong> <?= htmlspecialchars($clase['codigo_clase']); ?></span>
+                                </div>
+                                <div class="curso-imagen-form">
+                                    <form class="form-imagen-materia" action="actualizar_imagen_materia.php" method="POST" enctype="multipart/form-data" style="display:inline; max-width:300px;">
+                                        <input type="hidden" name="id_clase" value="<?= $clase['id'] ?>">
+                                        <label for="imagen_materia">Imagen de la materia:</label>
+                                        <input type="file" name="imagen_materia" class="imagen_materia" accept="image/*">
+                                        <br>
+                                        <label for="enlace_imagen">O enlace de imagen:</label>
+                                        <input type="text" name="enlace_imagen" class="enlace_imagen" placeholder="https://ejemplo.com/imagen.jpg">
+                                        <br>
+                                        <button type="submit" class="btn btn-primary">Actualizar imagen</button>
+                                    </form>
+                                </div>
                             </li>
                         <?php endforeach; ?>
                     <?php else: ?>

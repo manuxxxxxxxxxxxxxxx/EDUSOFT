@@ -293,7 +293,7 @@ if (isset($_GET['bienvenido'])) {
         <?php
           require_once 'conexiones/conexion.php';
           $id_estudiante = $_SESSION['id_estudiante'];
-          $query = "SELECT c.id AS id_clase, c.nombre_clase, c.materia, p.nombre AS nombre_profesor 
+          $query = "SELECT c.id AS id_clase, c.nombre_clase, c.materia, c.imagen_materia, p.nombre AS nombre_profesor 
                     FROM clases_estudiantes ce
                     JOIN clases c ON ce.id_clase = c.id
                     JOIN profesores p ON c.profesor_id = p.id
@@ -329,6 +329,7 @@ if (isset($_GET['bienvenido'])) {
             'quimica'    => 'quimica',
             'ingles'     => 'ingles',
             'sociales'   => 'sociales',
+            'inglés'     => 'ingles',
           ];
         ?>
         <?php foreach ($clases_estudiantes as $clases): 
@@ -339,12 +340,20 @@ if (isset($_GET['bienvenido'])) {
             'matemática' => '../img/mate_cursos.webp',
             'matematica' => '../img/mate_cursos.webp',
             'ciencias' => '../img/ciencias_cursos.png',
+            'ciencia' => '../img/ciencias_cursos.png',
             'biología' => '../img/biologia.jpg',
             'biologia' => '../img/biologia.jpg',
-            'química' => '../img/quimica.jpg',
-            'quimica' => '../img/quimica.jpg',
+            'química' => '../img/lobaratorios.jpg',
+            'quimica' => '../img/lobaratorios.jpg',
+            'ingles' => '../img/ingles.png',
+            'inglés' => '../img/ingles.png',
+            'sociales' => '../img/sociales_cursos.jpg',
+            'deporte' => '../img/deportes.jpg',
+            'debate' => '../img/Debate.jpg',
           ];
-          $img = $imagenes[$materia] ?? '../img/default.jpg';
+          $img = !empty($clases['imagen_materia']) 
+            ? $clases['imagen_materia'] 
+            : ($imagenes[$materia] ?? '../img/default.jpg');
           $materia_slug = $slug_archivo[$materia] ?? $materia;
         ?>
           <div class="card bg-green">

@@ -7,6 +7,25 @@ if (isset($_GET['origen'])) {
     $_SESSION['origen_materia'] = $_GET['origen'];
 }
 
+// Al guardar la preferencia:
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modo_oscuro'])) {
+    $modoOscuro = $_POST['modo_oscuro'] === 'on' ? 1 : 0;
+    $stmt = $conn->prepare("UPDATE estudiantes SET modo_oscuro = ? WHERE ID = ?");
+    $stmt->bind_param("ii", $modoOscuro, $id_alumno);
+    $stmt->execute();
+    $stmt->close();
+}
+
+// Leer la preferencia actual
+$stmt = $conn->prepare("SELECT modo_oscuro FROM estudiantes WHERE ID = ?");
+$stmt->bind_param("i", $id_alumno);
+$stmt->execute();
+$stmt->bind_result($modoOscuro);
+$stmt->fetch();
+$stmt->close();
+
+// Puedes guardar también en sesión si quieres usar en otros archivos
+$_SESSION['modo_oscuro'] = $modoOscuro;
 // Solo alumnos pueden acceder
 if (!isset($_SESSION['id_estudiante'])) {
     http_response_code(403);
@@ -84,7 +103,7 @@ $stmt->close();
     <link rel="stylesheet" href="css/styleMatematica.css">
     <link rel="stylesheet" href="styleconfiguracion_alumno.css">
 </head>
-<body>
+<body class="<?= $modoOscuro ? 'dark-mode' : '' ?>">>
     <div class="header-config">
         <a href="<?= htmlspecialchars(isset($_SESSION['origen_materia']) ? $_SESSION['origen_materia'] : 'matematica.php') ?>?id_clase=<?= $id_clase ?>" class="back-btn" title="Volver">
             <i class="fas fa-arrow-left"></i>
@@ -116,9 +135,26 @@ $stmt->close();
                 <input type="url" name="url_imagen" placeholder="https://ejemplo.com/mi-foto.jpg">
                 <button type="submit">Actualizar imagen</button>
             </form>
+
+            <h3>Accesibilidad</h3>
+            <form method="POST">
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="modoOscuroSwitch" name="modo_oscuro" <?= $modoOscuro ? 'checked' : '' ?>>
+                    <label class="form-check-label" for="modoOscuroSwitch">Modo Oscuro</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar preferencias</button>
+            </form>
         </div>
     </div>
     <script>
+    document.getElementById('modoOscuroSwitch').addEventListener('change', function() {
+        if(this.checked) {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
+    });
+    
     document.getElementById('alumno-form').addEventListener('submit', function(e){
         e.preventDefault();
         let fileInput = this.querySelector('input[type="file"]');

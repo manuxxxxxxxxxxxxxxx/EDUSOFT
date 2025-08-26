@@ -1,3 +1,15 @@
+body.dark-mode {
+    background: #222 !important;
+    color: #eee !important;
+}
+body.dark-mode .card,
+body.dark-mode .form-control,
+body.dark-mode .btn {
+    background: #333 !important;
+    color: #eee !important;
+    border-color: #555 !important;
+}
+
 body {
     background: #ddeafd;
     margin: 0;
