@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (move_uploaded_file($archivo["tmp_name"], $rutaDestino)) {
             $query = "INSERT INTO materiales_estudio (id_clase, titulo, descripcion, archivo, ruta_archivo, fecha_subida)
-                      VALUES (?, ?, ?, ?, ?, NOW())";
+                    VALUES (?, ?, ?, ?, ?, NOW())";
             $stmt = $conn->prepare($query);
             $stmt->bind_param("issss", $id_clase, $titulo, $descripcion, $nombreArchivo, $rutaDestino);
 
