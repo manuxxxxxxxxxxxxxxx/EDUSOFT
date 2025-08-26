@@ -11,12 +11,42 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       background: linear-gradient(120deg, #e6f0fa 0%, #c2e9fb 100%);
       min-height: 100vh;
       font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
     }
+    .back-arrow {
+    position: absolute;
+    top: 12px;
+    left: 32px;
+    width: 56px;
+    height: 56px;
+    background: #222;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    z-index: 100;
+}
+.back-arrow i {
+    color: #fff;
+    font-size: 2rem;
+    transition: color 0.2s;
+}
+.back-arrow:hover {
+    background: #007bff;
+    transform: scale(1.08);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+.back-arrow:active {
+    transform: scale(0.95);
+}
     .calendar-container {
       max-width: 950px;
       margin: 50px auto;
@@ -67,6 +97,7 @@
       font-weight: 700;
       letter-spacing: 1px;
       color: #1976d2;
+      padding-left: 30px;
     }
     .modal-header {
       background: #90caf9;
@@ -109,6 +140,9 @@
 <body>
   <nav class="navbar navbar-expand-lg bg-white shadow-sm mb-4">
     <div class="container">
+       <a href="javascript:history.back()" class="back-arrow" title="Volver atrás">
+  <i class="fa-solid fa-arrow-left"></i>
+</a>
       <a class="navbar-brand" href="#"><img src="../img/ELEFANTE.png" alt="Logo" style="width: 60px; height: 60px;"> EduSoft Calendario</a>
     </div>
   </nav>
