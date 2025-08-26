@@ -30,8 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt = $conn->prepare("INSERT INTO avisos (id_clase, titulo, descripcion, fecha_subida) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("isss", $id_clase, $titulo, $descripcion, $fecha_subida);
         if ($stmt->execute()) {
-            // Redirigir al panel del maestro automáticamente
-            header("Location: ../frontend_maestros/index.php?seccion=avisos");
+            // Redirigir al mismo archivo con exito=1 e id_clase para mostrar el modal
+            header("Location: crear_aviso.php?id_clase=$id_clase&exito=1");
             exit;
         } else {
             $error = "Hubo un error al guardar el aviso.";
@@ -74,7 +74,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <button type="submit" data-i18n="maestro_panel_aviso_btn_submit">Crear aviso</button>
     </form>
-      <script src="../principal/lang.js"></script>
-  <script src="../principal/idioma.js"></script>
+
+    <!-- Modal bonito de éxito para AVISO con letras naranjas -->
+    <div id="modalExitoAviso" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:9999;">
+        <div style="background-color:white; padding:30px; max-width:400px; margin:100px auto; border-radius:8px; text-align:center; box-shadow:0 5px 15px rgba(0,0,0,0.3);">
+            <h2 data-i18n="crear_aviso_modal_exito" style="color:orange;">✅ Aviso creado con éxito</h2>
+            <p data-i18n="crear_aviso_modal_exito_desc" style="color:orange;">Tu aviso ha sido registrado correctamente.</p>
+            <button onclick="cerrarModalAviso()" style="padding:8px 16px; margin-top:10px; background-color:#FF9800; color:white; border:none; border-radius:4px;" data-i18n="crear_aviso_modal_aceptar">Aceptar</button>
+        </div>
+    </div>
+
+    <script>
+    function cerrarModalAviso() {
+        // Extrae id_clase de los parámetros GET, no de PHP
+        var params = new URLSearchParams(window.location.search);
+        var id_clase = params.get("id_clase") || "";
+        window.location.href = "../frontend_maestros/index.php?id_clase=" + encodeURIComponent(id_clase) + "#seccion-avisos";
+    }
+    window.onload = function () {
+        var params = new URLSearchParams(window.location.search);
+        if (params.get("exito") === "1") {
+            document.getElementById("modalExitoAviso").style.display = "block";
+        }
+    }
+    </script>
+    <script src="../principal/lang.js"></script>
+    <script src="../principal/idioma.js"></script>
 </body>
 </html>

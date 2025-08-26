@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($stmt->execute()) {
                 // Redireccionamos al panel de profesor con id_clase para ver el material subido
-                header("Location: ../frontend_maestros?id_clase=" . $id_clase . "&msg=success");
+                header("Location: ../frontend_maestros/subir_material.php?id_clase=" . $id_clase . "&exito=1");
                 exit;
             } else {
                 die("Error al guardar en la base de datos: " . $stmt->error);
