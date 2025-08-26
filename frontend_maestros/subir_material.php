@@ -67,5 +67,6 @@ while ($fila = $res->fetch_assoc()) {
       </div>
     </form>
   </div>
+  
 </body>
 </html>

@@ -45,8 +45,8 @@ if ($accion === "eliminar_tarea") {
     $stmt->bind_param("i", $id_tarea);
     $stmt->execute();
 
-    // Redirigir a la sección de tareas del panel principal o la materia
-    header("Location: ../frontend_maestros?seccion=tareas&id_clase=$id_clase&msg=tarea_eliminada");
+    // Redirigir a la sección de tareas del panel principal
+    header("Location: ../frontend_maestros/index.php?id_clase=$id_clase#seccion-tareas&msg=tarea_eliminada");
     exit;
 
 } elseif ($accion === "eliminar_material") {
@@ -77,7 +77,7 @@ if ($accion === "eliminar_tarea") {
     $id_clase = $material['id_clase'];
 
     // Intentar eliminar archivo físico
-    if (file_exists($ruta_archivo)) {
+    if ($ruta_archivo && file_exists($ruta_archivo)) {
         unlink($ruta_archivo);
     }
 
@@ -88,7 +88,43 @@ if ($accion === "eliminar_tarea") {
     $stmt_del->close();
 
     // Redirigir a la sección de materiales con mensaje
-    header("Location: ../frontend_maestros?seccion=materiales&id_clase=$id_clase&msg=material_eliminado");
+    header("Location: ../frontend_maestros/index.php?id_clase=$id_clase#seccion-materiales&msg=material_eliminado");
+    exit;
+
+} elseif ($accion === "eliminar_aviso") {
+    // ELIMINAR AVISO
+    if (!isset($_POST['id_aviso'])) {
+        die("❌ ID de aviso no proporcionado.");
+    }
+
+    $id_aviso = intval($_POST['id_aviso']);
+    $id_clase = isset($_POST['id_clase']) ? intval($_POST['id_clase']) : null;
+
+    // Validar que el aviso pertenece a una clase del profesor
+    $sql = "SELECT a.id_clase 
+            FROM avisos a 
+            JOIN clases c ON a.id_clase = c.id 
+            WHERE a.id = ? AND c.profesor_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $id_aviso, $profesor_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+
+    if ($res->num_rows === 0) {
+        die("❌ No tienes permiso para eliminar este aviso.");
+    }
+
+    $aviso = $res->fetch_assoc();
+    $id_clase = $aviso['id_clase'];
+
+    // Eliminar el aviso
+    $stmt_del = $conn->prepare("DELETE FROM avisos WHERE id = ?");
+    $stmt_del->bind_param("i", $id_aviso);
+    $stmt_del->execute();
+    $stmt_del->close();
+
+    // Redirigir a la sección de avisos con mensaje
+    header("Location: ../frontend_maestros/index.php?id_clase=$id_clase#seccion-avisos&msg=aviso_eliminado");
     exit;
 
 } else {
