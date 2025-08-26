@@ -115,7 +115,7 @@
                 <div class="card-texto">
                     <h2 data-i18n="iniciativas">Iniciativas</h2>
                     <p data-i18n="parrafo_i">Párrafo. Haz clic aquí para agregar tu propio texto y editar. Es fácil.</p>
-                    <a href="#" data-i18n="leer_mas">Leer más</a>
+                    <a href="../principal/iniciativas/iniciativa.php" data-i18n="leer_mas">Leer más</a>
                 </div>
             </div>
             <div class="card chica">
@@ -124,7 +124,7 @@
                     <h2 data-i18n="mision">Misión</h2>
                     <p data-i18n="parrafo_m">Ayudar a todos los estudiantes que no cuentan con la tecnología ni servicios a integrarse
                         a una mejor Educación mucho más avanzada.</p>
-                    <a href="#" data-i18n="leer_mas">Leer más</a>
+                    <a href="../principal/mision/mision.php" data-i18n="leer_mas">Leer más</a>
                 </div>
             </div>
         </div>
@@ -132,17 +132,17 @@
             <div class="card chica">
                 <img src="../img/imagen3.webp" alt="Noticias">
                 <div class="card-texto">
-                    <h2 data-i18n="noticias">Noticias</h2>
+                    <h2 data-i18n="noticias">politica</h2>
                     <p data-i18n="parrafo_n">Párrafo. Haz clic aquí para agregar tu propio texto y editar. Es fácil.</p>
-                    <a href="#" data-i18n="leer_mas">Leer más</a>
+                    <a href="../principal/politica/politica.php" data-i18n="leer_mas">Leer más</a>
                 </div>
             </div>
             <div class="card grande">
                 <img src="../img/imagen4.jpg" alt="Participa">
                 <div class="card-texto">
-                    <h2 data-i18n="participa">Participa</h2>
+                    <h2 data-i18n="participa">Valores</h2>
                     <p data-i18n="parrafo_p">Párrafo. Haz clic aquí para agregar tu propio texto y editar. Es fácil.</p>
-                    <a href="#" data-i18n="leer_mas">Leer más</a>
+                    <a href="../principal/valores/valores.php" data-i18n="leer_mas">Leer más</a>
                 </div>
             </div>
         </div>
@@ -211,9 +211,9 @@
                 <div class="footer-column">
                     <h4 data-i18n="legal">Legal</h4>
                     <ul>
-                        <li><a href="#" data-i18n="terminos">Términos y Condiciones</a></li>
-                        <li><a href="#" data-i18n="politica">Política de Privacidad</a></li>
-                        <li><a href="#" data-i18n="cookies">Política de Cookies</a></li>
+                        <li data-i18n="terminos"><a href="#"></a></li>
+                        <li data-i18n="politica"><a href="#"></a></li>
+                        <li data-i18n="cookies"><a href="#"></a></li>
                     </ul>
                 </div>
             </div>
