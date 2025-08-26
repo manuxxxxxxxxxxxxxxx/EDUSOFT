@@ -6,8 +6,12 @@
   <title>Registro - ELEFANTE</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="prueba.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+    <a href="javascript:history.back()" class="back-arrow" title="Volver atrás">
+  <i class="fa-solid fa-arrow-left"></i>
+</a>
   <!-- Marca de agua: Elefante SVG -->
   <div class="elephant-watermark">
     <!-- Puedes reemplazar el SVG por una imagen si prefieres -->

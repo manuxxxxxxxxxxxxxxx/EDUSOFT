@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="prueba.css">
 </head>
 <body>
+      <a href="javascript:history.back()" class="back-arrow" title="Volver atrás">
+  <i class="fa-solid fa-arrow-left"></i>
+</a>
   <!-- Marca de agua: Elefante SVG -->
   <div class="elephant-watermark">
     <!-- Puedes reemplazar el SVG por una imagen si prefieres -->
