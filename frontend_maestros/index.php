@@ -189,7 +189,15 @@ $total_alumnos_unicos = count($alumno_ids);
         <i class="fas fa-bars"></i>
     </button>
     <div class="sidebar">
-        <img id="profile-img" src="/<?= htmlspecialchars($_SESSION['foto'] ?? 'https://ui-avatars.com/api/?name=Maestro+Ejemplo') ?>" alt="Foto de perfil del Maestro Ejemplo">
+        <?php
+        $foto = $_SESSION['foto'] ?? 'https://ui-avatars.com/api/?name=Maestro+Ejemplo';
+        if (preg_match('/^https?:\/\//', $foto)) {
+            $src = $foto;
+        } else {
+            $src = '/' . $foto;
+        }
+        ?>
+        <img id="profile-img" src="<?= htmlspecialchars($src) ?>" alt="Foto de perfil del Maestro Ejemplo">
         <h2 id="profile-name">Docente <?php echo htmlspecialchars($nombre); ?></h2>
         <nav>
             <a href="#"><i class="fas fa-home"></i>Inicio</a>
@@ -818,21 +826,57 @@ $total_alumnos_unicos = count($alumno_ids);
         <div id="seccion-perfil" class="seccion-panel">
             <div class="section">
                 <h3>Perfil</h3>
-                <form method="POST" action="index.php" enctype="multipart/form-data">
-                    <label for="edit-name">Nombre</label>
-                    <input type="text" id="edit-name" value="<?= htmlspecialchars($nombre) ?>" disabled>
+                <form id="foto-perfil-form" method="POST" action="index.php" enctype="multipart/form-data">
+                    <!--  <label for="edit-name">Nombre</label>
+                    <input type="text" id="edit-name" value="<?= htmlspecialchars($nombre) ?>" disabled><br><br>-->
                     
-                    <label for="edit-img">Subir foto de perfil</label>
+                    <label for="edit-img"><h3>Subir foto de perfil</h3></label>
                     <input type="file" name="foto_file" id="edit-img" accept="image/*">
 
                     <label for="foto_url">o URL de foto</label>
                     <input type="text" name="foto_url" id="foto_url" placeholder="URL de foto" value="<?= htmlspecialchars($_SESSION['foto']) ?>">
                     
-                    <button type="submit" name="guardar_foto">Guardar cambios</button>
+                    <button type="submit" name="guardar_foto">Editar foto de perfil</button>
                     <?php if (!empty($error)): ?>
                         <div style="color:red"><?= htmlspecialchars($error) ?></div>
                     <?php endif; ?>
                 </form>
+
+                <script>
+
+                // Alerta cuando selecciona archivo
+                document.getElementById('edit-img').addEventListener('change', function() {
+                    if (this.files.length > 0) {
+                        alert('Has seleccionado una nueva foto de perfil desde tu computadora.');
+                    }
+                });
+
+                // Alerta cuando escribe una URL
+                document.getElementById('foto_url').addEventListener('input', function() {
+                    if (this.value.length > 5) {
+                        alert('Has ingresado una URL para la foto de perfil.');
+                    }
+                });
+
+                // Alerta antes de guardar cambios
+                document.addEventListener('DOMContentLoaded', function() {
+                    var fotoForm = document.getElementById('foto-perfil-form');
+                    var fileInput = document.getElementById('edit-img');
+                    var urlInput = document.getElementById('foto_url');
+
+                    fotoForm.addEventListener('submit', function(e) {
+                        var cambioArchivo = fileInput.files.length > 0;
+                        var cambioURL = urlInput.value.length > 5;
+
+                        if (cambioArchivo || cambioURL) {
+                            var confirmar = confirm('¿Seguro que quieres editar tu foto de perfil?');
+                            if (!confirmar) {
+                                e.preventDefault();
+                            }
+                        }
+                    });
+                });
+                </script>
             </div>
         </div>
 
