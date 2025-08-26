@@ -211,15 +211,12 @@
                 <div class="footer-column">
                     <h4 data-i18n="legal">Legal</h4>
                     <ul>
-<<<<<<< HEAD
-                        <li><a href="#" onclick="openModal('terminosModal')" data-i18n="terminos">Términos y Condiciones</a></li>
+<li><a href="#" onclick="openModal('terminosModal')" data-i18n="terminos">Términos y Condiciones</a></li>
                         <li><a href="#" onclick="openModal('privacidadModal')" data-i18n="politica">Política de Privacidad</a></li>
                         <li><a href="#" onclick="openModal('cookiesModal')" data-i18n="cookies">Política de Cookies</a></li>
-=======
                         <li data-i18n="terminos"><a href="#"></a></li>
                         <li data-i18n="politica"><a href="#"></a></li>
                         <li data-i18n="cookies"><a href="#"></a></li>
->>>>>>> 7aca8046ab708e2bddcd867a884675fe51618770
                     </ul>
                 </div>
             </div>
