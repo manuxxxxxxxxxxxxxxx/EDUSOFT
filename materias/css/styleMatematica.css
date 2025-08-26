@@ -884,3 +884,64 @@ color: #fff;
     margin-left: 3vw;
 }
 }
+
+.icons {
+    display: flex;
+    align-items: center;
+    gap: 28px; /* Espacio entre iconos, puedes ajustar */
+    padding-right: 30px;
+}
+
+/* Icono de engranaje */
+.icons .settings {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+}
+
+.icons .settings i {
+    font-size: 44px;
+    color: #5e2ebf; /* Color del engranaje */
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: filter .2s;
+}
+
+/* Foto de perfil (dentro del span y el <a>) */
+.icons .profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+}
+
+.icons .profile a.profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    transition: box-shadow .2s;
+}
+
+.icons .profile a.profile:hover {
+    box-shadow: 0 0 0 3px #d1d9ff;
+}
+
+.icons .profile img {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 0; /* quita el borde para que no se vea más pequeña */
+    box-shadow: none; /* o una sombra muy ligera si quieres */
+    background: #f9f9fa;
+    transition: box-shadow .2s;
+}
