@@ -211,12 +211,9 @@
                 <div class="footer-column">
                     <h4 data-i18n="legal">Legal</h4>
                     <ul>
-<li><a href="#" onclick="openModal('terminosModal')" data-i18n="terminos">Términos y Condiciones</a></li>
-                        <li><a href="#" onclick="openModal('privacidadModal')" data-i18n="politica">Política de Privacidad</a></li>
-                        <li><a href="#" onclick="openModal('cookiesModal')" data-i18n="cookies">Política de Cookies</a></li>
-                        <li data-i18n="terminos"><a href="#"></a></li>
-                        <li data-i18n="politica"><a href="#"></a></li>
-                        <li data-i18n="cookies"><a href="#"></a></li>
+                        <li><a href=".././principal/politica/politica.php" data-i18n="terminos">Términos y Condiciones</a></li>
+                        <li><a href=".././principal/politica/politica.php" data-i18n="politica">Política de Privacidad</a></li>
+                        <li><a href=".././principal/politica/politica.php" data-i18n="cookies">Política de Cookies</a></li>
                     </ul>
                 </div>
             </div>

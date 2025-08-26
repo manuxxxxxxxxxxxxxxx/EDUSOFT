@@ -13,7 +13,35 @@
       background-image: url(../img/1\ \(1\).jpg);
       background-size: cover;
   }
-  
+  .back-arrow {
+    position: absolute;
+    top: 32px;
+    left: 32px;
+    width: 56px;
+    height: 56px;
+    background: #222;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    z-index: 200;
+}
+.back-arrow i {
+    color: #fff;
+    font-size: 2rem;
+    transition: color 0.2s;
+}
+.back-arrow:hover {
+    background: #007bff;
+    transform: scale(1.08);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+.back-arrow:active {
+    transform: scale(0.95);
+}
   .container-form {
     display: flex;
     border-radius: 20px;
