@@ -276,359 +276,566 @@ body {
 }
 /* TAREAS - DISEÑO MODERNO MEJORADO */
 #seccion-tareas .section {
-  /* Actualizando a un diseño más moderno con colores verde/esmeralda */
-  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #d1fae5 100%);
-  border-radius: 24px;
-  box-shadow: 0 8px 40px rgba(16, 206, 206, 0.15), 0 2px 16px rgba(16, 185, 129, 0.08);
-  padding: 40px 36px 32px 36px;
-  max-width: 900px;
-  margin: 0 auto 36px auto;
-  color: #064e3b;
-  border: 2px solid #a7f3d0;
+  background: linear-gradient(120deg, #e3f0ff 70%, #fafdff 100%);
+  border-radius: 26px;
+  box-shadow: 0 10px 48px #87bff533;
+  padding: 44px 38px 34px 38px;
+  max-width: 950px;
+  margin: 0 auto 38px auto;
+  color: #223a51;
+  border: 2.5px solid #87bff5;
   position: relative;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
 }
 
 #seccion-tareas .section::before {
-  /* Añadiendo efecto de brillo sutil */
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #1098c2, transparent);
-  border-radius: 24px 24px 0 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #87bff5, transparent);
+  border-radius: 26px 26px 0 0;
 }
 
 #seccion-tareas .section h3 {
-  /* Mejorando tipografía del título */
-  font-size: 1.4em;
+  font-size: 1.6em;
   font-weight: 800;
-  color: #0ae2e2;
-  margin-bottom: 28px;
+  color: #1976d2;
+  margin-bottom: 34px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   letter-spacing: 0.5px;
-  text-shadow: 0 1px 2px rgba(16, 185, 129, 0.1);
+  text-shadow: 0 1px 3px #87bff522;
 }
 
+/* SELECT DE CLASES */
 #seccion-tareas #select-tarea-clase {
-  /* Mejorando el selector con nuevo diseño */
   width: 100%;
-  padding: 14px 20px;
-  border-radius: 16px;
-  border: 2px solid #d1fae5;
-  margin-bottom: 24px;
-  font-size: 1.1em;
-  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
-  color: #159eb6;
-  box-shadow: 0 4px 16px rgba(23, 213, 219, 0.08);
+  padding: 15px 22px;
+  border-radius: 18px;
+  border: 2px solid #87bff5;
+  margin-bottom: 28px;
+  font-size: 1.18em;
+  background: linear-gradient(135deg, #fafdff 0%, #e3f0ff 100%);
+  color: #1976d2;
+  box-shadow: 0 4px 16px #87bff522;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 500;
 }
 
 #seccion-tareas #select-tarea-clase:focus {
-  /* Mejorando estado focus */
-  border-color: #10b9b9;
-  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
-  box-shadow: 0 0 0 4px rgba(86, 211, 228, 0.1), 0 8px 24px rgba(16, 185, 129, 0.15);
+  border-color: #1976d2;
+  background: linear-gradient(135deg, #fafdff 0%, #e3f0ff 100%);
+  box-shadow: 0 0 0 4px #87bff522, 0 8px 24px #1976d233;
   outline: none;
   transform: translateY(-1px);
 }
 
+/* LISTA DE TAREAS */
 #tareas-lista {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 28px;
 }
 
 #tareas-lista > li {
-  /* Rediseñando las tarjetas de tareas con estilo más moderno */
-  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 50%, #f0fdf4 100%);
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
-  padding: 28px 24px 22px 24px;
+  background: linear-gradient(120deg, #fafdff 90%, #e3f0ff 100%);
+  border-radius: 22px;
+  box-shadow: 0 4px 24px #87bff522;
+  padding: 30px 24px 22px 24px;
   position: relative;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start; /* Cambiado para alinear contenido arriba */
-  gap: 24px;
-  border: 1px solid #e5e7eb;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-direction: column;
+  gap: 12px;
+  border: 2px solid #87bff5;
+  transition: box-shadow 0.18s, border 0.18s;
   overflow: hidden;
 }
 
-#tareas-lista > li::before {
-  /* Añadiendo borde decorativo izquierdo */
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: linear-gradient(180deg, #10a0b9, #056d96);
-  border-radius: 0 20px 20px 0;
-}
-
 #tareas-lista > li:hover {
-  /* Mejorando efectos hover */
-  box-shadow: 0 12px 40px rgba(16, 185, 129, 0.15), 0 4px 16px rgba(0, 0, 0, 0.08);
-  border-color: #a7f3d0;
-  transform: translateY(-2px) scale(1.01);
-  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+  box-shadow: 0 12px 48px #90caf944;
+  border-color: #1976d2;
+  background: linear-gradient(120deg, #e3f0ff 96%, #fafdff 100%);
 }
 
 #tareas-lista > li > b {
-  /* Estilizando el título de la tarea */
-  font-size: 1.25em;
+  font-size: 1.27em;
   font-weight: 700;
-  color: #047857;
+  color: #1976d2;
   letter-spacing: 0.3px;
   line-height: 1.3;
-  display: block;
-  margin-bottom: 8px;
+  margin-bottom: 2px;
 }
 
 #tareas-lista > li > small {
-  /* Estilizando la descripción */
-  font-size: 1.05em;
-  color: #374151;
+  font-size: 1.07em;
+  color: #223a51;
   line-height: 1.6;
   font-weight: 400;
-  display: block;
-  margin-top: 8px;
-  margin-bottom: 12px;
-}
-
-#tareas-lista > li {
-  flex-wrap: wrap;
-}
-
-#tareas-lista > li > b,
-#tareas-lista > li > small,
-#tareas-lista > li > br {
-  flex: 1 1 100%;
-  order: 1;
-}
-
-#tareas-lista > li > form {
-  order: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
-  min-width: 180px;
-  flex-shrink: 0;
-  margin-left: auto;
-}
-
-#tareas-lista > li > form:first-of-type {
   margin-bottom: 0;
-}
-
-#tareas-lista > li > form:last-of-type {
-  margin-top: 0;
-}
-
-#tareas-lista > li {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: auto auto auto;
-  gap: 12px 24px;
-  align-items: start;
-}
-
-#tareas-lista > li > b {
-  grid-column: 1;
-  grid-row: 1;
-}
-
-#tareas-lista > li > br:first-of-type {
-  display: none; /* Ocultando el br ya que usamos grid */
-}
-
-#tareas-lista > li > small {
-  grid-column: 1;
-  grid-row: 2;
-}
-
-#tareas-lista > li > form {
-  grid-column: 2;
-  grid-row: 1 / -1; /* Ocupa todas las filas */
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
-  min-width: 180px;
-}
-
-.tarea-contenido {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  text-align: left; /* Asegurando alineación izquierda del contenido */
-  align-items: flex-start; /* Alineando elementos al inicio (izquierda) */
 }
 
 .tarea-botones {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center; /* Centrando botones horizontalmente */
-  justify-content: center; /* Centrando botones verticalmente */
-  min-width: 180px;
-  flex-shrink: 0; /* Evitando que los botones se compriman */
+  gap: 14px;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 18px;
 }
 
-/* AVISOS - NUEVO DISEÑO AZUL MODERNO */
+.tarea-botones .btn-eliminar {
+  background: linear-gradient(90deg, #e74c3c 75%, #ffb85f 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 1.08em;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 1px 8px #e74c3c33;
+  transition: background 0.2s, box-shadow 0.18s;
+}
+
+.tarea-botones .btn-eliminar:hover {
+  background: linear-gradient(90deg, #ffb85f 75%, #e74c3c 100%);
+  box-shadow: 0 2px 14px #e74c3c44;
+}
+
+.tarea-botones .btn-ver-entregas {
+  background: linear-gradient(90deg, #1976d2 80%, #87bff5 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 1.08em;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 1px 8px #87bff522;
+  transition: background 0.18s, color 0.18s, box-shadow 0.16s;
+}
+
+.tarea-botones .btn-ver-entregas:hover {
+  background: linear-gradient(90deg, #3498db 80%, #1976d2 100%);
+  color: #fff;
+  box-shadow: 0 2px 16px #87bff544;
+}
+
+/* BOTÓN CREAR TAREA */
+#seccion-tareas .quick-action {
+  margin-top: 0;
+  background: linear-gradient(90deg, #87bff5 90%, #1976d2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 26px;
+  cursor: pointer;
+  font-size: 1.13em;
+  font-weight: 700;
+  transition: background 0.18s, color 0.18s;
+  box-shadow: 0 1px 8px #90caf933;
+}
+
+#seccion-tareas .quick-action:hover {
+  background: #1976d2;
+  color: #87bff5;
+}
+
+/* SECCIÓN DE ENTREGAS DE ALUMNOS */
+.entregas-section {
+    background: linear-gradient(110deg, #e3f0ff 93%, #fafdff 100%);
+    padding: 26px 32px;
+    border-radius: 22px;
+    box-shadow: 0 6px 32px #90caf944;
+    margin: 22px 0 0 0;
+    max-width: 930px;
+    border: 2px solid #90caf9;
+}
+
+.entregas-section h3 {
+    font-size: 1.28em;
+    font-weight: 800;
+    color: #1976d2;
+    margin-bottom: 22px;
+    letter-spacing: 0.5px;
+}
+
+.entrega-card {
+    background: linear-gradient(120deg, #fafdff 95%, #e3f0ff 100%);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px #90caf944;
+    padding: 18px 16px 10px 16px;
+    margin-bottom: 16px;
+    transition: box-shadow 0.18s, border 0.18s;
+    border: 1.2px solid #87bff5;
+    position: relative;
+}
+
+.entrega-card:hover {
+    box-shadow: 0 8px 24px #1976d233;
+    border-color: #1976d2;
+}
+
+.entrega-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.entrega-header b {
+    font-size: 1.13em;
+    color: #1976d2;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+}
+
+.entrega-fecha {
+    background: #e3f0ff;
+    color: #1976d2;
+    padding: 3px 13px;
+    border-radius: 8px;
+    font-size: 0.94em;
+    font-weight: 500;
+    border: 1px solid #87bff5;
+}
+
+.entrega-archivos {
+    margin: 8px 0 0 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+.entrega-archivos li {
+    margin-bottom: 3px;
+}
+
+.entrega-archivos a {
+    color: #1976d2;
+    text-decoration: underline;
+    font-size: 0.97em;
+    transition: color 0.2s;
+    font-weight: 500;
+}
+
+.entrega-archivos a:hover {
+    color: #234281;
+}
+
+.entrega-sin-archivos {
+    color: #888;
+    font-size: 0.96em;
+    margin-bottom: 7px;
+    display: block;
+}
+
+.entrega-calificacion-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    background: #eaf3fb;
+    border-radius: 10px;
+    padding: 8px 12px;
+    box-shadow: 0 1px 6px #87bff522;
+    border: 1.1px solid #90caf9;
+}
+
+.entrega-calificacion-form label {
+    font-weight: 600;
+    color: #1976d2;
+    font-size: 1em;
+}
+
+.entrega-calificacion-form select {
+    border-radius: 7px;
+    border: 1.4px solid #90caf9;
+    padding: 7px 12px;
+    font-size: 1em;
+    background: #fafdff;
+    color: #223a51;
+    font-weight: 500;
+    transition: border-color 0.18s;
+}
+
+.entrega-calificacion-form select:focus {
+    border-color: #1976d2;
+    outline: none;
+}
+
+.retroalimentacion-input {
+    border-radius: 7px;
+    border: 1.4px solid #90caf9;
+    padding: 7px 12px;
+    font-size: 1em;
+    background: #fcfcfd;
+    color: #223a51;
+    width: 160px;
+    transition: border-color 0.18s;
+}
+
+.retroalimentacion-input:focus {
+    border-color: #1976d2;
+    background: #fafdff;
+    outline: none;
+}
+
+.entrega-btn-calificar {
+    background: linear-gradient(90deg, #1976d2 80%, #87bff5 100%);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 8px 16px;
+    font-size: 1em;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 1px 8px #87bff522;
+    transition: background 0.18s, color 0.18s, box-shadow 0.16s;
+    margin-left: auto;
+}
+
+.entrega-btn-calificar:hover {
+    background: linear-gradient(90deg, #3498db 80%, #1976d2 100%);
+    color: #fff;
+    box-shadow: 0 2px 16px #87bff544;
+}
+
+.entrega-calificacion-actual {
+    margin-top: 7px;
+    font-size: 1.02em;
+    color: #1976d2;
+    background: #e3f0ff;
+    padding: 7px 12px;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px #87bff522;
+    border: 1px solid #90caf9;
+}
+.entrega-calificacion-actual small {
+    color: #223a51;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+  #seccion-tareas .section {
+    padding: 18px 8px 8px 8px;
+    max-width: 99vw;
+    border-radius: 16px;
+  }
+  #tareas-lista > li {
+    padding: 16px 10px 14px 10px;
+    border-radius: 13px;
+  }
+  .entregas-section {
+    padding: 8px 4vw 8px 4vw;
+    max-width: 99vw;
+    border-radius: 14px;
+  }
+  .entrega-card {
+    padding: 12px 8px 8px 8px;
+    border-radius: 12px;
+  }
+}
+/* ====== AVISOS - DISEÑO MODERNO ESTILO EDUSOFT ====== */
+
 #seccion-avisos .section {
-  background: linear-gradient(120deg, #fafdff 92%, #e3f0ff 100%);
-  border-radius: 24px;
-  box-shadow: 0 6px 32px rgba(44, 62, 80, 0.13);
-  padding: 38px 30px 26px 30px;
-  max-width: 800px;
+  background: linear-gradient(120deg, #e3f0ff 78%, #fafdff 100%);
+  border-radius: 26px;
+  box-shadow: 0 8px 36px #87bff533;
+  padding: 38px 32px 28px 32px;
+  max-width: 900px;
   margin: 0 auto 32px auto;
   color: #223a51;
-  border: 1.5px solid #90caf9;
+  border: 2px solid #87bff5;
   position: relative;
+  backdrop-filter: blur(10px);
 }
+
+#seccion-avisos .section::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #87bff5, transparent);
+  border-radius: 26px 26px 0 0;
+}
+
 #seccion-avisos .section h3 {
-  font-size: 1.23em;
-  font-weight: 700;
+  font-size: 1.5em;
+  font-weight: 800;
   color: #1976d2;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  letter-spacing: 1.2px;
+  gap: 12px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 3px #87bff522;
 }
+
+/* Select de clases en avisos */
 #seccion-avisos #select-aviso-clase {
   width: 100%;
-  padding: 10px 16px;
-  border-radius: 10px;
-  border: 1.5px solid #e3eafc;
-  margin-bottom: 18px;
-  font-size: 1.04em;
-  background: #fafdff;
-  color: #223a51;
-  box-shadow: 0 1px 6px #e3eafc22;
-  transition: border 0.18s;
+  padding: 14px 20px;
+  border-radius: 16px;
+  border: 2px solid #87bff5;
+  margin-bottom: 20px;
+  font-size: 1.12em;
+  background: linear-gradient(135deg, #fafdff 0%, #e3f0ff 100%);
+  color: #1976d2;
+  box-shadow: 0 2px 10px #87bff522;
+  font-weight: 500;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 #seccion-avisos #select-aviso-clase:focus {
   border-color: #1976d2;
   background: #e3f0ff;
+  box-shadow: 0 0 0 3px #87bff522;
+  outline: none;
 }
+
+/* Botón crear aviso */
+#seccion-avisos .quick-action {
+  background: linear-gradient(90deg, #87bff5 85%, #1976d2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 26px;
+  cursor: pointer;
+  font-size: 1.13em;
+  font-weight: 700;
+  margin-bottom: 14px;
+  transition: background 0.18s, color 0.18s;
+  box-shadow: 0 1px 8px #90caf933;
+}
+
+#seccion-avisos .quick-action:hover {
+  background: #1976d2;
+  color: #87bff5;
+}
+
+/* Lista de avisos */
 #avisos-lista {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
+
 #avisos-lista > li {
-  background: linear-gradient(120deg, #fff 95%, #e3f0ff 100%);
-  border-radius: 16px;
-  box-shadow: 0 2px 12px #90caf91a;
-  padding: 22px 20px 18px 20px;
+  background: linear-gradient(120deg, #fafdff 94%, #e3f0ff 100%);
+  border-radius: 18px;
+  box-shadow: 0 2px 14px #87bff533;
+  padding: 20px 18px 16px 18px;
   position: relative;
+  border: 1.5px solid #87bff5;
+  transition: box-shadow 0.18s, border 0.18s, background 0.18s;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  border: 1.5px solid #e3eafc;
-  transition: box-shadow 0.16s, border 0.16s;
-}
-#avisos-lista > li:hover {
-  box-shadow: 0 8px 32px #90caf933;
-  border-color: #90caf9;
-}
-.aviso-titulo {
-  font-size: 1.17em;
-  font-weight: 700;
-  color: #1976d2;
-  margin-bottom: 4px;
-  letter-spacing: 0.8px;
-  display: flex;
-  align-items: center;
   gap: 8px;
 }
-.aviso-materia {
-  font-size: 0.99em;
-  color: #3498db;
+
+#avisos-lista > li:hover {
+  box-shadow: 0 8px 28px #90caf944;
+  border-color: #1976d2;
+  background: linear-gradient(120deg, #e3f0ff 99%, #fafdff 100%);
+}
+
+#avisos-lista > li > b {
+  font-size: 1.15em;
+  font-weight: 700;
+  color: #1976d2;
+  letter-spacing: 0.2px;
+  margin-bottom: 2px;
+}
+
+#avisos-lista > li > span,
+#avisos-lista > li > .aviso-fecha {
   background: #e3f0ff;
-  padding: 2px 8px;
+  color: #1976d2;
+  padding: 3px 11px;
   border-radius: 8px;
-  margin-left: 8px;
+  font-size: 0.99em;
   font-weight: 500;
+  margin-left: 12px;
+  border: 1px solid #87bff5;
+  display: inline-block;
 }
-.aviso-fecha {
-  font-size: 0.97em;
-  color: #e65100;
-  background: #fffbe6;
-  padding: 2px 9px;
-  border-radius: 7px;
-  margin-left: 8px;
-  font-weight: 500;
-}
-.aviso-descripcion {
-  font-size: 1em;
-  color: #435d75;
-  margin-bottom: 5px;
+
+#avisos-lista > li > small {
+  font-size: 1.06em;
+  color: #223a51;
+  line-height: 1.6;
+  font-weight: 400;
+  margin-bottom: 6px;
   margin-top: 4px;
   word-break: break-word;
-  line-height: 1.6;
 }
+
+.form-eliminar-aviso {
+  margin-top: 8px;
+}
+
 .btn-eliminar {
   background: linear-gradient(90deg, #e74c3c 75%, #ffb85f 100%);
   color: #fff;
   border: none;
-  border-radius: 7px;
+  border-radius: 8px;
   padding: 8px 16px;
-  font-size: 0.99em;
+  font-size: 1em;
   cursor: pointer;
-  margin-top: 7px;
-  transition: background 0.2s;
-}
-.btn-ver-entregas {
-  margin-left: 8px;
-  background: #3c68bb;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 0.95em;
-  transition: background 0.2s;
-}
-.btn-ver-entregas:hover {
-  background: #234281;
+  font-weight: 600;
+  box-shadow: 0 1px 8px #e74c3c33;
+  transition: background 0.2s, box-shadow 0.18s;
 }
 
-.quick-action {
-  margin-top: 16px;
-  background: linear-gradient(90deg, #87bff5 90%, #1976d2 100%);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 22px;
-  cursor: pointer;
-  font-size: 1.05em;
-  font-weight: 600;
-  transition: background 0.18s, color 0.18s;
-  box-shadow: 0 1px 8px #90caf933;
+.btn-eliminar:hover {
+  background: linear-gradient(90deg, #ffb85f 75%, #e74c3c 100%);
+  box-shadow: 0 2px 14px #e74c3c44;
 }
-.quick-action:hover {
-  background: #1976d2;
-  color: #87bff5;
+
+/* Responsive */
+@media (max-width: 900px) {
+  #seccion-avisos .section {
+    padding: 18px 8px 8px 8px;
+    max-width: 99vw;
+    border-radius: 16px;
+  }
+  #avisos-lista > li {
+    padding: 12px 6px 8px 6px;
+    border-radius: 12px;
+  }
+  #seccion-avisos #select-aviso-clase {
+    padding: 9px 10px;
+    border-radius: 10px;
+    font-size: 1em;
+  }
 }
+
+/* Si tienes avisos por clase en ul dentro de li, también puedes aplicar: */
+#avisos-lista ul {
+  margin-left: 0;
+  padding-left: 12px;
+}
+#avisos-lista ul > li {
+  background: linear-gradient(120deg, #fafdff 96%, #e3f0ff 100%);
+  border-radius: 13px;
+  box-shadow: 0 2px 8px #87bff522;
+  padding: 12px 10px 8px 10px;
+  border: 1px solid #87bff5;
+  margin-bottom: 8px;
+  font-size: 1em;
+}
+
+/* Mensaje vacío */
 #avisos-lista li:not([class]) {
   background: none;
   box-shadow: none;
@@ -638,392 +845,277 @@ body {
   padding: 8px 0;
   margin-bottom: 0;
 }
-@media (max-width: 700px) {
-  #seccion-tareas .section {
-    padding: 20px 16px 16px 16px;
-    max-width: 95vw;
-    border-radius: 16px;
-  }
+/* ====== MATERIALES - DISEÑO MODERNO ESTILO EDUSOFT ====== */
 
-  #tareas-lista > li {
-    /* Layout móvil simplificado */
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 20px;
-    border-radius: 16px;
-    padding: 20px 16px 16px 16px;
-  }
-
-  #tareas-lista > li > form {
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    min-width: auto;
-    gap: 12px;
-    margin-left: 0;
-  }
-
-  .tarea-contenido {
-    text-align: left; /* Manteniendo alineación izquierda en móvil */
-    align-items: flex-start;
-  }
-
-  .tarea-botones {
-    flex-direction: row;
-    justify-content: center; /* Centrando botones en móvil */
-    align-items: center;
-    min-width: auto;
-    gap: 12px;
-  }
-
-  .tarea-titulo {
-    font-size: 1.1em;
-  }
-
-  .tarea-materia,
-  .tarea-fecha {
-    font-size: 0.85em;
-    padding: 3px 10px;
-  }
-
-  .btn-eliminar,
-  .btn-ver-entregas {
-    padding: 8px 16px;
-    font-size: 0.9em;
-  }
-}
-
-/* ALUMNOS */
-.alumnos-section {
-  background: linear-gradient(120deg, #fafdff 85%, #e3f0ff 100%);
-  border-radius: 13px;
-  box-shadow: 0 2px 12px #0001;
-  padding: 26px 18px 18px 18px;
-  max-width: 600px;
-  margin: 0 auto 32px auto;
-}
-.select-clase {
-  width: 100%;
-  padding: 7px 12px;
-  border-radius: 8px;
-  border: 1px solid #e3eafc;
-  margin-bottom: 13px;
-  font-size: 1em;
-  background: #fafdff;
-  color: #223a51;
-}
-.alumnos-buscar {
-  width: 95%;
-  border-radius: 8px;
-  border: 1px solid #e3eafc;
-  padding: 7px 12px;
-  margin-bottom: 8px;
-  font-size: 1em;
-  background: #fcfcfc;
-  color: #223a51;
-}
-.lista-alumnos {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  min-height: 44px;
-}
-.lista-alumnos li {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 6px #0001;
-  padding: 10px 14px;
-  margin-bottom: 9px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  align-items: center;
-  font-size: 1em;
-  transition: box-shadow 0.2s;
-}
-.lista-alumnos li:hover {
-  box-shadow: 0 3px 14px #0002;
-}
-.alumnos-vacio {
-  color: #999;
-  font-size: 0.98em;
-  background: none !important;
-  box-shadow: none !important;
-}
-.alumno-nombre {
-  font-weight: 500;
-  color: #1976d2;
-  margin-right: 11px;
-}
-.alumno-num {
-  background: #e3eafc;
-  color: #223a51;
-  border-radius: 6px;
-  padding: 2px 8px;
-  font-size: 0.93em;
-  margin-right: 9px;
-}
-.alumno-email {
-  color: #888;
-  font-size: 0.95em;
-}
-@media (max-width: 700px) {
-  .alumnos-section {
-    padding: 8px 4vw 8px 4vw;
-    max-width: 99vw;
-  }
-  .lista-alumnos li {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-}
-/* COMENTARIOS MULTIHILO */
-#seccion-mensajes .section {
-  background: linear-gradient(120deg, #fafdff 93%, #e3f0ff 100%);
-  border-radius: 22px;
-  box-shadow: 0 6px 32px rgba(100, 150, 255, 0.11);
+#seccion-materiales .section {
+  background: linear-gradient(120deg, #e3f0ff 80%, #fafdff 100%);
+  border-radius: 26px;
+  box-shadow: 0 8px 36px #87bff533;
   padding: 38px 32px 28px 32px;
   max-width: 900px;
   margin: 0 auto 32px auto;
   color: #223a51;
-  border: 1.5px solid #c4e2ff;
+  border: 2px solid #87bff5;
   position: relative;
+  backdrop-filter: blur(10px);
 }
-#seccion-mensajes .section h3 {
-  font-size: 1.28em;
-  font-weight: 700;
+
+#seccion-materiales .section::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #87bff5, transparent);
+  border-radius: 26px 26px 0 0;
+}
+
+#seccion-materiales .section h3 {
+  font-size: 1.5em;
+  font-weight: 800;
   color: #1976d2;
-  margin-bottom: 26px;
+  margin-bottom: 28px;
   display: flex;
   align-items: center;
-  gap: 14px;
-  letter-spacing: 1.5px;
+  gap: 12px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 3px #87bff522;
 }
-#seccion-mensajes .section .badge {
-  background: linear-gradient(90deg, #e65100 80%, #ff9800 100%);
+
+/* Select de clase en materiales */
+#seccion-materiales #select-material-clase {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 16px;
+  border: 2px solid #87bff5;
+  margin-bottom: 20px;
+  font-size: 1.12em;
+  background: linear-gradient(135deg, #fafdff 0%, #e3f0ff 100%);
+  color: #1976d2;
+  box-shadow: 0 2px 10px #87bff522;
+  font-weight: 500;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+#seccion-materiales #select-material-clase:focus {
+  border-color: #1976d2;
+  background: #e3f0ff;
+  box-shadow: 0 0 0 3px #87bff522;
+  outline: none;
+}
+
+/* Botón subir material */
+#seccion-materiales .quick-action {
+  background: linear-gradient(90deg, #87bff5 85%, #1976d2 100%);
   color: #fff;
-  padding: 2px 11px;
-  border-radius: 15px;
-  font-size: 0.99em;
-  margin-left: 8px;
-  box-shadow: 0 1px 4px #e6510022;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 26px;
+  cursor: pointer;
+  font-size: 1.13em;
+  font-weight: 700;
+  margin-bottom: 14px;
+  transition: background 0.18s, color 0.18s;
+  box-shadow: 0 1px 8px #90caf933;
 }
-#seccion-mensajes ul {
+
+#seccion-materiales .quick-action:hover {
+  background: #1976d2;
+  color: #87bff5;
+}
+
+/* Lista de materiales */
+#lista-materiales {
   list-style: none;
   padding: 0;
   margin: 0;
-}
-#seccion-mensajes ul > li {
-  margin-bottom: 26px;
-  border-bottom: 2px solid #e3eafc;
-  padding-bottom: 17px;
-  display: block;
-  background: linear-gradient(120deg, #fafdff 98%, #e3f0ff 100%);
-  border-radius: 14px;
-  box-shadow: 0 2px 10px rgba(100, 150, 255, 0.07);
-  padding-top: 13px;
-  transition: box-shadow 0.18s, border 0.16s;
-  position: relative;
-}
-#seccion-mensajes ul > li:hover {
-  box-shadow: 0 4px 24px #90caf957;
-  border-bottom: 2px solid #90caf9;
-}
-#seccion-mensajes ul > li b {
-  color: #1565c0;
-  font-weight: 600;
-  font-size: 1.09em;
-  margin-right: 4px;
-}
-#seccion-mensajes ul > li small {
-  color: #8fa3c4;
-  font-size: 0.97em;
-  margin-left: 7px;
-}
-#seccion-mensajes ul > li span {
-  font-weight: 400;
-  color: #888;
-  font-size: 0.99em;
-}
-.respuesta-hilo {
-  margin: 10px 0 3px 24px;
-  padding: 9px 16px;
-  border-radius: 10px;
-  font-size: 15px;
-  background: linear-gradient(90deg, #f7fbff 98%, #e3f0ff 100%);
-  color: #234567;
-  border-left: 4px solid #90caf9;
-  box-shadow: 0 1px 6px #e3eafc33;
-  position: relative;
-  transition: background 0.15s;
-}
-.resp-prof {
-  background: linear-gradient(90deg, #e0f7fa 92%, #b2ebf2 100%);
-  border-left: 4px solid #1976d2;
-}
-.resp-alum {
-  background: linear-gradient(90deg, #fffde7 96%, #fffde7 100%);
-  border-left: 4px solid #fbc02d;
-}
-.respuesta-hilo b {
-  font-weight: 600;
-  color: #1976d2;
-  margin-right: 6px;
-  font-size: 1em;
-}
-.resp-alum b {
-  color: #fbc02d;
-}
-.form-resp-comentario {
-  margin: 12px 0 0 24px;
   display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  background: linear-gradient(90deg, #f7faff 98%, #e3f0ff 100%);
-  border-radius: 10px;
-  padding: 11px 16px;
-  box-shadow: 0 2px 6px #e3eafc22;
-  border: 1.2px solid #e3e8f0;
-  transition: box-shadow 0.15s;
-  position: relative;
-}
-.form-resp-comentario:focus-within {
-  box-shadow: 0 2px 12px #90caf957;
-  border-color: #90caf9;
-}
-.textarea-respuesta {
-  width: 100%;
-  min-height: 32px;
-  max-width: 270px;
-  padding: 7px 13px;
-  border: 1.5px solid #c7dbfa;
-  border-radius: 8px;
-  background: #fff;
-  font-size: 14px;
-  resize: vertical;
-  transition: border-color 0.18s;
-  outline: none;
-  color: #223a51;
-  box-shadow: 0 1px 4px #e3eafc33;
-}
-.textarea-respuesta:focus {
-  border-color: #1976d2;
-  background: #f6fbff;
-}
-.btn-respuesta {
-  padding: 8px 16px;
-  background: linear-gradient(90deg, #e3e8f0 90%, #c7dbfa 100%);
-  color: #1976d2;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.18s, color 0.18s, box-shadow 0.14s;
-  box-shadow: 0 1px 6px #e3eafc33;
-}
-.btn-respuesta:hover {
-  background: #90caf9;
-  color: #fff;
-  box-shadow: 0 2px 12px #90caf957;
-}
-@media (max-width: 700px) {
-  #seccion-mensajes .section {
-    padding: 13px 4vw 8px 4vw;
-    max-width: 98vw;
-  }
-  #seccion-mensajes ul > li {
-    padding: 10px 6px 16px 6px;
-  }
-  .form-resp-comentario {
-    padding: 9px 2vw;
-    margin-left: 2vw;
-  }
-  .textarea-respuesta {
-    font-size: 13px;
-    padding: 7px 8px;
-  }
-  .respuesta-hilo {
-    margin-left: 3vw;
-  }
-}
-@keyframes popShow {
-  0% {
-    transform: scale(0.85);
-    opacity: 0.1;
-  }
-  80% {
-    transform: scale(1.04);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-.comment-card,
-.respuesta-hilo,
-.form-resp-comentario {
-  animation: popShow 0.33s;
-}
-#seccion-mensajes ul > li:not(:last-child) {
-  margin-bottom: 32px;
-}
-#seccion-mensajes ul > li[data-estado="pendiente"] {
-  border-left: 7px solid #e65100;
-  box-shadow: 0 0px 12px #e6510022;
-  background: linear-gradient(90deg, #fff4e3 96%, #fafdff 100%);
+  flex-direction: column;
+  gap: 24px;
 }
 
-.entregas-section {
-  background: #f8f9fa;
-  padding: 18px 22px;
-  border-radius: 10px;
-  margin: 18px 0;
-  box-shadow: 0 2px 8px #0001;
+#lista-materiales > li {
+  background: linear-gradient(120deg, #fafdff 94%, #e3f0ff 100%);
+  border-radius: 18px;
+  box-shadow: 0 2px 14px #87bff533;
+  padding: 20px 18px 16px 18px;
+  position: relative;
+  border: 1.5px solid #87bff5;
+  transition: box-shadow 0.18s, border 0.18s, background 0.18s;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
-.entrega-item {
-  border-bottom: 1px solid #c4c4c4;
-  padding: 10px 0;
-  margin-bottom: 10px;
+
+#lista-materiales > li:hover {
+  box-shadow: 0 8px 28px #90caf944;
+  border-color: #1976d2;
+  background: linear-gradient(120deg, #e3f0ff 99%, #fafdff 100%);
 }
-.entrega-item:last-child {
-  border-bottom: none;
+
+#lista-materiales > li > strong {
+  font-size: 1.15em;
+  font-weight: 700;
+  color: #1976d2;
+  letter-spacing: 0.2px;
+  margin-bottom: 2px;
+  display: block;
 }
-/* ====== APARTADO DE MIS CURSOS - DISEÑO BONITO ====== */
+
+#lista-materiales > li > small {
+  font-size: 1.06em;
+  color: #223a51;
+  line-height: 1.6;
+  font-weight: 400;
+  margin-bottom: 6px;
+  margin-top: 4px;
+  word-break: break-word;
+  display: block;
+}
+
+#lista-materiales > li a {
+  color: #1976d2;
+  text-decoration: underline;
+  font-size: 1em;
+  font-weight: 500;
+  background: #fafdff;
+  border-radius: 7px;
+  padding: 2px 10px;
+  transition: background 0.16s, color 0.18s;
+}
+#lista-materiales > li a:hover {
+  background: #e3f0ff;
+  color: #234281;
+}
+
+#lista-materiales > li form.form-eliminar-material {
+  margin-top: 8px;
+  display: inline-block;
+}
+
+.btn-eliminar {
+  background: linear-gradient(90deg, #e74c3c 75%, #ffb85f 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 1em;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 1px 8px #e74c3c33;
+  transition: background 0.2s, box-shadow 0.18s;
+}
+
+.btn-eliminar:hover {
+  background: linear-gradient(90deg, #ffb85f 75%, #e74c3c 100%);
+  box-shadow: 0 2px 14px #e74c3c44;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  #seccion-materiales .section {
+    padding: 18px 8px 8px 8px;
+    max-width: 99vw;
+    border-radius: 16px;
+  }
+  #lista-materiales > li {
+    padding: 12px 6px 8px 6px;
+    border-radius: 12px;
+  }
+  #seccion-materiales #select-material-clase {
+    padding: 9px 10px;
+    border-radius: 10px;
+    font-size: 1em;
+  }
+}
+
+/* Si tienes materiales por clase en ul dentro de li, también puedes aplicar: */
+#lista-materiales ul {
+  margin-left: 0;
+  padding-left: 12px;
+}
+#lista-materiales ul > li {
+  background: linear-gradient(120deg, #fafdff 96%, #e3f0ff 100%);
+  border-radius: 13px;
+  box-shadow: 0 2px 8px #87bff522;
+  padding: 12px 10px 8px 10px;
+  border: 1px solid #87bff5;
+  margin-bottom: 8px;
+  font-size: 1em;
+}
+
+/* Mensaje vacío */
+#lista-materiales li:not([class]) {
+  background: none;
+  box-shadow: none;
+  border: none;
+  color: #888;
+  font-size: 1.03em;
+  padding: 8px 0;
+  margin-bottom: 0;
+}
+/* ====== MIS CURSOS - DISEÑO MODERNO ESTILO EDUSOFT ====== */
+
 #seccion-cursos .section {
   background: linear-gradient(110deg, #e3f0ff 92%, #fafdff 100%);
-  border-radius: 22px;
-  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.13);
-  padding: 40px 30px 30px 30px;
+  border-radius: 26px;
+  box-shadow: 0 8px 36px #87bff533;
+  padding: 38px 32px 28px 32px;
   max-width: 950px;
   margin: 0 auto 32px auto;
   color: #223a51;
   border: 2px solid #87bff5;
   position: relative;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+}
+
+#seccion-cursos .section::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #87bff5, transparent);
+  border-radius: 26px 26px 0 0;
 }
 
 #seccion-cursos .section h3 {
-  font-size: 1.6em;
+  font-size: 1.5em;
+  font-weight: 800;
   color: #1976d2;
-  font-weight: 700;
-  margin-bottom: 26px;
-  letter-spacing: 1px;
-  text-shadow: 0 2px 8px #87bff522;
+  margin-bottom: 28px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 3px #87bff522;
 }
 
-#seccion-cursos .cursos-lista {
+/* Botón crear curso */
+#seccion-cursos .quick-action {
+  background: linear-gradient(90deg, #87bff5 85%, #1976d2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 26px;
+  cursor: pointer;
+  font-size: 1.13em;
+  font-weight: 700;
+  margin-bottom: 14px;
+  transition: background 0.18s, color 0.18s;
+  box-shadow: 0 1px 8px #90caf933;
+}
+#seccion-cursos .quick-action:hover {
+  background: #1976d2;
+  color: #87bff5;
+}
+
+/* Lista de cursos */
+.cursos-lista {
   padding: 0;
   margin: 0;
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 24px;
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
@@ -1094,6 +1186,7 @@ body {
   font-weight: 500;
 }
 
+/* Formulario de imagen de materia */
 .curso-imagen-form {
   min-width: 180px;
   max-width: 310px;
@@ -1156,6 +1249,7 @@ body {
   box-shadow: 0 2px 16px #87bff544;
 }
 
+/* Responsive */
 @media (max-width: 900px) {
   #seccion-cursos .section {
     padding: 15px 5vw 15px 5vw;
@@ -1178,5 +1272,269 @@ body {
     min-width: auto;
     align-items: stretch;
     text-align: left;
+  }
+}
+/* ====== ALUMNOS - DISEÑO MODERNO ESTILO EDUSOFT ====== */
+
+#seccion-alumnos .section.alumnos-section {
+  background: linear-gradient(120deg, #e3f0ff 80%, #fafdff 100%);
+  border-radius: 26px;
+  box-shadow: 0 8px 36px #87bff533;
+  padding: 38px 32px 28px 32px;
+  max-width: 700px;
+  margin: 0 auto 32px auto;
+  color: #223a51;
+  border: 2px solid #87bff5;
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+#seccion-alumnos .section.alumnos-section::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #87bff5, transparent);
+  border-radius: 26px 26px 0 0;
+}
+
+#seccion-alumnos .section.alumnos-section h3 {
+  font-size: 1.4em;
+  font-weight: 800;
+  color: #1976d2;
+  margin-bottom: 26px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 3px #87bff522;
+}
+
+/* Select de clase */
+.select-clase {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 14px;
+  border: 2px solid #87bff5;
+  margin-bottom: 18px;
+  font-size: 1.07em;
+  background: linear-gradient(135deg, #fafdff 0%, #e3f0ff 100%);
+  color: #1976d2;
+  box-shadow: 0 2px 8px #87bff522;
+  font-weight: 500;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.select-clase:focus {
+  border-color: #1976d2;
+  background: #e3f0ff;
+  box-shadow: 0 0 0 3px #87bff522;
+  outline: none;
+}
+
+/* Buscador de alumnos */
+.alumnos-buscar {
+  width: 100%;
+  border-radius: 14px;
+  border: 2px solid #87bff5;
+  padding: 12px 20px;
+  margin-bottom: 16px;
+  font-size: 1.07em;
+  background: #fcfcfc;
+  color: #223a51;
+  box-shadow: 0 2px 8px #87bff522;
+  font-weight: 500;
+  transition: border-color 0.2s, background 0.2s;
+}
+.alumnos-buscar:focus {
+  border-color: #1976d2;
+  background: #fafdff;
+  outline: none;
+}
+
+.lista-alumnos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lista-alumnos li {
+  background: linear-gradient(120deg, #fafdff 94%, #e3f0ff 100%);
+  border-radius: 15px;
+  box-shadow: 0 1px 10px #87bff522;
+  padding: 13px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  font-size: 1.08em;
+  font-weight: 500;
+  transition: box-shadow 0.2s, border 0.18s, background 0.18s;
+  border: 1px solid #87bff5;
+}
+
+.lista-alumnos li:hover {
+  box-shadow: 0 4px 18px #1976d244;
+  background: linear-gradient(120deg, #e3f0ff 99%, #fafdff 100%);
+}
+
+.alumnos-vacio {
+  color: #888;
+  font-size: 1em;
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 10px 0;
+}
+
+/* Info del alumno */
+.alumno-nombre {
+  font-weight: 700;
+  color: #1976d2;
+  margin-right: 12px;
+  font-size: 1.08em;
+}
+
+.alumno-num {
+  background: #e3f0ff;
+  color: #223a51;
+  border-radius: 8px;
+  padding: 3px 12px;
+  font-size: 0.95em;
+  margin-right: 10px;
+  border: 1px solid #87bff5;
+  font-weight: 500;
+}
+
+.alumno-email {
+  color: #888;
+  font-size: 0.99em;
+  padding: 2px 10px;
+  border-radius: 8px;
+  background: #eef6fb;
+  font-weight: 500;
+}
+
+@media (max-width: 700px) {
+  #seccion-alumnos .section.alumnos-section {
+    padding: 14px 4vw 14px 4vw;
+    max-width: 99vw;
+    border-radius: 16px;
+  }
+  .lista-alumnos li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+    padding: 12px 8px;
+    border-radius: 10px;
+  }
+}
+.tareas-clase-group {
+  background: linear-gradient(120deg, #fafdff 94%, #e3f0ff 100%);
+  border-radius: 18px;
+  box-shadow: 0 2px 14px #87bff533;
+  padding: 20px 18px 12px 18px;
+  margin-bottom: 24px;
+  border: 1.5px solid #87bff5;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.tareas-clase-group-title {
+  font-size: 1.13em;
+  font-weight: 700;
+  color: #1976d2;
+  margin-bottom: 10px;
+  letter-spacing: 0.4px;
+}
+.tareas-clase-group ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.tareas-clase-group ul > li {
+  background: linear-gradient(120deg, #fafdff 96%, #e3f0ff 100%);
+  border-radius: 14px;
+  box-shadow: 0 1px 8px #87bff522;
+  padding: 18px 14px 12px 14px;
+  border: 1px solid #87bff5;
+  margin-bottom: 0;
+  transition: box-shadow 0.18s, border 0.18s, background 0.18s;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tareas-clase-group ul > li:hover {
+  box-shadow: 0 4px 18px #1976d244;
+  background: linear-gradient(120deg, #e3f0ff 99%, #fafdff 100%);
+  border-color: #1976d2;
+}
+.tareas-clase-group ul > li > b {
+  font-size: 1.1em;
+  font-weight: 700;
+  color: #1976d2;
+  letter-spacing: 0.2px;
+  margin-bottom: 1px;
+}
+.tareas-clase-group ul > li > small {
+  font-size: 1em;
+  color: #223a51;
+  margin-bottom: 2px;
+}
+.tarea-botones {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+.btn-eliminar {
+  background: linear-gradient(90deg, #e74c3c 75%, #ffb85f 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 1em;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 1px 8px #e74c3c33;
+  transition: background 0.2s, box-shadow 0.18s;
+}
+.btn-eliminar:hover {
+  background: linear-gradient(90deg, #ffb85f 75%, #e74c3c 100%);
+  box-shadow: 0 2px 14px #e74c3c44;
+}
+.btn-ver-entregas {
+  background: linear-gradient(90deg, #1976d2 80%, #87bff5 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 1em;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 1px 8px #87bff522;
+  transition: background 0.18s, color 0.18s, box-shadow 0.16s;
+}
+.btn-ver-entregas:hover {
+  background: linear-gradient(90deg, #3498db 80%, #1976d2 100%);
+  color: #fff;
+  box-shadow: 0 2px 16px #87bff544;
+}
+/* Responsive */
+@media (max-width: 900px) {
+  .tareas-clase-group {
+    padding: 10px 3vw 6px 3vw;
+    border-radius: 12px;
+  }
+  .tareas-clase-group ul > li {
+    padding: 8px 6px 6px 6px;
+    border-radius: 9px;
   }
 }

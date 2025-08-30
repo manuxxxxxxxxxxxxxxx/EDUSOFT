@@ -478,24 +478,26 @@ $total_alumnos_unicos = count($alumno_ids);
                 $resultadoTareas = $stmtTareas->get_result();
                 if ($resultadoTareas->num_rows > 0):
                     while ($tarea = $resultadoTareas->fetch_assoc()): ?>
-                        <li>
-                            <b><?= htmlspecialchars($tarea['titulo']); ?></b> 
-                            – <?= ucfirst(htmlspecialchars($tarea['materia'])); ?> 
-                            – Fecha entrega: <?= htmlspecialchars($tarea['fecha_entrega']); ?>
-                            <br><small><?= htmlspecialchars($tarea['descripcion']); ?></small>
-                            <form class="form-eliminar-tarea" action="../frontend_maestros/eliminar_tarea.php" method="POST" style="display:inline;">
-                                <input type="hidden" name="accion" value="eliminar_tarea">
-                                <input type="hidden" name="id_tarea" value="<?= $tarea['id']; ?>">
-                                <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase); ?>">
-                                <button type="button" class="btn-eliminar" onclick="abrirModalEliminarTarea('<?= $tarea['id'] ?>','<?= htmlspecialchars($tarea['titulo']) ?>')">Eliminar</button>
-                            </form>
-                            <form action="index.php" method="get" style="display:inline;">
-                                <input type="hidden" name="ver_entregas" value="1">
-                                <input type="hidden" name="id_tarea_profesor" value="<?= $tarea['id'] ?>">
-                                <input type="hidden" name="id_clase" value="<?= $id_clase ?>">
-                                <button type="submit" class="btn-ver-entregas">Tareas entregadas</button>
-                            </form>
-                        </li>
+          <li>
+                   <b><?= htmlspecialchars($tarea['titulo']); ?></b> 
+                 – <?= ucfirst(htmlspecialchars($tarea['materia'])); ?> 
+                – Fecha entrega: <?= htmlspecialchars($tarea['fecha_entrega']); ?>
+                 <br><small><?= htmlspecialchars($tarea['descripcion']); ?></small>
+        <div class="tarea-botones">
+                  <form class="form-eliminar-tarea" action="../frontend_maestros/eliminar_tarea.php" method="POST" style="display:inline;">
+                   <input type="hidden" name="accion" value="eliminar_tarea">
+                  <input type="hidden" name="id_tarea" value="<?= $tarea['id']; ?>">
+                 <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase); ?>">
+                    <button type="button" class="btn-eliminar" onclick="abrirModalEliminarTarea('<?= $tarea['id'] ?>','<?= htmlspecialchars($tarea['titulo']) ?>')">Eliminar</button>
+             </form>
+        <form action="index.php" method="get" style="display:inline;">
+            <input type="hidden" name="ver_entregas" value="1">
+            <input type="hidden" name="id_tarea_profesor" value="<?= $tarea['id'] ?>">
+            <input type="hidden" name="id_clase" value="<?= $id_clase ?>">
+            <button type="submit" class="btn-ver-entregas">Tareas entregadas</button>
+        </form>
+         </div>
+           </li>
                     <?php endwhile;
                 else: ?>
                     <li>No hay tareas registradas para esta clase.</li>
@@ -521,28 +523,35 @@ $total_alumnos_unicos = count($alumno_ids);
                 }
 
                 if (count($tareasPorClase) > 0) {
-                    foreach ($tareasPorClase as $idClase => $datosClase) {
-                        echo "<li style='margin-top:10px;'><strong>" . htmlspecialchars($datosClase['nombre_clase']) . " – " . htmlspecialchars($datosClase['materia']) . "</strong><ul>";
-                        foreach ($datosClase['tareas'] as $tarea) {
-                            echo "<li>";
-                            echo "<b>" . htmlspecialchars($tarea['titulo']) . "</b> – Fecha entrega: " . htmlspecialchars($tarea['fecha_entrega']);
-                            echo "<br><small>" . htmlspecialchars($tarea['descripcion']) . "</small>";
-                            echo "<form class='form-eliminar-tarea' action='../frontend_maestros/eliminar_tarea.php' method='POST' style='display:inline;'>";
-                            echo "<input type='hidden' name='accion' value='eliminar_tarea'>";
-                            echo "<input type='hidden' name='id_tarea' value='" . $tarea['id'] . "'>";
-                            echo "<input type='hidden' name='id_clase' value='" . htmlspecialchars($idClase) . "'>";
-                            echo "<button type='button' class='btn-eliminar' onclick=\"abrirModalEliminarTarea('".$tarea['id']."','".htmlspecialchars($tarea['titulo'])."')\">Eliminar</button>";
-                            echo "</form>";
-                            echo "<form action='index.php' method='get' style='display:inline;'>";
-                            echo "<input type='hidden' name='ver_entregas' value='1'>";
-                            echo "<input type='hidden' name='id_tarea_profesor' value='" . $tarea['id'] . "'>";
-                            echo "<input type='hidden' name='id_clase' value='" . $idClase . "'>";
-                            echo "<button type='submit' class='btn-ver-entregas'>Tareas entregadas</button>";
-                            echo "</form>";
-                            echo "</li>";
-                        }
-                        echo "</ul></li>";
-                    }
+             foreach ($tareasPorClase as $idClase => $datosClase) {
+                echo "<div class='tareas-clase-group'>";
+               echo "<div class='tareas-clase-group-title'>" . htmlspecialchars($datosClase['nombre_clase']) . " – " . htmlspecialchars($datosClase['materia']) . "</div>";
+                echo "<ul>";
+             foreach ($datosClase['tareas'] as $tarea) {
+                echo "<li>";
+                echo "<b>" . htmlspecialchars($tarea['titulo']) . "</b> – Fecha entrega: " . htmlspecialchars($tarea['fecha_entrega']);
+                echo "<br><small>" . htmlspecialchars($tarea['descripcion']) . "</small>";
+                echo "<div class='tarea-botones'>";
+       
+                 echo "<form class='form-eliminar-tarea' action='../frontend_maestros/eliminar_tarea.php' method='POST' style='display:inline;'>";
+                echo "<input type='hidden' name='accion' value='eliminar_tarea'>";
+                echo "<input type='hidden' name='id_tarea' value='" . $tarea['id'] . "'>";
+                echo "<input type='hidden' name='id_clase' value='" . htmlspecialchars($idClase) . "'>";
+                echo "<button type='button' class='btn-eliminar' onclick=\"abrirModalEliminarTarea('" . $tarea['id'] . "','" . htmlspecialchars($tarea['titulo']) . "')\">Eliminar</button>";
+                echo "</form>";
+        
+                echo "<form action='index.php' method='get' style='display:inline;'>";
+                echo "<input type='hidden' name='ver_entregas' value='1'>";
+                echo "<input type='hidden' name='id_tarea_profesor' value='" . $tarea['id'] . "'>";
+                echo "<input type='hidden' name='id_clase' value='" . $idClase . "'>";
+               echo "<button type='submit' class='btn-ver-entregas'>Tareas entregadas</button>";
+               echo "</form>";
+               echo "</div>"; // tarea-botones
+              echo "</li>";
+             }
+                echo "</ul>";
+                echo "</div>"; // tareas-clase-group
+            }
                 } else {
                     echo "<li>No hay tareas registradas aún.</li>";
                 }
@@ -563,61 +572,63 @@ $total_alumnos_unicos = count($alumno_ids);
             $stmt->execute();
             $res = $stmt->get_result();
             ?>
-            <div class="entregas-section">
-            <h3>Tareas entregadas por alumnos</h3>
-            <?php
-            if ($res->num_rows == 0) {
-                echo "<p>No hay entregas aún.</p>";
-            } else {
-                while ($entrega = $res->fetch_assoc()) {
-                    ?>
-                    <div class="entrega-item">
-                        <b><?= htmlspecialchars($entrega['nombre']) ?></b>
-                        <span>Fecha entrega: <?= htmlspecialchars($entrega['fecha_subida']) ?></span>
-                        <?php
-                        // Mostrar todos los archivos subidos por el alumno para esta entrega
-                        $sqlArchivos = "SELECT nombre_archivo, ruta_archivo FROM tareas_archivos WHERE id_tarea = ?";
-                        $stmtArchivos = $conn->prepare($sqlArchivos);
-                        $stmtArchivos->bind_param("i", $entrega['id']);
-                        $stmtArchivos->execute();
-                        $resArchivos = $stmtArchivos->get_result();
-                        if ($resArchivos->num_rows > 0) {
-                            echo "<ul>";
-                            while ($archivo = $resArchivos->fetch_assoc()) {
-                                echo '<li><a href="' . htmlspecialchars($archivo['ruta_archivo']) . '" target="_blank">Descargar: ' . htmlspecialchars($archivo['nombre_archivo']) . '</a></li>';
-                            }
-                            echo "</ul>";
-                        } else {
-                            echo "<span>No hay archivos subidos.</span>";
-                        }
-                        $stmtArchivos->close();
-                        ?>
-                        <form method="POST" action="calificar_tarea.php" style="margin-top:5px;">
-                            <input type="hidden" name="id_tarea" value="<?= $entrega['id'] ?>">
-                            <label>Calificación:</label>
-                            <select name="calificacion" required>
-                                <?php for($i=1;$i<=10;$i++): ?>
-                                    <option value="<?= $i ?>"<?= ($entrega['calificacion']==$i)?" selected":"" ?>><?= $i ?></option>
-                                <?php endfor; ?>
-                            </select>
-                            <input type="text" name="retroalimentacion" placeholder="Retroalimentación" value="<?= htmlspecialchars($entrega['retroalimentacion'] ?? '') ?>">
-                            <button type="submit">Guardar</button>
-                        </form>
-                        <?php if ($entrega['calificacion'] !== null): ?>
-                            <div>
-                                <strong>Calificación actual:</strong> <?= $entrega['calificacion'] ?>
-                                <?php if ($entrega['retroalimentacion']): ?>
-                                    <br><small><b>Retroalimentación:</b> <?= htmlspecialchars($entrega['retroalimentacion']) ?></small>
-                                <?php endif; ?>
-                            </div>
+           <div class="entregas-section">
+    <h3>Tareas entregadas por alumnos</h3>
+    <?php
+    if ($res->num_rows == 0) {
+        echo "<p>No hay entregas aún.</p>";
+    } else {
+        while ($entrega = $res->fetch_assoc()) {
+            ?>
+            <div class="entrega-card">
+                <div class="entrega-header">
+                    <b><?= htmlspecialchars($entrega['nombre']) ?></b>
+                    <span class="entrega-fecha">Fecha entrega: <?= htmlspecialchars($entrega['fecha_subida']) ?></span>
+                </div>
+                <?php
+                // Mostrar todos los archivos subidos por el alumno para esta entrega
+                $sqlArchivos = "SELECT nombre_archivo, ruta_archivo FROM tareas_archivos WHERE id_tarea = ?";
+                $stmtArchivos = $conn->prepare($sqlArchivos);
+                $stmtArchivos->bind_param("i", $entrega['id']);
+                $stmtArchivos->execute();
+                $resArchivos = $stmtArchivos->get_result();
+                if ($resArchivos->num_rows > 0) {
+                    echo "<ul class='entrega-archivos'>";
+                    while ($archivo = $resArchivos->fetch_assoc()) {
+                        echo '<li><a href="' . htmlspecialchars($archivo['ruta_archivo']) . '" target="_blank">Descargar: ' . htmlspecialchars($archivo['nombre_archivo']) . '</a></li>';
+                    }
+                    echo "</ul>";
+                } else {
+                    echo "<span class='entrega-sin-archivos'>No hay archivos subidos.</span>";
+                }
+                $stmtArchivos->close();
+                ?>
+                <form class="entrega-calificacion-form" method="POST" action="calificar_tarea.php">
+                    <input type="hidden" name="id_tarea" value="<?= $entrega['id'] ?>">
+                    <label>Calificación:</label>
+                    <select name="calificacion" required>
+                        <?php for($i=1;$i<=10;$i++): ?>
+                            <option value="<?= $i ?>"<?= ($entrega['calificacion']==$i)?" selected":"" ?>><?= $i ?></option>
+                        <?php endfor; ?>
+                    </select>
+                    <input type="text" name="retroalimentacion" class="retroalimentacion-input" placeholder="Retroalimentación" value="<?= htmlspecialchars($entrega['retroalimentacion'] ?? '') ?>">
+                    <button type="submit" class="entrega-btn-calificar">Guardar</button>
+                </form>
+                <?php if ($entrega['calificacion'] !== null): ?>
+                    <div class="entrega-calificacion-actual">
+                        <strong>Calificación actual:</strong> <?= $entrega['calificacion'] ?>
+                        <?php if ($entrega['retroalimentacion']): ?>
+                            <br><small><b>Retroalimentación:</b> <?= htmlspecialchars($entrega['retroalimentacion']) ?></small>
                         <?php endif; ?>
                     </div>
-                    <?php
-                }
-            }
-            $stmt->close();
-            ?>
+                <?php endif; ?>
             </div>
+            <?php
+        }
+    }
+    $stmt->close();
+    ?>
+</div>
         <?php endif; ?>
     </div>
 </div>
