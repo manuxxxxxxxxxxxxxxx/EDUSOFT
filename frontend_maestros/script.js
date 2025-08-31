@@ -37,3 +37,82 @@ function searchStudent() {
         list[i].style.display = name.includes(input) ? '' : 'none';
     }
 }
+// Mostrar sección según el hash en la URL al cargar y cuando cambie
+function mostrarSeccionDesdeHash() {
+    document.querySelectorAll('.seccion-panel').forEach(function(sec) {
+        sec.style.display = 'none';
+    });
+    var hash = window.location.hash || '#seccion-inicio';
+    var hashSolo = hash.split('&')[0];
+    var seccion = document.querySelector(hashSolo);
+    if (seccion) {
+        seccion.style.display = 'block';
+        const links = document.querySelectorAll('.sidebar nav a');
+        links.forEach(a => a.classList.remove('active'));
+        const hashList = [
+            '#seccion-inicio',
+            '#seccion-cursos',
+            '#seccion-alumnos',
+            '#seccion-tareas',
+            '#seccion-materiales',
+            '#seccion-avisos',
+            '#seccion-mensajes',
+            '#seccion-perfil'
+        ];
+        const idx = hashList.indexOf(hashSolo);
+        if (idx >= 0 && links[idx]) links[idx].classList.add('active');
+    } else {
+        document.getElementById('seccion-inicio').style.display = 'block';
+        document.querySelector('.sidebar nav a').classList.add('active');
+    }
+}
+document.addEventListener('DOMContentLoaded', mostrarSeccionDesdeHash);
+window.addEventListener('hashchange', mostrarSeccionDesdeHash);
+
+// Detecta cambios en todos los selects de clase para redirigir con el hash adecuado
+document.addEventListener('DOMContentLoaded', function() {
+    // Alumnos
+    var selectAlumnos = document.getElementById('select-clase');
+    if (selectAlumnos) {
+        selectAlumnos.onchange = function() {
+            var id_clase = this.value;
+            var url = 'index.php';
+            if (id_clase) url += '?id_clase=' + encodeURIComponent(id_clase);
+            url += '#seccion-alumnos';
+            window.location.href = url;
+        };
+    }
+    // Tareas
+    var selectTareas = document.getElementById('select-tarea-clase');
+    if (selectTareas) {
+        selectTareas.onchange = function() {
+            var id_clase = this.value;
+            var url = 'index.php';
+            if (id_clase) url += '?id_clase=' + encodeURIComponent(id_clase);
+            url += '#seccion-tareas';
+            window.location.href = url;
+        };
+    }
+    // Materiales
+    var selectMateriales = document.getElementById('select-material-clase');
+    if (selectMateriales) {
+        selectMateriales.onchange = function() {
+            var id_clase = this.value;
+            var url = 'index.php';
+            if (id_clase) url += '?id_clase=' + encodeURIComponent(id_clase);
+            url += '#seccion-materiales';
+            window.location.href = url;
+        };
+    }
+    // Avisos
+    var selectAvisos = document.getElementById('select-aviso-clase');
+    if (selectAvisos) {
+        selectAvisos.onchange = function() {
+            var id_clase = this.value;
+            var url = 'index.php';
+            if (id_clase) url += '?id_clase=' + encodeURIComponent(id_clase);
+            url += '#seccion-avisos';
+            window.location.href = url;
+        };
+    }
+});
