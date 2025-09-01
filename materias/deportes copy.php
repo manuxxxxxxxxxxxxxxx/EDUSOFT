@@ -205,6 +205,7 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
         <button data-i18n="alumnos" id="alumnos-btn"><i class="fas fa-users"></i> <span data-i18n="alumnos_texto">Alumnos</span></button>
         <button data-i18n="avisos" id="avisos-btn"><i class="fas fa-bell"></i> <span data-i18n="avisos_texto">Avisos</span></button>
         <button data-i18n="comentarios" id="comentarios-btn"><i class="fas fa-comments"></i>Comentarios</button>
+        <button data-i18n="ia" id="ia-btn"><i class="fas fa-robot"></i>IA</button>
     </nav>
 </div>
 
@@ -502,6 +503,17 @@ if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase
                 }
                 ?>
             </ul>
+        </section>
+
+         <section id="ia" class="seccion" style="display: none;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 24px;">
+                <h2 style="font-size:2em;color:#4285f4;"><i class="fas fa-robot"></i> Chatea con Atenea</h2>
+                <p style="font-size:1.15em;color:#234567;margin-bottom:12px;">¿Tienes dudas o quieres explorar algo con inteligencia artificial? Usa nuestro chat educativo.</p>
+                <a href="../atenea/atenea.php" class="boton-estilo" style="text-decoration:none;">
+                    <i class="fas fa-comments"></i>
+                    Ir al chat con Atenea
+                </a>
+            </div>
         </section>
     </main>
 </div>

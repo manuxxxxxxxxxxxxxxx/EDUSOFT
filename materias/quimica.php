@@ -253,6 +253,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
         document.getElementById("material-btn").onclick = function() { showSection("material"); };
         document.getElementById("alumnos-btn").onclick = function() { showSection("alumnos"); };
         document.getElementById("avisos-btn").onclick = function() { showSection("avisos"); };
+        document.getElementById("ia-btn").onclick = function() { showSection("ia"); };
+
         document.querySelectorAll(".tablon-card[data-section]").forEach(function(el) {
             el.onclick = function() {
                 showSection(el.getAttribute("data-section"));
@@ -275,6 +277,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
             <button id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
             <button id="avisos-btn"><i class="fas fa-bell"></i>Avisos</button>
             <button data-i18n="comentarios" id="comentarios-btn"><i class="fas fa-comments"></i>Comentarios</button>
+            <button data-i18n="ia" id="ia-btn"><i class="fas fa-robot"></i>IA</button>
         </nav>
     </div>
     <div class="main-content">
@@ -623,6 +626,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                     <li>No hay alumnos inscritos en esta clase.</li>
                 <?php endif; ?>
             </ul>
+        </section>
+
+
+
+         <section id="ia" class="seccion" style="display: none;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 24px;">
+                <h2 style="font-size:2em;color:#4285f4;"><i class="fas fa-robot"></i> Chatea con Atenea</h2>
+                <p style="font-size:1.15em;color:#234567;margin-bottom:12px;">¿Tienes dudas o quieres explorar algo con inteligencia artificial? Usa nuestro chat educativo.</p>
+                <a href="../atenea/atenea.php" class="boton-estilo" style="text-decoration:none;">
+                    <i class="fas fa-comments"></i>
+                    Ir al chat con Atenea
+                </a>
+            </div>
         </section>
         </main>
     </div>
