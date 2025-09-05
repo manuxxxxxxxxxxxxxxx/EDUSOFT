@@ -210,6 +210,12 @@ if (isset($_GET['bienvenido'])) {
             <span data-i18n="contactoN">Contacto</span>
           </a>
         </li>
+        <li class="sidebar-item">
+            <a href="http://127.0.0.1:5000/" class="sidebar-link" title="Atenea">
+                <i class="fas fa-robot"></i>
+                <span data-i18n="AteneaV">Atenea</span>
+            </a>
+        </li>
       </ul>
       
       <div class="sidebar-footer">
@@ -229,6 +235,7 @@ if (isset($_GET['bienvenido'])) {
             <span data-i18n="bienvenido">Bienvenido</span>
             <span><?= isset($_SESSION['nombre']) ? htmlspecialchars($_SESSION['nombre']) :'estudiante'; ?></span>
             <img src="<?= $imagenAlumno ?>" alt="Foto perfil" class="user-img" style="width:65px; height:65px; border-radius:50%; object-fit:cover; margin-left:10px; box-shadow:0 1px 6px rgba(0,0,0,0.10); border:2px solid #e8eaf6;">
+
         </div>
       </header>
 
@@ -258,10 +265,10 @@ if (isset($_GET['bienvenido'])) {
     </div>
     <!-- Card: Avisos -->
     <div class="qa-card">
-      <i class="fa-solid fa-bell"></i>
-      <h4>Avisos</h4>
-      <p>Revisa las últimas novedades y mensajes de tus profesores.</p>
-      <a href="../avisos/avisos.php" class="qa-btn">Ir</a>
+      <i class="fas fa-robot"></i>
+      <h4>Atenea</h4>
+      <p>Revisa tu nuevo ayudante para realizar tus investigaciones de manera más sencilla.</p>
+      <a href="http://127.0.0.1:5000/" class="qa-btn">Ir</a>
     </div>
   </div>
   <div class="motivational-phrase">
@@ -337,8 +344,14 @@ if (isset($_GET['bienvenido'])) {
           $materia_slug = $slug_archivo[$materia] ?? $materia;
         ?>
           <div class="card bg-green">
-            <div class="card-image-container">
-              <img src="<?= $img ?>" class="card-img" alt="<?= htmlspecialchars($clases['materia']) ?>">
+            <div class="card-image-container" >
+              <?php if ($materia === 'filosofía' || $materia === 'filosofia'): ?>
+                <span style="color:#4285f4; font-size:0.95em; font-weight:600; text-align:center; display:block;">
+                  ¡Pide a tu profe que personaliza la clase a su estilo aquí!
+                </span>
+              <?php else: ?>
+                <img src="<?= $img ?>" class="card-img" alt="<?= htmlspecialchars($clases['materia']) ?>">
+              <?php endif; ?>
             </div>
             <div class="card-content">
               <h2><?= htmlspecialchars($clases['nombre_clase']) ?></h2>
@@ -348,7 +361,7 @@ if (isset($_GET['bienvenido'])) {
               <?php
                 $materia_slug = $slug_archivo[strtolower($clases['materia'])] ?? strtolower($clases['materia']);
               ?>
-                <a href="../materias/<?php echo $materia_slug; ?>.php?id_clase=<?php echo $clases['id_clase']; ?>" class="btn">Más información</a>
+                <a href="../materias/materia_generica.php?id_clase=<?= $clases['id_clase']; ?>" class="btn">Más información</a>
 
                 <form method="POST" action="salir_clase.php" style="display:inline;">
                   <input type="hidden" name="id_clase" value="<?php echo $clases['id_clase']; ?>">

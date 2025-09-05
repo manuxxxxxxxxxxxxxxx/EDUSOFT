@@ -1,0 +1,50 @@
+<!--
+**************************************************************
+Proyecto : Atenea (Versión mínima)
+Archivo  : chat.html
+Secuencia: 03
+Descripción:
+    Página principal de interacción con Atenea.
+    - Muestra los mensajes con <pre> para preservar esquemas
+    - Botón "Limpiar chat" borra historial en memoria (ruta /clear)
+    - Formulario de entrada de mensajes
+**************************************************************
+-->
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="chat-container">
+    <!-- Área de conversación -->
+    <div id="messages">
+        {% if messages %}
+        {% for role, text in messages %}
+        <div class="message {{ role }}">
+            <strong>{{ role|capitalize }}:</strong>
+            {% if role == 'atenea' %}
+            <pre>{{ text }}</pre>
+            {% else %}
+            {{ text }}
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="system-msg">
+            Hola, soy Atenea, tu guía para investigaciones.
+            Escríbeme un tema y te daré un formato sugerido.
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Botón para limpiar la caja de respuestas -->
+    <form action="{{ url_for('clear_messages') }}" method="post" class="clear-form">
+        <button type="submit" class="clear-btn">🗑 Limpiar chat</button>
+    </form>
+
+    <!-- Formulario de entrada -->
+    <form action="{{ url_for('chat_page') }}" method="post" class="chat-form">
+        <input type="text" name="user_input" placeholder="Escribe tu mensaje aquí..." required autocomplete="off">
+        <button type="submit">Enviar</button>
+    </form>
+</div>
+{% endblock %}

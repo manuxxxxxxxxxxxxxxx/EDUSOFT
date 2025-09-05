@@ -1,0 +1,63 @@
+<!--
+**************************************************************
+Proyecto : Atenea (Versión mínima)
+Archivo  : base.html
+Secuencia: 02
+Descripción:
+    Plantilla base de la aplicación web.
+    - Define la estructura HTML5 principal
+    - Carga CSS y permite herencia de contenido
+    - Incluye header y footer consistentes
+**************************************************************
+-->
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atenea - Guía de Investigación</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Fuente moderna -->
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <table border="1" style="width: 100%;">
+            <tr>
+                <td style="width: 30%;">
+                    <!-- AGREGAR BOTON DE RETORNO --> 
+                        <button onclick="history.back()" style="width: 100px; height: 40px;">Regresar</button>
+                </td>
+
+                <td style="width: 40%;">
+                    <h2>Atenea - Guía Académica</h2>
+                </td>
+
+                <td style="width: 30%; text-align: center;">
+                    <img src="../img/EDUSOFT.png" alt="EDUSOFT Logo" class="brand-logo">
+                </td>
+            </tr>
+        </table>
+		
+        
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Contenido específico de cada página -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>Proyecto Atenea - Desarrollado con Flask & Gemini</p>
+    </footer>
+
+    <!-- Script común si se necesita -->
+    {% block scripts %}
+    {% endblock %}
+</body>
+
+</html>

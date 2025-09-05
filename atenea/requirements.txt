@@ -1,0 +1,12 @@
+# **************************************************************
+# Proyecto : Atenea (Versión mínima)
+# Archivo  : requirements.txt
+# Secuencia: 05
+# Descripción:
+#   Lista de dependencias necesarias para ejecutar Atenea.
+#   Permite instalar todas las librerías con un solo comando:
+#       pip install -r requirements.txt
+# **************************************************************
+
+flask
+google-generativeai

@@ -1,0 +1,13 @@
+pip install flask
+pip install google-generativeai
+
+ateneacdb@gmail
+Tamarindo
+
+pip install -r requirements.txt
+
+API Gemini
+AIzaSyBdOunBZQGGxwTsgaOAjZ73RpZbTo_JZKk
+
+Ejecutar script
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process

@@ -66,10 +66,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" name="nombre_clase" required data-i18n="crear_clase_input_nombre">
 
                 <div class="form-row">
+                    <!--
                     <label for="materia" data-i18n="crear_clase_label_materia">
                         <i class="fa-solid fa-book-open"></i> <span data-i18n="crear_clase_materia">Materia:</span>
                     </label>
+                    -->
                     <div class="select-wrapper">
+                        
+                        <label for="materia">Materia:</label>
+                        <input type="text" name="materia" id="materia" required placeholder="Ejemplo: Robótica, Educación Cívica, etc.">
+                        <!--
                         <select name="materia" id="materia" required data-i18n="crear_clase_select_materia">
                             <option value="" data-i18n="crear_clase_option_default">-- Selecciona una materia --</option>
                             <option value="matematica" data-i18n="crear_clase_option_matematica">Matemática</option>
@@ -83,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <option value="quimica" data-i18n="crear_clase_option_debate">Química</option>
 
                         </select>
+                        -->
                         <span class="select-icon"><i class="fa-solid fa-book-open"></i></span>
                     </div>
                 </div>
