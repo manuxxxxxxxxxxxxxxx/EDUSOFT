@@ -344,13 +344,13 @@ if (isset($_GET['bienvenido'])) {
           $materia_slug = $slug_archivo[$materia] ?? $materia;
         ?>
           <div class="card bg-green">
-            <div class="card-image-container" >
-              <?php if ($materia === 'filosofía' || $materia === 'filosofia'): ?>
+            <div class="card-image-container" style="display: flex; align-items: center; justify-content: center;">
+              <?php if (empty($clases['imagen_materia'])): ?>
                 <span style="color:#4285f4; font-size:0.95em; font-weight:600; text-align:center; display:block;">
-                  ¡Pide a tu profe que personaliza la clase a su estilo aquí!
+                  ¡Pide a tu profe que personalice la clase a su estilo aquí!
                 </span>
               <?php else: ?>
-                <img src="<?= $img ?>" class="card-img" alt="<?= htmlspecialchars($clases['materia']) ?>">
+                <img src="<?= htmlspecialchars($clases['imagen_materia']) ?>" class="card-img" alt="<?= htmlspecialchars($clases['materia']) ?>">
               <?php endif; ?>
             </div>
             <div class="card-content">
