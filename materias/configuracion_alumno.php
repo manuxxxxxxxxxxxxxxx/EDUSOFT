@@ -98,10 +98,8 @@ $stmt->close();
     <!-- Header OUTSIDE of grid -->
     <header class="profile-header">
         <div class="header-container">
-            <a href="<?= htmlspecialchars(isset($_SESSION['origen_materia']) ? $_SESSION['origen_materia'] : 'matematica.php') ?>?id_clase=<?= $id_clase ?>" class="back-button" title="Volver">
-                <i class="fas fa-arrow-left"></i>
-                <span>Volver</span>
-            </a>
+            <button onclick="history.back()">Volver</button>
+            
             <div class="header-title">
                 <h1><i class="fas fa-user-cog"></i> Configurar Perfil</h1>
                 <p>Personaliza tu imagen de perfil</p>

@@ -631,7 +631,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
             <div style="display: flex; flex-direction: column; align-items: center; gap: 24px;">
                 <h2 style="font-size:2em;color:#4285f4;"><i class="fas fa-robot"></i> Chatea con Atenea</h2>
                 <p style="font-size:1.15em;color:#234567;margin-bottom:12px;">¿Tienes dudas o quieres explorar algo con inteligencia artificial? Usa nuestro chat educativo.</p>
-                <a href="../atenea/atenea.php" class="boton-estilo" style="text-decoration:none;">
+                <a href="http://127.0.0.1:5000/" class="boton-estilo" style="text-decoration:none;">
                     <i class="fas fa-comments"></i>
                     Ir al chat con Atenea
                 </a>

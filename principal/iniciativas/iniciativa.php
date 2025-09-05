@@ -30,6 +30,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                            <a href="http://127.0.0.1:5000/" class="nav-link">
+                                <i class="fas fa-robot"></i>
+                                <span data-i18n="AteneaV">Atenea</span>
+                            </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="" class="nav-link active">
                             <i class="fas fa-lightbulb"></i>
                             <span>Iniciativas</span>

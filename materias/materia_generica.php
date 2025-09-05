@@ -219,7 +219,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
         $stmt_add->bind_param("iis", $id_clase, $id_estudiante, $comentario);
         $stmt_add->execute();
         $stmt_add->close();
-        header("Location: biologia.php?id_clase=$id_clase#comentarios");
+        header("Location: " . basename($_SERVER['PHP_SELF']) . "?id_clase=$id_clase#comentarios");
         exit;
     }
 }
@@ -229,18 +229,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSoft - Biología</title>
+    <title>EduSoft </title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../materias/css/styleBiologia.css">
+    <link rel="stylesheet" href="../materias/css/styleGenerica.css">">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    
+
     <script>
+    // Cambia de sección y navbar activo
     function showSection(id) {
         document.querySelectorAll("main > section").forEach(function(section) {
             section.style.display = "none";
         });
         var el = document.getElementById(id);
         if (el) el.style.display = "block";
+
         document.querySelectorAll(".sidebar nav button").forEach(function(btn) {
             btn.classList.remove("active");
         });
@@ -253,13 +255,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
         document.getElementById("material-btn").onclick = function() { showSection("material"); };
         document.getElementById("alumnos-btn").onclick = function() { showSection("alumnos"); };
         document.getElementById("avisos-btn").onclick = function() { showSection("avisos"); };
-         document.getElementById("ia-btn").onclick = function() { showSection("ia"); };
+        document.getElementById("ia-btn").onclick = function() { showSection("ia"); };
 
+        // Tablón: click en cada card para ir a su sección y cambiar navbar
         document.querySelectorAll(".tablon-card[data-section]").forEach(function(el) {
             el.onclick = function() {
                 showSection(el.getAttribute("data-section"));
             };
         });
+
+        // Inicial: mostrar tablon
         showSection("tablon");
     });
     </script>
@@ -267,27 +272,47 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
 <body>
     <div class="sidebar">
         <div class="sidebar-logo">
-            <i class="fas fa-dna"></i>
+            <i class="fas fa-square-root-alt"></i>
             <span>EduSoft</span>
         </div>
         <nav>
             <button data-i18n="tablon" id="tablon-btn" class="active"><i class="fas fa-th-large"></i>Tablón</button>
-            <button data-i18n="tareas" id="tareas-btn"><i class="fas fa-tasks"></i>Tareas</button>
-            <button data-i18n="material" id="material-btn"><i class="fas fa-folder-open"></i>Material</button> 
-            <button data-i18n="alumnos" id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
+            <button data-i18n="tareas"    id="tareas-btn"><i class="fas fa-tasks"></i>Tareas</button>
+            <button data-i18n="material"  id="material-btn"><i class="fas fa-folder-open"></i>Material</button> 
+            <button  data-i18n="alumnos"  id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
             <button data-i18n="avisos" id="avisos-btn"><i class="fas fa-bell"></i>Avisos</button>
             <button data-i18n="comentarios" id="comentarios-btn"><i class="fas fa-comments"></i>Comentarios</button>
             <button data-i18n="ia" id="ia-btn"><i class="fas fa-robot"></i>IA</button>
         </nav>
     </div>
     <div class="main-content">
+        <?php
+
+        if (!isset($_GET['id_clase'])) {
+            die("⚠️ Clase no especificada.");
+        }
+        $id_clase = intval($_GET['id_clase']);
+
+        $stmt = $conn->prepare("SELECT c.*, p.nombre AS profesor FROM clases c JOIN profesores p ON c.profesor_id = p.id WHERE c.id = ?");
+        $stmt->bind_param("i", $id_clase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows === 0) {
+            die("Clase no encontrada.");
+        }
+        $clase = $result->fetch_assoc();
+        ?>
         <header>
             <a href="../cursos.php" class="logo modern-back">
                 <span class="back-btn"><i class="fas fa-arrow-left"></i></span>
-                <span class="header-title" data-i18n="segundo">Segundo año B <span class="header-materia" data-i18n="biologiaM">Biología</span></span>
+                <span class="header-title">
+                    <?= htmlspecialchars($clase['nombre_clase']) ?>
+                    <span class="header-materia"><?= htmlspecialchars($clase['materia']) ?></span>
+                </span>
+                <!--<span class="header-title" data-i18n="segundo">Segundo año B <span class="header-materia" data-i18n="matematicaM">Matemática</span></span>-->
             </a>
             <div class="icons">
-               <span class="profile">
+                <span class="profile">
                 <a href="configuracion_alumno.php?id_clase=<?= $id_clase ?>&origen=<?= urlencode(basename($_SERVER['PHP_SELF'])) ?>" title="Ajustes">
                     <i class="fas fa-cog"></i>
                 </a>
@@ -305,10 +330,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
         </header>
         <main>
             <section id="tablon" class="seccion">
-                <div class="banner" id="banner6">
+                <div class="banner">
                     <canvas id="particles-bg"></canvas>
                     <div class="abstract-shape"></div>
-                    <h1 data-i18n="biologiaM">BIOLOGÍA</h1>
+                    <h1><?= strtoupper(htmlspecialchars($clase['materia'])) ?></h1>
                 </div>
                 <div class="content">
                     <div class="profesor">
@@ -382,7 +407,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                     </div>
                 </div>
             </section>
-        <section id="tareas" class="seccion" style="display: none;">
+<section id="tareas" class="seccion" style="display: none;">
                 <div class="section-card">
                     <h2 data-i18n="tareas">Tareas</h2>
                     <div class="tareas-container">
@@ -461,24 +486,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                     </div>
                 </div>
         </section>
-            <section id="avisos" class="seccion" style="display: none;">
-                <h2 data-i18n="avisos">Avisos</h2>
-                <ul class="lista-avisos">
-                    <?php
-                    if (!empty($avisos)) {
-                        foreach ($avisos as $aviso) {
-                            echo "<li>";
-                            echo "<span>" . htmlspecialchars($aviso['titulo']) . "</span>";
-                            echo "<p>" . htmlspecialchars($aviso['descripcion']) . "</p>";
-                            echo "<small>Fecha: " . htmlspecialchars($aviso['fecha_subida']) . "</small>";
-                            echo "</li>";
-                        }
-                    } else {
-                        echo "<li>No hay avisos registrados para esta clase.</li>";
-                    }
-                    ?>
-                </ul>
-</section>
 <section id="comentarios" class="seccion">
     <h2>Comentarios y dudas 
         <?php
@@ -537,46 +544,89 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
     </ul>
 </section>
             <section id="material" class="seccion" style="display: none;">
-                <div class="section-card">
-                    <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
-                    <?php
-                    if (!$id_clase) {
-                        echo "<p>⚠️ Clase no especificada.</p>";
-                    } else {
-                        if (count($materiales_clase) > 0) {
-                            echo '<div class="materiales-container">';
-                            foreach ($materiales_clase as $material) {
-                                $titulo = htmlspecialchars($material["titulo"]);
-                                $descripcion = htmlspecialchars($material["descripcion"]);
-                                $archivo = htmlspecialchars($material["archivo"]);
-                                $ruta = htmlspecialchars($material["ruta_archivo"]);
-                                $fecha = date("d/m/Y", strtotime($material["fecha_subida"]));
-                                $extension = pathinfo($archivo, PATHINFO_EXTENSION);
-                                switch (strtolower($extension)) {
-                                    case "pdf": $icono = "fa-file-pdf"; break;
-                                    case "doc": case "docx": $icono = "fa-file-word"; break;
-                                    case "ppt": case "pptx": $icono = "fa-file-powerpoint"; break;
-                                    case "xls": case "xlsx": $icono = "fa-file-excel"; break;
-                                    case "mp4": case "avi": case "mov": $icono = "fa-file-video"; break;
-                                    default: $icono = "fa-file"; break;
-                                }
-                                echo "<div class='material-item'>";
-                                echo "<i class='fas $icono'></i> <strong>$titulo</strong><br>";
-                                if ($descripcion) {
-                                    echo "<p>$descripcion</p>";
-                                }
-                                echo "<a href='$ruta' target='_blank'>📎 Descargar archivo: $archivo</a><br>";
-                                echo "<small>Subido el $fecha</small>";
-                                echo "</div>";
+                <h2><i class="fas fa-folder-open"></i> Material de la materia</h2>
+                <?php
+                if (!$id_clase) {
+                    echo "<p>⚠️ Clase no especificada.</p>";
+                } else {
+                    if (count($materiales_clase) > 0) {
+                        echo '<div class="materiales-container">';
+                        foreach ($materiales_clase as $material) {
+                            $titulo = htmlspecialchars($material["titulo"]);
+                            $descripcion = htmlspecialchars($material["descripcion"]);
+                            $archivo = htmlspecialchars($material["archivo"]);
+                            $ruta = htmlspecialchars($material["ruta_archivo"]);
+                            $fecha = date("d/m/Y", strtotime($material["fecha_subida"]));
+                            $extension = pathinfo($archivo, PATHINFO_EXTENSION);
+                            switch (strtolower($extension)) {
+                                case "pdf": $icono = "fa-file-pdf"; break;
+                                case "doc": case "docx": $icono = "fa-file-word"; break;
+                                case "ppt": case "pptx": $icono = "fa-file-powerpoint"; break;
+                                case "xls": case "xlsx": $icono = "fa-file-excel"; break;
+                                case "mp4": case "avi": case "mov": $icono = "fa-file-video"; break;
+                                default: $icono = "fa-file"; break;
                             }
-                            echo '</div>';
-                        } else {
-                            echo "<p>📭 No hay materiales disponibles para esta clase.</p>";
+                            echo "<div class='material-item'>";
+                            echo "<i class='fas $icono'></i> <strong>$titulo</strong><br>";
+                            if ($descripcion) {
+                                echo "<p>$descripcion</p>";
+                            }
+                            echo "<a href='$ruta' target='_blank'>📎 Descargar archivo: $archivo</a><br>";
+                            echo "<small>Subido el $fecha</small>";
+                            echo "</div>";
                         }
+                        echo '</div>';
+                    } else {
+                        echo "<p>📭 No hay materiales disponibles para esta clase.</p>";
+                    }
+                }
+                ?>
+            </section>
+            <section id="avisos" class="seccion" style="display: none;">
+                <h2 data-i18n="avisos">Avisos</h2>
+                <ul class="lista-avisos">
+                    <?php
+                    if (!empty($avisos)) {
+                        foreach ($avisos as $aviso) {
+                            echo "<li>";
+                            echo "<span>" . htmlspecialchars($aviso['titulo']) . "</span>";
+                            echo "<p>" . htmlspecialchars($aviso['descripcion']) . "</p>";
+                            echo "<small>Fecha: " . htmlspecialchars($aviso['fecha_subida']) . "</small>";
+                            echo "</li>";
+                        }
+                    } else {
+                        echo "<li>No hay avisos registrados para esta clase.</li>";
                     }
                     ?>
-                </div>
+                </ul>
             </section>
+
+
+ 
+             <section id="comentarios" class="seccion" style="display: none;">
+                <h2><i class="fas fa-comments"></i> Comentarios</h2>
+                <ul class="lista-comentarios">
+                    <li>
+                        <i class="fas fa-user"></i>
+                        <span>Juan Pérez</span>
+                        <p>¿El informe debe incluir imágenes?</p>
+                        <small>22/08/2025 - 14:10</small>
+                    </li>
+                    <li>
+                        <i class="fas fa-user"></i>
+                        <span>María Gómez</span>
+                        <p>¡Muy útil el material, gracias profe!</p>
+                        <small>22/08/2025 - 19:45</small>
+                    </li>
+                    <li>
+                        <i class="fas fa-user"></i>
+                        <span>Cristofer Alfaro</span>
+                        <p>¡Recuerden que el informe debe entregarse en PDF!</p>
+                        <small>23/08/2025 - 09:02</small>
+                    </li>
+                </ul>
+            </section>
+
 
             <section id="alumnos" class="seccion" style="display: none;">
             <h2 data-i18n="lista">Lista de Alumnos</h2>
@@ -597,7 +647,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
         </section>
 
 
-            <section id="ia" class="seccion" style="display: none;">
+         <section id="ia" class="seccion" style="display: none;">
             <div style="display: flex; flex-direction: column; align-items: center; gap: 24px;">
                 <h2 style="font-size:2em;color:#4285f4;"><i class="fas fa-robot"></i> Chatea con Atenea</h2>
                 <p style="font-size:1.15em;color:#234567;margin-bottom:12px;">¿Tienes dudas o quieres explorar algo con inteligencia artificial? Usa nuestro chat educativo.</p>
@@ -610,6 +660,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
 
         </main>
     </div>
-    <script src="../materias/js/scriptBiologia.js"></script>
+    <script src="../materias/js/scriptMatematica.js"></script>
 </body>
 </html>

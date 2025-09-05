@@ -1,0 +1,167 @@
+/*
+**************************************************************
+Proyecto : Atenea (Versión mínima)
+Archivo  : style.css
+Secuencia: 04
+Descripción:
+    Estilos modernos para el chat de Atenea.
+    - Burbuja de chat diferenciando usuario y Atenea
+    - Fondo agradable y tipografía legible
+    - Contenedor con scroll
+    - Botón y campo de texto estilizados
+**************************************************************
+*/
+
+/* Reset básico */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Cuerpo */
+body {
+    background: #7575af;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    background: #4a90e2;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Main */
+main {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* Contenedor del chat */
+.chat-container {
+    width: 100%;
+    max-width: 900px;
+    background: #ece7f3;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(46, 46, 46, 0.1);
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    height: 80vh;
+}
+
+/* Área de mensajes */
+#messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding-right: 5px;
+}
+
+/* Mensajes */
+.message {
+    margin: 8px 0;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 98%;
+    word-wrap: break-word;
+    line-height: 1.4;
+    font-size: 1rem;
+}
+
+/* Diferenciar usuario y Atenea */
+.message.user {
+    background: #e0f7fa;
+    align-self: flex-end;
+    color: #000000;
+}
+
+.message.atenea {
+    background: #c8c8dd;
+    align-self: flex-start;
+    color: #000000;
+}
+
+/* Mensaje de sistema */
+.system-msg {
+    text-align: center;
+    color: #000000;
+    font-style: italic;
+    margin: 10px 0;
+}
+
+/* Formulario */
+.chat-form {
+    display: flex;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.chat-form input[type="text"] {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.chat-form input[type="text"]:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+.chat-form button {
+    background: #4a90e2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    border-radius: 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.chat-form button:hover {
+    background: #357ab7;
+}
+
+/* Botón de limpiar chat */
+.clear-btn {
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 10px;
+}
+
+.clear-btn:hover {
+    background: #d32f2f;
+}
+
+/* Preformateado para los mensajes de Atenea */
+pre {
+    white-space: pre-wrap;
+    /* mantiene saltos de línea */
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+}
