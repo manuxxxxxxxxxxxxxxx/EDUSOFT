@@ -15,9 +15,9 @@ $id_clase = intval($_GET['id_clase']);
 
 // Obtener SIEMPRE el nombre del profesor y nombre de la clase
 $sql_prof = "SELECT c.nombre_clase, p.nombre AS nombre_profesor 
-            FROM clases c 
-            JOIN profesores p ON c.profesor_id = p.id 
-            WHERE c.id = ?";
+             FROM clases c 
+             JOIN profesores p ON c.profesor_id = p.id 
+             WHERE c.id = ?";
 $stmt_prof = $conn->prepare($sql_prof);
 $stmt_prof->bind_param("i", $id_clase);
 $stmt_prof->execute();
@@ -219,7 +219,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
         $stmt_add->bind_param("iis", $id_clase, $id_estudiante, $comentario);
         $stmt_add->execute();
         $stmt_add->close();
-        header("Location: debate.php?id_clase=$id_clase#comentarios");
+        header("Location: deportes.php?id_clase=$id_clase#comentarios");
         exit;
     }
 }
@@ -229,9 +229,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSoft - Debate</title>
+    <title>EduSoft - Deportes</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../materias/css/styleQuimica.css">
+    <link rel="stylesheet" href="../materias/css/styleDeportes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <script>
@@ -250,6 +250,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
     document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("tablon-btn").onclick = function() { showSection("tablon"); };
         document.getElementById("tareas-btn").onclick = function() { showSection("tareas"); };
+        document.getElementById("material-btn").onclick = function() { showSection("material"); };
         document.getElementById("alumnos-btn").onclick = function() { showSection("alumnos"); };
         document.getElementById("avisos-btn").onclick = function() { showSection("avisos"); };
         document.querySelectorAll(".tablon-card[data-section]").forEach(function(el) {
@@ -264,22 +265,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
 <body>
     <div class="sidebar">
         <div class="sidebar-logo">
-            <i class="fas fa-comments"></i>
-            <span>EduSoft</span>
+            <i class="fas fa-running" style="color: #66bb6a;"></i> <span>EduSoft</span>
         </div>
         <nav>
             <button id="tablon-btn" class="active"><i class="fas fa-th-large"></i>Tablón</button>
             <button id="tareas-btn"><i class="fas fa-tasks"></i>Tareas</button>
+            <button id="material-btn"><i class="fas fa-folder-open"></i>Material</button>
             <button id="alumnos-btn"><i class="fas fa-users"></i>Alumnos</button>
             <button id="avisos-btn"><i class="fas fa-bell"></i>Avisos</button>
-            <button id="material-btn"><i class="fas fa-folder-open"></i>Material</button>
         </nav>
     </div>
     <div class="main-content">
         <header>
             <a href="../cursos.php" class="logo modern-back">
                 <span class="back-btn"><i class="fas fa-arrow-left"></i></span>
-                 <span class="header-title">Club de Debate <span class="header-materia">Debate</span></span>
+                <span class="header-title" data-i18n="segundo">Segundo año B <span class="header-materia">Deportes</span></span>
             </a>
             <div class="icons">
                <span class="profile">
@@ -300,9 +300,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
         </header>
         <main>
             <section id="tablon" class="seccion">
-                <div class="banner banner-debate" id="bannerDebate">
-                    <h1>DEBATE</h1>
+                <div class="banner banner-deportes" id="banner-deportes">
+                    <canvas id="particles-bg"></canvas>
                     <div class="abstract-shape"></div>
+                    <h1>DEPORTES</h1>
                 </div>
                 <div class="content">
                     <div class="profesor">
@@ -373,7 +374,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                     </div>
                 </div>
             </section>
-<section id="tareas" class="seccion" style="display: none;">
+        <section id="tareas" class="seccion" style="display: none;">
                 <div class="section-card">
                     <h2 data-i18n="tareas">Tareas</h2>
                     <div class="tareas-container">
@@ -384,61 +385,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                                     <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
                                     <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
                                     <small>
-                                    Fecha límite: <?php echo htmlspecialchars($tarea['fecha_limite'] ?? ''); ?> | 
-                                    Puntos: <?php echo $tarea['puntos']; ?>
+                                        Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | 
+                                        Puntos: <?php echo $tarea['puntos']; ?>
                                     </small>
                                     <?php if (!empty($tarea['archivo_adjunto'])): ?>
                                         <br><a href="<?php echo htmlspecialchars($tarea['archivo_adjunto']); ?>" target="_blank">📎 Ver archivo adjunto del profesor</a>
                                     <?php endif; ?>
-                                    <!-- Mostrar la rúbrica de la tarea en la sección de tareas -->
-                                    <?php
-                                    $sql_rubrica = "SELECT * FROM rubricas WHERE id_tarea = ?";
-                                    $stmt_rubrica = $conn->prepare($sql_rubrica);
-                                    $stmt_rubrica->bind_param("i", $tarea['id']);
-                                    $stmt_rubrica->execute();
-                                    $res_rubrica = $stmt_rubrica->get_result();
-                                    $rubrica = $res_rubrica->fetch_assoc();
-                                    $stmt_rubrica->close();
-                                    ?>
-                                    <?php if ($rubrica): ?>
-                                    <div class="rubrica-tarea">
-                                        <details class="rubrica-details">
-                                            <summary style="font-weight:bold;cursor:pointer;">
-                                                <i class="fas fa-clipboard-list"></i>
-                                                Rúbrica de evaluación: <?= htmlspecialchars($rubrica['titulo']) ?>
-                                                <span style="font-size:0.9em;color:#888;margin-left:8px;">(ver criterios)</span>
-                                            </summary>
-                                            <div style="margin-top:10px;">
-                                                <?php if (!empty($rubrica['descripcion'])): ?>
-                                                    <div style="margin-bottom:8px;color:#555;"><?= htmlspecialchars($rubrica['descripcion']) ?></div>
-                                                <?php endif; ?>
-                                                <?php
-                                                    $criterios = json_decode($rubrica['criterios_json'], true);
-                                                    if (is_array($criterios) && count($criterios) > 0):
-                                                ?>
-                                                    <table style="width:98%;border-collapse:collapse;margin-bottom:8px;">
-                                                        <thead>
-                                                            <tr style="background:#f3f7ff;">
-                                                                <th style="padding:6px 10px;text-align:left;border:1px solid #dbeafe;">Criterio</th>
-                                                                <th style="padding:6px 10px;text-align:left;border:1px solid #dbeafe;">Porcentaje</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <?php foreach ($criterios as $cr): ?>
-                                                            <tr>
-                                                                <td style="padding:6px 10px;border:1px solid #e3eafc;"><?= htmlspecialchars($cr['nombre']) ?></td>
-                                                                <td style="padding:6px 10px;border:1px solid #e3eafc;"><?= $cr['porcentaje'] ?>%</td>
-                                                            </tr>
-                                                        <?php endforeach; ?>
-                                                        </tbody>
-                                                    </table>
-                                                <?php else: ?>
-                                                    <div>No hay criterios definidos.</div>
-                                                <?php endif; ?>
-                                            </div>
-                                        </details>
-                                    </div>
-                                <?php endif; ?>
                                     <?php if (isset($_SESSION['id_estudiante'])): ?>
                                         <div class="entrega-alumno">
                                             <?php
@@ -480,7 +432,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                                             <?php endif; ?>
                                             <form class="formSubirTarea" action="subir_tarea_ajax.php" method="POST" enctype="multipart/form-data">
                                                 <input type="hidden" name="id_tarea_profesor" value="<?php echo $tarea['id']; ?>">
-                                                <input type="hidden" name="materia" value="matematica">
+                                                <input type="hidden" name="materia" value="lenguaje">
                                                 <input type="hidden" name="id_clase" value="<?php echo $id_clase; ?>">
                                                 <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>">
                                                 <?php if ($entrega): ?>
@@ -501,7 +453,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                     </div>
                 </div>
         </section>
-    <section id="comentarios" class="seccion">
+            <section id="comentarios" class="seccion">
     <h2>Comentarios y dudas 
         <?php
         $pendientes = 0;
