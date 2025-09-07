@@ -81,7 +81,7 @@
 
       <!-- Tarjetas de usuario con diseño de 3 columnas -->
       <div class="user-selection-area">
-        <div class="selection-grid-two">
+        <div class="selection-grid-three">
           <!-- Tarjeta de Profesor -->
           <div class="user-card professor-card" data-user="professor">
             <div class="card-header">
@@ -221,10 +221,67 @@
               <div class="btn-ripple"></div>
             </button>
           </div>
+                   <div class="user-card notas-card" data-user="notas">
+      <div class="card-header">
+        <div class="card-number">03</div>
+        <div class="card-category" data-i18n="notas">Notas</div>
+      </div>
+      <div class="card-illustration">
+        <svg class="custom-svg notas-svg" viewBox="0 0 200 200">
+          <!-- Hoja de notas -->
+          <rect x="50" y="40" width="100" height="120" rx="8" fill="#f5f5f5" stroke="#b3b3b3" stroke-width="2"/>
+          <line x1="60" y1="60" x2="140" y2="60" stroke="#9fc7e8" stroke-width="2"/>
+          <line x1="60" y1="80" x2="140" y2="80" stroke="#9fc7e8" stroke-width="2"/>
+          <line x1="60" y1="100" x2="140" y2="100" stroke="#ffc107" stroke-width="2"/>
+          <line x1="60" y1="120" x2="140" y2="120" stroke="#9fc7e8" stroke-width="2"/>
+          <rect x="120" y="110" width="18" height="10" rx="2" fill="#7c3aed"/>
+          <text x="129" y="118" fill="#fff" font-size="8" font-weight="bold" text-anchor="middle">10</text>
+          <!-- Clip superior -->
+          <rect x="90" y="32" width="20" height="14" rx="4" fill="#8b5cf6"/>
+          <!-- Estrella decorativa -->
+          <polygon points="175,60 180,68 188,69 182,75 184,83 175,79 166,83 168,75 162,69 170,68" fill="rgba(124,58,237,0.17)"/>
+        </svg>
+      </div>
+      <div class="card-content">
+        <h3 data-i18n="iniciarnotas">Sistema de notas</h3>
+        <p data-i18n="p_notas">Accede al sistema de notas para consultar y registrar calificaciones de manera sencilla y segura.</p>
+        <div class="features-grid">
+          <div class="feature-item">
+            <i class="fas fa-file-alt"></i>
+            <span data-i18n="calificaciones">Ver Calificaciones</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-pen"></i>
+            <span data-i18n="registro">Registrar Notas</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-shield-alt"></i>
+            <span data-i18n="seguridad">Seguridad</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-history"></i>
+            <span data-i18n="historial">Historial</span>
+          </div>
+        </div>
+      </div>
+      <button class="access-btn notas-btn" onclick="window.location.href='../Registros/loginNotas.php'">
+        <span class="btn-text" data-i18n="acceder_notas">Acceder al Sistema de Notas</span>
+        <div class="btn-icon">
+          <i class="fas fa-arrow-right"></i>
+        </div>
+        <div class="btn-ripple"></div>
+      </button>
+    </div>
+  </div>
+</div>
 
 
         </div>
+
       </div>
+
+     
+
 
       <!-- Sección de información adicional con diseño innovador -->
       <div class="additional-section">
