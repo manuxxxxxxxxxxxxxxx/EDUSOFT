@@ -375,7 +375,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                 </div>
             </div>
         </section>
-    <section id="tareas" class="seccion" style="display: none;">
+<section id="tareas" class="seccion" style="display: none;">
                 <div class="section-card">
                     <h2 data-i18n="tareas">Tareas</h2>
                     <div class="tareas-container">
@@ -386,12 +386,61 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                                     <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
                                     <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
                                     <small>
-                                        Fecha límite: <?php echo htmlspecialchars($tarea['fecha_entrega']); ?> | 
-                                        Puntos: <?php echo $tarea['puntos']; ?>
+                                    Fecha límite: <?php echo htmlspecialchars($tarea['fecha_limite'] ?? ''); ?> | 
+                                    Puntos: <?php echo $tarea['puntos']; ?>
                                     </small>
                                     <?php if (!empty($tarea['archivo_adjunto'])): ?>
                                         <br><a href="<?php echo htmlspecialchars($tarea['archivo_adjunto']); ?>" target="_blank">📎 Ver archivo adjunto del profesor</a>
                                     <?php endif; ?>
+                                    <!-- Mostrar la rúbrica de la tarea en la sección de tareas -->
+                                    <?php
+                                    $sql_rubrica = "SELECT * FROM rubricas WHERE id_tarea = ?";
+                                    $stmt_rubrica = $conn->prepare($sql_rubrica);
+                                    $stmt_rubrica->bind_param("i", $tarea['id']);
+                                    $stmt_rubrica->execute();
+                                    $res_rubrica = $stmt_rubrica->get_result();
+                                    $rubrica = $res_rubrica->fetch_assoc();
+                                    $stmt_rubrica->close();
+                                    ?>
+                                    <?php if ($rubrica): ?>
+                                    <div class="rubrica-tarea">
+                                        <details class="rubrica-details">
+                                            <summary style="font-weight:bold;cursor:pointer;">
+                                                <i class="fas fa-clipboard-list"></i>
+                                                Rúbrica de evaluación: <?= htmlspecialchars($rubrica['titulo']) ?>
+                                                <span style="font-size:0.9em;color:#888;margin-left:8px;">(ver criterios)</span>
+                                            </summary>
+                                            <div style="margin-top:10px;">
+                                                <?php if (!empty($rubrica['descripcion'])): ?>
+                                                    <div style="margin-bottom:8px;color:#555;"><?= htmlspecialchars($rubrica['descripcion']) ?></div>
+                                                <?php endif; ?>
+                                                <?php
+                                                    $criterios = json_decode($rubrica['criterios_json'], true);
+                                                    if (is_array($criterios) && count($criterios) > 0):
+                                                ?>
+                                                    <table style="width:98%;border-collapse:collapse;margin-bottom:8px;">
+                                                        <thead>
+                                                            <tr style="background:#f3f7ff;">
+                                                                <th style="padding:6px 10px;text-align:left;border:1px solid #dbeafe;">Criterio</th>
+                                                                <th style="padding:6px 10px;text-align:left;border:1px solid #dbeafe;">Porcentaje</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <?php foreach ($criterios as $cr): ?>
+                                                            <tr>
+                                                                <td style="padding:6px 10px;border:1px solid #e3eafc;"><?= htmlspecialchars($cr['nombre']) ?></td>
+                                                                <td style="padding:6px 10px;border:1px solid #e3eafc;"><?= $cr['porcentaje'] ?>%</td>
+                                                            </tr>
+                                                        <?php endforeach; ?>
+                                                        </tbody>
+                                                    </table>
+                                                <?php else: ?>
+                                                    <div>No hay criterios definidos.</div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </details>
+                                    </div>
+                                <?php endif; ?>
                                     <?php if (isset($_SESSION['id_estudiante'])): ?>
                                         <div class="entrega-alumno">
                                             <?php
@@ -433,7 +482,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                                             <?php endif; ?>
                                             <form class="formSubirTarea" action="subir_tarea_ajax.php" method="POST" enctype="multipart/form-data">
                                                 <input type="hidden" name="id_tarea_profesor" value="<?php echo $tarea['id']; ?>">
-                                                <input type="hidden" name="materia" value="lenguaje">
+                                                <input type="hidden" name="materia" value="matematica">
                                                 <input type="hidden" name="id_clase" value="<?php echo $id_clase; ?>">
                                                 <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>">
                                                 <?php if ($entrega): ?>

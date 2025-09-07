@@ -185,37 +185,37 @@ $total_alumnos_unicos = count($alumno_ids);
 
     //NUEVO BOTON IMAGEN MODIFICAR PROFE
     document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.form-imagen-materia').forEach(function(form) {
-    form.addEventListener('submit', function(e) {
-      // Busca los inputs dentro del formulario actual
-      const archivo = form.querySelector('.imagen_materia').files[0];
-      const enlace = form.querySelector('.enlace_imagen').value.trim();
+      document.querySelectorAll('.form-imagen-materia').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+          // Busca los inputs dentro del formulario actual
+          const archivo = form.querySelector('.imagen_materia').files[0];
+          const enlace = form.querySelector('.enlace_imagen').value.trim();
 
-      if (!archivo && !enlace) {
-        alert('Debes subir una imagen o poner el enlace.');
-        e.preventDefault();
-        return false;
-      }
-
-      if (enlace) {
-        if (!/^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/i.test(enlace)) {
-          alert('El enlace debe ser una URL válida de imagen (jpg, png, webp, gif).');
-          e.preventDefault();
-          return false;
+          if (!archivo && !enlace) {
+            alert('Debes subir una imagen o poner el enlace.');
+            e.preventDefault();
+            return false;
         }
-      }
 
-      if (archivo) {
-        const permitidas = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-        if (!permitidas.includes(archivo.type)) {
-          alert('El archivo debe ser una imagen jpg, png, webp o gif.');
-          e.preventDefault();
-          return false;
+        if (enlace) {
+            if (!/^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/i.test(enlace)) {
+            alert('El enlace debe ser una URL válida de imagen (jpg, png, webp, gif).');
+            e.preventDefault();
+            return false;
+            }
         }
-      }
+
+        if (archivo) {
+            const permitidas = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+            if (!permitidas.includes(archivo.type)) {
+            alert('El archivo debe ser una imagen jpg, png, webp o gif.');
+            e.preventDefault();
+            return false;
+            }
+        }
+        });
     });
-  });
-});
+    });
     </script>
 </head>
 <body>
@@ -329,10 +329,10 @@ $total_alumnos_unicos = count($alumno_ids);
                         $notificaciones[] = '<i class="fas fa-envelope icon-blue"></i> <span style="margin-left:14px;">Nuevo comentario de <b>' . htmlspecialchars($row['nombre_alumno'] ?? 'Alumno') . '</b></span>: <span style="margin-left:14px;">"' . htmlspecialchars($row['comentario'] ?? '') . '"</span>';
                     }
                     // Última tarea registrada
-                    $sql = "SELECT t.titulo, t.fecha_entrega FROM tareas_profesor t ORDER BY t.fecha_entrega DESC LIMIT 1";
+                    $sql = "SELECT t.titulo, t.fecha_limite FROM tareas_profesor t ORDER BY t.fecha_limite DESC LIMIT 1";
                     $res = $conn->query($sql);
                     if ($row = $res->fetch_assoc()) {
-                        $notificaciones[] = '<i class="fas fa-check-circle icon-green"></i> <span style="margin-left:14px;">Última tarea registrada</span>: <span style="margin-left:14px;"><b>' . htmlspecialchars($row['titulo'] ?? '') . '</b></span> <span style="margin-left:14px;">(' . htmlspecialchars($row['fecha_entrega'] ?? '') . ')</span>';
+                        $notificaciones[] = '<i class="fas fa-check-circle icon-green"></i> <span style="margin-left:14px;">Última tarea registrada</span>: <span style="margin-left:14px;"><b>' . htmlspecialchars($row['titulo'] ?? '') . '</b></span> <span style="margin-left:14px;">(' . htmlspecialchars($row['fecha_limite'] ?? '') . ')</span>';
                     }
                     // Último aviso publicado
                     $sql = "SELECT titulo, fecha_subida FROM avisos ORDER BY fecha_subida DESC LIMIT 1";
@@ -467,37 +467,37 @@ $total_alumnos_unicos = count($alumno_ids);
 
             if ($id_clase) {
                 // Tareas de la clase seleccionada
-                $sqlTareas = "SELECT t.id, t.titulo, t.fecha_entrega, t.descripcion, c.materia 
+                $sqlTareas = "SELECT t.id, t.titulo, t.fecha_limite, t.descripcion, c.materia 
                             FROM tareas_profesor t
                             INNER JOIN clases c ON t.id_clase = c.id
                             WHERE t.id_clase = ?
-                            ORDER BY t.fecha_entrega DESC";
+                            ORDER BY t.fecha_limite DESC";
                 $stmtTareas = $conn->prepare($sqlTareas);
                 $stmtTareas->bind_param("i", $id_clase);
                 $stmtTareas->execute();
                 $resultadoTareas = $stmtTareas->get_result();
                 if ($resultadoTareas->num_rows > 0):
                     while ($tarea = $resultadoTareas->fetch_assoc()): ?>
-          <li>
-                   <b><?= htmlspecialchars($tarea['titulo']); ?></b> 
-                 – <?= ucfirst(htmlspecialchars($tarea['materia'])); ?> 
-                – Fecha entrega: <?= htmlspecialchars($tarea['fecha_entrega']); ?>
-                 <br><small><?= htmlspecialchars($tarea['descripcion']); ?></small>
-        <div class="tarea-botones">
-                  <form class="form-eliminar-tarea" action="../frontend_maestros/eliminar_tarea.php" method="POST" style="display:inline;">
-                   <input type="hidden" name="accion" value="eliminar_tarea">
-                  <input type="hidden" name="id_tarea" value="<?= $tarea['id']; ?>">
-                 <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase); ?>">
-                    <button type="button" class="btn-eliminar" onclick="abrirModalEliminarTarea('<?= $tarea['id'] ?>','<?= htmlspecialchars($tarea['titulo']) ?>')">Eliminar</button>
-             </form>
-        <form action="index.php" method="get" style="display:inline;">
-            <input type="hidden" name="ver_entregas" value="1">
-            <input type="hidden" name="id_tarea_profesor" value="<?= $tarea['id'] ?>">
-            <input type="hidden" name="id_clase" value="<?= $id_clase ?>">
-            <button type="submit" class="btn-ver-entregas">Tareas entregadas</button>
-        </form>
-         </div>
-           </li>
+        <li>
+            <b><?= htmlspecialchars($tarea['titulo'] ?? '') ?></b> 
+            – <?= ucfirst(htmlspecialchars($tarea['materia'] ?? '')) ?> 
+            – Fecha límite: <?= htmlspecialchars($tarea['fecha_limite'] ?? '') ?>
+            <br><small><?= htmlspecialchars($tarea['descripcion'] ?? '') ?></small>
+            <div class="tarea-botones">
+                <form class="form-eliminar-tarea" action="../frontend_maestros/eliminar_tarea.php" method="POST" style="display:inline;">
+                    <input type="hidden" name="accion" value="eliminar_tarea">
+                    <input type="hidden" name="id_tarea" value="<?= $tarea['id']; ?>">
+                    <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase ?? '') ?>">
+                    <button type="button" class="btn-eliminar" onclick="abrirModalEliminarTarea('<?= $tarea['id'] ?>','<?= htmlspecialchars($tarea['titulo'] ?? '') ?>')">Eliminar</button>
+                </form>
+                <form action="index.php" method="get" style="display:inline;">
+                    <input type="hidden" name="ver_entregas" value="1">
+                    <input type="hidden" name="id_tarea_profesor" value="<?= $tarea['id'] ?>">
+                    <input type="hidden" name="id_clase" value="<?= $id_clase ?>">
+                    <button type="submit" class="btn-ver-entregas">Tareas entregadas</button>
+                </form>
+            </div>
+        </li>
                     <?php endwhile;
                 else: ?>
                     <li>No hay tareas registradas para esta clase.</li>
@@ -505,11 +505,11 @@ $total_alumnos_unicos = count($alumno_ids);
                 $stmtTareas->close();
             } else {
                 // Mostrar tareas de todas las clases
-                $sqlTareas = "SELECT t.id, t.titulo, t.fecha_entrega, t.descripcion, c.materia, c.nombre_clase, t.id_clase
+                $sqlTareas = "SELECT t.id, t.titulo, t.fecha_limite, t.descripcion, c.materia, c.nombre_clase, t.id_clase
                             FROM tareas_profesor t
                             INNER JOIN clases c ON t.id_clase = c.id
                             WHERE c.profesor_id = ?
-                            ORDER BY c.nombre_clase, t.fecha_entrega DESC";
+                            ORDER BY c.nombre_clase, t.fecha_limite DESC";
                 $stmtTareas = $conn->prepare($sqlTareas);
                 $stmtTareas->bind_param("i", $profesor_id);
                 $stmtTareas->execute();
@@ -523,43 +523,43 @@ $total_alumnos_unicos = count($alumno_ids);
                 }
 
                 if (count($tareasPorClase) > 0) {
-             foreach ($tareasPorClase as $idClase => $datosClase) {
-                echo "<div class='tareas-clase-group'>";
-               echo "<div class='tareas-clase-group-title'>" . htmlspecialchars($datosClase['nombre_clase']) . " – " . htmlspecialchars($datosClase['materia']) . "</div>";
-                echo "<ul>";
-             foreach ($datosClase['tareas'] as $tarea) {
-                echo "<li>";
-                echo "<b>" . htmlspecialchars($tarea['titulo']) . "</b> – Fecha entrega: " . htmlspecialchars($tarea['fecha_entrega']);
-                echo "<br><small>" . htmlspecialchars($tarea['descripcion']) . "</small>";
-                echo "<div class='tarea-botones'>";
-       
-                 echo "<form class='form-eliminar-tarea' action='../frontend_maestros/eliminar_tarea.php' method='POST' style='display:inline;'>";
-                echo "<input type='hidden' name='accion' value='eliminar_tarea'>";
-                echo "<input type='hidden' name='id_tarea' value='" . $tarea['id'] . "'>";
-                echo "<input type='hidden' name='id_clase' value='" . htmlspecialchars($idClase) . "'>";
-                echo "<button type='button' class='btn-eliminar' onclick=\"abrirModalEliminarTarea('" . $tarea['id'] . "','" . htmlspecialchars($tarea['titulo']) . "')\">Eliminar</button>";
-                echo "</form>";
-        
-                echo "<form action='index.php' method='get' style='display:inline;'>";
-                echo "<input type='hidden' name='ver_entregas' value='1'>";
-                echo "<input type='hidden' name='id_tarea_profesor' value='" . $tarea['id'] . "'>";
-                echo "<input type='hidden' name='id_clase' value='" . $idClase . "'>";
-               echo "<button type='submit' class='btn-ver-entregas'>Tareas entregadas</button>";
-               echo "</form>";
-               echo "</div>"; // tarea-botones
-              echo "</li>";
-             }
-                echo "</ul>";
-                echo "</div>"; // tareas-clase-group
-            }
-                } else {
-                    echo "<li>No hay tareas registradas aún.</li>";
+                foreach ($tareasPorClase as $idClase => $datosClase) {
+                    echo "<div class='tareas-clase-group'>";
+                    echo "<div class='tareas-clase-group-title'>" . htmlspecialchars($datosClase['nombre_clase'] ?? '') . " – " . htmlspecialchars($datosClase['materia'] ?? '') . "</div>";
+                    echo "<ul>";
+                    foreach ($datosClase['tareas'] as $tarea) {
+                        echo "<li>";
+                        echo "<b>" . htmlspecialchars($tarea['titulo'] ?? '') . "</b> – Fecha límite: " . htmlspecialchars($tarea['fecha_limite'] ?? '');
+                        echo "<br><small>" . htmlspecialchars($tarea['descripcion'] ?? '') . "</small>";
+                        echo "<div class='tarea-botones'>";
+
+                        echo "<form class='form-eliminar-tarea' action='../frontend_maestros/eliminar_tarea.php' method='POST' style='display:inline;'>";
+                        echo "<input type='hidden' name='accion' value='eliminar_tarea'>";
+                        echo "<input type='hidden' name='id_tarea' value='" . $tarea['id'] . "'>";
+                        echo "<input type='hidden' name='id_clase' value='" . htmlspecialchars($idClase ?? '') . "'>";
+                        echo "<button type='button' class='btn-eliminar' onclick=\"abrirModalEliminarTarea('" . $tarea['id'] . "','" . htmlspecialchars($tarea['titulo'] ?? '') . "')\">Eliminar</button>";
+                        echo "</form>";
+
+                        echo "<form action='index.php' method='get' style='display:inline;'>";
+                        echo "<input type='hidden' name='ver_entregas' value='1'>";
+                        echo "<input type='hidden' name='id_tarea_profesor' value='" . $tarea['id'] . "'>";
+                        echo "<input type='hidden' name='id_clase' value='" . htmlspecialchars($idClase ?? '') . "'>";
+                        echo "<button type='submit' class='btn-ver-entregas'>Tareas entregadas</button>";
+                        echo "</form>";
+                        echo "</div>"; // tarea-botones
+                        echo "</li>";
+                    }
+                    echo "</ul>";
+                    echo "</div>"; // tareas-clase-group
                 }
-                $stmtTareas->close();
+            } else {
+                echo "<li>No hay tareas registradas aún.</li>";
+            }
+            $stmtTareas->close();
             }
             ?>
         </ul>
-        <!-- BLOQUE DE TAREAS ENTREGADAS Y ARCHIVOS DE ALUMNOS -->
+        <!-- BLOQUE MODIFICADO: SOLO LISTADO DE ENTREGAS CON BOTÓN "REVISAR" -->
         <?php
         if (isset($_GET['ver_entregas']) && isset($_GET['id_tarea_profesor'])): 
             $id_tarea_profesor = intval($_GET['id_tarea_profesor']);
@@ -572,59 +572,23 @@ $total_alumnos_unicos = count($alumno_ids);
             $stmt->execute();
             $res = $stmt->get_result();
             ?>
-           <div class="entregas-section">
+        <div class="entregas-section">
     <h3>Tareas entregadas por alumnos</h3>
     <?php
     if ($res->num_rows == 0) {
         echo "<p>No hay entregas aún.</p>";
     } else {
-        while ($entrega = $res->fetch_assoc()) {
-            ?>
-            <div class="entrega-card">
-                <div class="entrega-header">
-                    <b><?= htmlspecialchars($entrega['nombre']) ?></b>
-                    <span class="entrega-fecha">Fecha entrega: <?= htmlspecialchars($entrega['fecha_subida']) ?></span>
-                </div>
-                <?php
-                // Mostrar todos los archivos subidos por el alumno para esta entrega
-                $sqlArchivos = "SELECT nombre_archivo, ruta_archivo FROM tareas_archivos WHERE id_tarea = ?";
-                $stmtArchivos = $conn->prepare($sqlArchivos);
-                $stmtArchivos->bind_param("i", $entrega['id']);
-                $stmtArchivos->execute();
-                $resArchivos = $stmtArchivos->get_result();
-                if ($resArchivos->num_rows > 0) {
-                    echo "<ul class='entrega-archivos'>";
-                    while ($archivo = $resArchivos->fetch_assoc()) {
-                        echo '<li><a href="' . htmlspecialchars($archivo['ruta_archivo']) . '" target="_blank">Descargar: ' . htmlspecialchars($archivo['nombre_archivo']) . '</a></li>';
-                    }
-                    echo "</ul>";
-                } else {
-                    echo "<span class='entrega-sin-archivos'>No hay archivos subidos.</span>";
-                }
-                $stmtArchivos->close();
-                ?>
-                <form class="entrega-calificacion-form" method="POST" action="calificar_tarea.php">
-                    <input type="hidden" name="id_tarea" value="<?= $entrega['id'] ?>">
-                    <label>Calificación:</label>
-                    <select name="calificacion" required>
-                        <?php for($i=1;$i<=10;$i++): ?>
-                            <option value="<?= $i ?>"<?= ($entrega['calificacion']==$i)?" selected":"" ?>><?= $i ?></option>
-                        <?php endfor; ?>
-                    </select>
-                    <input type="text" name="retroalimentacion" class="retroalimentacion-input" placeholder="Retroalimentación" value="<?= htmlspecialchars($entrega['retroalimentacion'] ?? '') ?>">
-                    <button type="submit" class="entrega-btn-calificar">Guardar</button>
-                </form>
-                <?php if ($entrega['calificacion'] !== null): ?>
-                    <div class="entrega-calificacion-actual">
-                        <strong>Calificación actual:</strong> <?= $entrega['calificacion'] ?>
-                        <?php if ($entrega['retroalimentacion']): ?>
-                            <br><small><b>Retroalimentación:</b> <?= htmlspecialchars($entrega['retroalimentacion']) ?></small>
-                        <?php endif; ?>
-                    </div>
-                <?php endif; ?>
-            </div>
-            <?php
+        echo "<table class='tabla-entregas' style='width:100%;border-collapse:collapse;'>";
+        echo "<tr><th>Alumno</th><th>Fecha entrega</th><th>Calificación</th><th>Acciones</th></tr>";
+    while ($entrega = $res->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td><b>" . htmlspecialchars($entrega['nombre'] ?? '') . "</b></td>";
+            echo "<td>" . htmlspecialchars($entrega['fecha_subida'] ?? '') . "</td>";
+            echo "<td>" . htmlspecialchars($entrega['calificacion'] ?? '-') . "</td>"; // <-- aquí el cambio
+            echo "<td><a href='revision_entrega.php?id_entrega=" . $entrega['id'] . "&id_tarea_profesor=" . $id_tarea_profesor . "' class='btn-revisar-entrega'>Revisar</a></td>";
+            echo "</tr>";
         }
+                echo "</table>";
     }
     $stmt->close();
     ?>
@@ -642,7 +606,7 @@ $total_alumnos_unicos = count($alumno_ids);
         <form id="formEliminarTarea" method="POST" action="../frontend_maestros/eliminar_tarea.php">
             <input type="hidden" name="accion" value="eliminar_tarea">
             <input type="hidden" name="id_tarea" id="inputIdTareaEliminar">
-            <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase); ?>">
+            <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase ?? ''); ?>">
             <button type="submit" class="quick-action" style="background:#FF9800;color:#fff;">Sí, eliminar</button>
             <button type="button" class="quick-action" style="background:#eee;color:#333;" onclick="cerrarModalEliminarTarea()">Cancelar</button>
         </form>
@@ -780,7 +744,7 @@ document.getElementById('cerrarModalEliminarTarea').onclick = cerrarModalElimina
         <form id="formEliminarMaterial" method="POST" action="../frontend_maestros/eliminar_tarea.php">
             <input type="hidden" name="accion" value="eliminar_material">
             <input type="hidden" name="id_material" id="inputIdMaterialEliminar">
-            <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase); ?>">
+            <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase ?? ''); ?>">
             <button type="submit" class="quick-action" style="background:orange;color:#fff;">Sí, eliminar</button>
             <button type="button" class="quick-action" style="background:#eee;color:#333;" onclick="cerrarModalEliminarMaterial()">Cancelar</button>
         </form>
@@ -905,7 +869,7 @@ document.getElementById('cerrarModalEliminarMaterial').onclick = cerrarModalElim
         <form id="formEliminarAviso" method="POST" action="../frontend_maestros/eliminar_tarea.php">
             <input type="hidden" name="accion" value="eliminar_aviso">
             <input type="hidden" name="id_aviso" id="inputIdAvisoEliminar">
-            <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase); ?>">
+            <input type="hidden" name="id_clase" value="<?= htmlspecialchars($id_clase ?? ''); ?>">
             <button type="submit" class="quick-action" style="background:#ff8c1a;color:#fff;">Sí, eliminar</button>
             <button type="button" class="quick-action" style="background:#eee;color:#333;" onclick="cerrarModalEliminarAviso()">Cancelar</button>
         </form>

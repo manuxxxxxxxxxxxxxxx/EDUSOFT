@@ -8,7 +8,31 @@ $id_clase = $_POST['id_clase'];
 $materia = $_POST['materia'];
 $id_entrega = isset($_POST['id_entrega']) ? $_POST['id_entrega'] : null;
 
-// Si ya existe la entrega, usar ese ID. Si no, crear la entrega.
+// 1. Obtener la fecha de entrega de la tarea del profesor (solo un campo)
+$sql_fecha = "SELECT fecha_limite FROM tareas_profesor WHERE id = ?";
+$stmt_fecha = $conn->prepare($sql_fecha);
+$stmt_fecha->bind_param("i", $id_tarea_profesor);
+$stmt_fecha->execute();
+$stmt_fecha->bind_result($fecha_entrega);
+$stmt_fecha->fetch();
+$stmt_fecha->close();
+
+// Validar que la fecha existe y es válida
+if (!$fecha_entrega || $fecha_entrega == "0000-00-00 00:00:00") {
+    echo json_encode(['error' => 'La tarea no tiene una fecha de entrega válida. Contacte a su profesor.']);
+    exit;
+}
+
+// Comparar con la fecha actual
+$ahora = strtotime(date("Y-m-d H:i:s"));
+$fecha_entrega_ts = strtotime($fecha_entrega);
+
+if ($ahora > $fecha_entrega_ts) {
+    echo json_encode(['error' => 'La fecha de entrega para esta tarea ha expirado.']);
+    exit;
+}
+
+// 2. Si ya existe la entrega, usar ese ID. Si no, crear la entrega.
 if (!$id_entrega) {
     $sql = "INSERT INTO tareas (id_tarea_profesor, materia, id_clase, id_estudiante, fecha_subida) VALUES (?, ?, ?, ?, NOW())";
     $stmt = $conn->prepare($sql);
@@ -17,7 +41,7 @@ if (!$id_entrega) {
     $id_entrega = $conn->insert_id;
 }
 
-// Procesar archivos subidos
+// 3. Procesar archivos subidos
 $mensajes = [];
 foreach ($_FILES['archivo']['tmp_name'] as $i => $tmpName) {
     if ($_FILES['archivo']['error'][$i] === UPLOAD_ERR_OK) {
@@ -31,51 +55,6 @@ foreach ($_FILES['archivo']['tmp_name'] as $i => $tmpName) {
         $stmt->execute();
 
         $mensajes[] = "$nombre subido correctamente.";
-    }
-}
-
-// Verifica si ya existe entrega
-$sql_check = "SELECT id FROM tareas WHERE id_estudiante = ? AND id_tarea_profesor = ?";
-$stmt_check = $conn->prepare($sql_check);
-$stmt_check->bind_param("ii", $id_estudiante, $id_tarea_profesor);
-$stmt_check->execute();
-$stmt_check->store_result();
-
-if ($stmt_check->num_rows > 0) {
-    // Ya tiene entrega, obtén el id
-    $stmt_check->bind_result($id_tarea);
-    $stmt_check->fetch();
-} else {
-    // Crea nueva entrega
-    $sql = "INSERT INTO tareas (id_estudiante, materia, id_clase, id_tarea_profesor, fecha_subida)
-            VALUES (?, ?, ?, ?, NOW())";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("isii", $id_estudiante, $materia, $id_clase, $id_tarea_profesor);
-    $stmt->execute();
-    $id_tarea = $stmt->insert_id;
-}
-
-// Procesa varios archivos
-$respuestas = [];
-$carpeta = "../tareas_subidas/" . $materia . "/";
-if (!is_dir($carpeta)) {
-    mkdir($carpeta, 0777, true);
-}
-
-foreach ($_FILES['archivo']['name'] as $key => $archivo) {
-    $tmp = $_FILES['archivo']['tmp_name'][$key];
-    if ($archivo && $tmp) {
-        $ruta = $carpeta . time() . "_" . basename($archivo);
-        if (move_uploaded_file($tmp, $ruta)) {
-            // Guarda cada archivo
-            $sql_archivo = "INSERT INTO tareas_archivos (id_tarea, nombre_archivo, ruta_archivo) VALUES (?, ?, ?)";
-            $stmt_archivo = $conn->prepare($sql_archivo);
-            $stmt_archivo->bind_param("iss", $id_tarea, $archivo, $ruta);
-            $stmt_archivo->execute();
-            $respuestas[] = $archivo . " subido correctamente.";
-        } else {
-            $respuestas[] = "❌ Error al subir " . $archivo;
-        }
     }
 }
 

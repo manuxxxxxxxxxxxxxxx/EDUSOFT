@@ -922,3 +922,32 @@ color: #fff;
     font-size: 1em;
   }
 }
+.rubrica-details {
+    margin-top: 12px;
+    font-size: 1em;
+}
+.rubrica-details summary {
+    background: linear-gradient(90deg, #b6e0fe 60%, #6ea8fe 100%);
+    color: #234567;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 1px 6px #b6e0fe22;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.18s;
+}
+.rubrica-details[open] summary {
+    background: linear-gradient(90deg, #6ea8fe 60%, #b6e0fe 100%);
+    color: #fff;
+}
+.rubrica-details table {
+    width: 96%;
+    margin-top: 12px;
+    border-radius: 7px;
+    background: #f6faff;
+}
+.rubrica-details th, .rubrica-details td {
+    font-size: 0.98em;
+}

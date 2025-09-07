@@ -52,39 +52,45 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Cerrar modal
-    span.onclick = function() {
-        modal.style.display = "none";
+    if(span) {
+        span.onclick = function() {
+            modal.style.display = "none";
+        };
     }
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
+    };
+
+    // Subir archivos (en modal)
+    if(archivoInput && listaArchivos) {
+        archivoInput.addEventListener('change', function() {
+            listaArchivos.innerHTML = "";
+            Array.from(archivoInput.files).forEach(function(file) {
+                var li = document.createElement("li");
+                li.textContent = file.name;
+                listaArchivos.appendChild(li);
+            });
+        });
     }
 
-    // Subir archivos
-    archivoInput.addEventListener('change', function() {
-        listaArchivos.innerHTML = "";
-        Array.from(archivoInput.files).forEach(function(file) {
-            var li = document.createElement("li");
-            li.textContent = file.name;
-            listaArchivos.appendChild(li);
+    // Agregar enlaces (en modal)
+    if(agregarEnlaceBtn && enlaceInput && listaEnlaces) {
+        agregarEnlaceBtn.addEventListener('click', function() {
+            var url = enlaceInput.value;
+            if (url.trim() !== "") {
+                var li = document.createElement("li");
+                var a = document.createElement("a");
+                a.href = url;
+                a.target = "_blank";
+                a.textContent = url;
+                li.appendChild(a);
+                listaEnlaces.appendChild(li);
+                enlaceInput.value = "";
+            }
         });
-    });
-
-    // Agregar enlaces
-    agregarEnlaceBtn.addEventListener('click', function() {
-        var url = enlaceInput.value;
-        if (url.trim() !== "") {
-            var li = document.createElement("li");
-            var a = document.createElement("a");
-            a.href = url;
-            a.target = "_blank";
-            a.textContent = url;
-            li.appendChild(a);
-            listaEnlaces.appendChild(li);
-            enlaceInput.value = "";
-        }
-    });
+    }
 
     // Partículas animadas en el banner (solo rojas pastel y menos cantidad)
     const canvas = document.getElementById('particles-bg');
@@ -158,64 +164,10 @@ document.addEventListener("DOMContentLoaded", function() {
             createParticles();
         });
     }
-});
 
-/*document.getElementById("formSubirTarea").addEventListener("submit", function(e) {
-    e.preventDefault();
-    
-    const formData = new FormData(this);
-    const mensaje = document.getElementById("mensajeSubida");
-
-    fetch('subir_tarea_ajax.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(res => res.json())
-    .then(data => {
-        mensaje.innerHTML = data.mensaje;
-
-    })
-    .catch(err => {
-        mensaje.innerHTML = "❌ Error en la conexión.";
-    });
-});*/
-
-function eliminarArchivo(idArchivo) {
-    if (confirm("¿Seguro que deseas eliminar este archivo?")) {
-        fetch("eliminar_archivo_ajax.php", {
-            method: "POST",
-            headers: {"Content-Type": "application/x-www-form-urlencoded"},
-            body: "id_archivo=" + idArchivo
-        })
-        .then(resp => resp.text())
-        .then(msg => {
-            alert(msg);
-            location.reload();
-        });
-    }
-}
-
-function eliminarEntrega(idEntrega) {
-    if (confirm("¿Seguro que deseas eliminar toda la entrega?")) {
-        fetch("eliminar_entrega_ajax.php", {
-            method: "POST",
-            headers: {"Content-Type": "application/x-www-form-urlencoded"},
-            body: "id_entrega=" + idEntrega
-        })
-        .then(resp => resp.text())
-        .then(msg => {
-            alert(msg);
-            location.reload();
-        });
-    }
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    // ... (todo tu código sidebar, modal, partículas, etc) ...
-
-    // SUBIR TAREA CON ALERT DE MENSAJE
+    // SUBIR TAREA CON ALERT DE MENSAJE Y MANEJO DE ERROR
     document.querySelectorAll('.formSubirTarea').forEach(form => {
-        form.onsubmit = function(e) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
             let formData = new FormData(form);
             fetch(form.action, {
@@ -224,14 +176,50 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .then(resp => resp.json())
             .then(data => {
-                alert(data.mensaje); // <-- Sale el alert aquí
-                location.reload();   // Opcional: recarga la página para mostrar los nuevos archivos
+                if (data.mensaje) {
+                    alert(data.mensaje);
+                    location.reload();
+                } else if (data.error) {
+                    alert("❌ " + data.error);
+                } else {
+                    alert("❌ Error inesperado.");
+                }
             })
             .catch(err => {
                 alert("❌ Error en la conexión.");
             });
-        };
+        });
     });
 
-    // ... (el resto de tu código, funciones de eliminar, etc) ...
+    // Eliminar archivo
+    window.eliminarArchivo = function(idArchivo) {
+        if (confirm("¿Seguro que deseas eliminar este archivo?")) {
+            fetch("eliminar_archivo_ajax.php", {
+                method: "POST",
+                headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                body: "id_archivo=" + idArchivo
+            })
+            .then(resp => resp.text())
+            .then(msg => {
+                alert(msg);
+                location.reload();
+            });
+        }
+    };
+
+    // Eliminar entrega
+    window.eliminarEntrega = function(idEntrega) {
+        if (confirm("¿Seguro que deseas eliminar toda la entrega?")) {
+            fetch("eliminar_entrega_ajax.php", {
+                method: "POST",
+                headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                body: "id_entrega=" + idEntrega
+            })
+            .then(resp => resp.text())
+            .then(msg => {
+                alert(msg);
+                location.reload();
+            });
+        }
+    };
 });
