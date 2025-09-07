@@ -24,26 +24,19 @@ Descripción:
 </head>
 
 <body>
-    <header>
-        <table border="1" style="width: 100%;">
-            <tr>
-                <td style="width: 30%;">
-                    <!-- AGREGAR BOTON DE RETORNO --> 
-                        <button onclick="history.back()" style="width: 100px; height: 40px;">Regresar</button>
-                </td>
-
-                <td style="width: 40%;">
-                    <h2>Atenea - Guía Académica</h2>
-                </td>
-
-                <td style="width: 30%; text-align: center;">
-                    <img src="../img/EDUSOFT.png" alt="EDUSOFT Logo" class="brand-logo">
-                </td>
-            </tr>
-        </table>
-		
-        
-    </header>
+<header>
+    <div class="header-content">
+        <div class="header-section">
+            <button onclick="history.back()">Regresar</button>
+        </div>
+        <div class="header-section header-title">
+            <h2>Atenea - Guía Académica</h2>
+        </div>
+        <div class="header-section header-logo">
+            <img src="{{ url_for('static', filename='img2/EDUSOFT.png') }}" alt="EDUSOFT Logo" class="brand-logo">
+        </div>
+    </div>
+</header>
 
     <main>
         {% block content %}
@@ -51,10 +44,45 @@ Descripción:
         {% endblock %}
     </main>
 
-    <footer>
-        <p>Proyecto Atenea - Desarrollado con Flask & Gemini</p>
+<footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="{{ url_for('static', filename='img2/ELEFANTE.png') }} "alt="Logo EDUSOFT" class="logo">
+                <h3>EDUSOFT</h3>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4 data-i18n="h4">Plataforma</h4>
+                    <ul>
+                        <li><a href="#" data-i18n="inicio">Inicio</a></li>
+                        <li><a href="#" data-i18n="cursos">Cursos</a></li>
+                        <li><a href="#" data-i18n="nosotros">Nosotros</a></li>
+                        <li><a href="#" data-i18n="contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 data-i18n="recursosP">Recursos</h4>
+                    <ul>
+                        <li><a href="#" data-i18n="biblioteca">Biblioteca Digital</a></li>
+                        <li><a href="#" data-i18n="tutoriales">Tutoriales</a></li>
+                        <li><a href="#" onclick="openModal('faqModal')" data-i18n="preguntas_frecuentes">Preguntas Frecuentes</a></li>
+                        <li><a href="#" onclick="openModal('soporteModal')" data-i18n="soporte">Soporte Técnico</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 data-i18n="legal">Legal</h4>
+                    <ul>
+                        <li><a href=".././principal/politica/politica.php" data-i18n="terminos">Términos y Condiciones</a></li>
+                        <li><a href=".././principal/politica/politica.php" data-i18n="politica">Política de Privacidad</a></li>
+                        <li><a href=".././principal/politica/politica.php" data-i18n="cookies">Política de Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p data-i18n="copy">&copy; 2024 EDUSOFT - Plataforma Educativa. Desarrollado por estudiantes de Bachillerato Técnico.</p>
+        </div>
     </footer>
-
     <!-- Script común si se necesita -->
     {% block scripts %}
     {% endblock %}

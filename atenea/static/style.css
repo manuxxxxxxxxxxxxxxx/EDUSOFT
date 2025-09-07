@@ -2,17 +2,15 @@
 **************************************************************
 Proyecto : Atenea (Versión mínima)
 Archivo  : style.css
-Secuencia: 04
 Descripción:
-    Estilos modernos para el chat de Atenea.
-    - Burbuja de chat diferenciando usuario y Atenea
-    - Fondo agradable y tipografía legible
-    - Contenedor con scroll
-    - Botón y campo de texto estilizados
+    Estilos modernos y elegantes para el chat y header de Atenea.
+    - Inspirado en la identidad visual de EDUSOFT.
+    - Header blanco, logo grande y letras azules.
+    - Chat moderno: burbujas diferenciadas, botones modernos.
 **************************************************************
 */
 
-/* Reset básico */
+/* RESET Y FUENTE */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -20,148 +18,403 @@ Descripción:
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Cuerpo */
+/* ===== HEADER BLANCO, LETRAS Y BOTÓN AZUL, LOGO GRANDE ===== */
+header {
+    background: #fff;
+    color: #173f6a;
+    box-shadow: 0 4px 18px rgba(23,63,106,0.08);
+    border-bottom: 3px solid #e7b23a;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 22px 34px 18px 34px;
+    min-height: 110px;
+}
+
+.header-section {
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.header-title {
+    justify-content: center;
+    text-align: center;
+}
+
+.header-logo {
+    justify-content: flex-end;
+}
+
+.brand-logo {
+    max-height: 108px;    /* Mucho más grande */
+    max-width: 320px;
+    margin-left: 10px;
+    object-fit: contain;
+}
+
+/* TÍTULO EN AZUL FUERTE */
+header h2 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+    color: #173f6a;
+    text-shadow: none;
+    filter: none;
+}
+
+/* BOTÓN "REGRESAR" EN AZUL */
+header button {
+    width: 120px;
+    height: 48px;
+    font-size: 1.08rem;
+    border-radius: 14px;
+    border: 2px solid #173f6a;
+    background: #fff;
+    color: #173f6a;
+    font-weight: 600;
+    box-shadow: 0 2px 8px #173f6a12;
+    transition: background 0.2s, color 0.2s, border 0.2s, transform 0.12s;
+    cursor: pointer;
+}
+header button:hover {
+    background: #173f6a;
+    color: #fff;
+    border-color: #173f6a;
+    transform: scale(1.05);
+}
+
+/* Responsive para header */
+@media (max-width: 950px) {
+    .header-content {
+        flex-direction: column;
+        gap: 10px;
+        padding: 14px 14px 10px 14px;
+        min-height: 0;
+    }
+    .header-title h2 {
+        font-size: 1.2rem;
+    }
+    .brand-logo {
+        max-height: 64px;
+        max-width: 160px;
+    }
+    header button {
+        width: 100px;
+        height: 40px;
+        font-size: 0.97rem;
+    }
+}
+
+/* ===== MAIN Y CHAT ====== */
 body {
-    background: #7575af;
-    color: #333;
+    background: linear-gradient(135deg, #e8f0fa 0%, #b3c6e6 100%);
+    color: #22304a;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    transition: background 0.3s;
 }
 
-/* Header */
-header {
-    background: #4a90e2;
-    color: white;
-    padding: 15px 20px;
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Main */
 main {
     flex: 1;
-    padding: 20px;
+    padding: 24px 0;
     display: flex;
     justify-content: center;
     align-items: flex-start;
 }
 
-/* Contenedor del chat */
 .chat-container {
     width: 100%;
     max-width: 900px;
-    background: #ece7f3;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(46, 46, 46, 0.1);
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(23,63,106,0.13);
     display: flex;
     flex-direction: column;
-    padding: 15px;
-    height: 80vh;
+    padding: 22px 18px 15px 18px;
+    height: 78vh;
+    min-height: 400px;
+    border: 2.5px solid #e7b23a33;
+    position: relative;
+    transition: box-shadow 0.2s;
+}
+.chat-container:hover {
+    box-shadow: 0 12px 40px 0 rgba(23,63,106,0.17);
 }
 
-/* Área de mensajes */
+/* MENSAJES */
 #messages {
     flex: 1;
     overflow-y: auto;
-    margin-bottom: 10px;
-    padding-right: 5px;
+    margin-bottom: 12px;
+    padding-right: 7px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    scroll-behavior: smooth;
 }
 
-/* Mensajes */
+/* BURBUJAS */
 .message {
     margin: 8px 0;
-    padding: 10px 15px;
-    border-radius: 15px;
-    max-width: 98%;
+    padding: 13px 20px;
+    border-radius: 20px 20px 8px 20px;
+    max-width: 96%;
     word-wrap: break-word;
-    line-height: 1.4;
+    line-height: 1.55;
     font-size: 1rem;
+    box-shadow: 0 2px 10px #c9dafb44;
+    position: relative;
+    animation: fadeIn 0.4s;
+    transition: background 0.2s, color 0.2s;
 }
 
-/* Diferenciar usuario y Atenea */
+/* Usuario */
 .message.user {
-    background: #e0f7fa;
+    background: linear-gradient(90deg, #2586d0 70%, #60b7fc 100%);
+    color: #fff;
     align-self: flex-end;
-    color: #000000;
+    border-bottom-right-radius: 3.5px;
+    border: 1.5px solid #e7b23a55;
+    box-shadow: 0 3px 14px #2586d022;
 }
 
+/* Atenea */
 .message.atenea {
-    background: #c8c8dd;
+    background: linear-gradient(90deg, #e8eaf6 70%, #d6e4f0 100%);
+    color: #173f6a;
     align-self: flex-start;
-    color: #000000;
+    border-bottom-left-radius: 3.5px;
+    border: 1.5px solid #2586d055;
+    box-shadow: 0 3px 10px #2586d012;
 }
 
-/* Mensaje de sistema */
+/* Sistema */
 .system-msg {
     text-align: center;
-    color: #000000;
+    color: #b38f2f;
     font-style: italic;
     margin: 10px 0;
+    letter-spacing: 0.5px;
+    font-size: 1.03rem;
 }
 
-/* Formulario */
+/* FORMULARIO */
 .chat-form {
     display: flex;
-    border-top: 1px solid #ddd;
+    border-top: 1.5px solid #e7b23a77;
     padding-top: 10px;
+    gap: 9px;
 }
 
 .chat-form input[type="text"] {
     flex: 1;
-    padding: 10px 15px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
+    padding: 12px 18px;
+    border: 2px solid #b3c6e6;
+    border-radius: 30px;
     outline: none;
-    font-size: 1rem;
-    transition: all 0.2s;
+    font-size: 1.08rem;
+    background: #f5f9ff;
+    color: #22304a;
+    transition: border 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 6px #2586d005;
 }
 
 .chat-form input[type="text"]:focus {
-    border-color: #4a90e2;
-    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+    border-color: #2586d0;
+    box-shadow: 0 0 8px 0 #2586d055;
 }
 
+/* BOTON ENVIAR */
 .chat-form button {
-    background: #4a90e2;
-    color: white;
+    background: linear-gradient(90deg, #e7b23a 60%, #f7d774 100%);
+    color: #173f6a;
     border: none;
-    padding: 10px 20px;
-    margin-left: 10px;
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-size: 1.08rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #e7b23a24;
+    transition: background 0.18s, color 0.18s, transform 0.12s;
+    letter-spacing: 0.7px;
+}
+.chat-form button:hover {
+    background: linear-gradient(90deg, #2586d0, #e7b23a 90%);
+    color: #fff;
+    transform: translateY(-2px) scale(1.04);
+}
+
+/* BOTÓN LIMPIAR */
+.clear-btn {
+    background: linear-gradient(90deg, #f44336 55%, #e7b23a 100%);
+    color: #fff;
+    border: none;
+    padding: 8px 18px;
     border-radius: 20px;
     font-size: 1rem;
     cursor: pointer;
-    transition: all 0.2s;
-}
-
-.chat-form button:hover {
-    background: #357ab7;
-}
-
-/* Botón de limpiar chat */
-.clear-btn {
-    background: #f44336;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s;
+    transition: background 0.2s, transform 0.1s;
     margin-bottom: 10px;
+    font-weight: 600;
+    box-shadow: 0 1px 4px #f4433622;
 }
-
 .clear-btn:hover {
-    background: #d32f2f;
+    background: linear-gradient(90deg, #d32f2f 60%, #e7b23a 100%);
+    transform: scale(1.05);
 }
 
-/* Preformateado para los mensajes de Atenea */
+/* PRE MENSAJE ATENEA */
 pre {
     white-space: pre-wrap;
-    /* mantiene saltos de línea */
     margin: 0;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Fira Mono', 'Courier New', Courier, monospace;
     font-size: 1rem;
+    color: #173f6a;
+    background: #e8eaf6;
+    border-radius: 10px;
+    padding: 10px 14px;
+}
+
+/* SCROLLBAR */
+#messages::-webkit-scrollbar {
+    width: 9px;
+    background: #e8f0fa;
+}
+#messages::-webkit-scrollbar-thumb {
+    background: #b3c6e6;
+    border-radius: 8px;
+}
+#messages::-webkit-scrollbar-thumb:hover {
+    background: #2586d055;
+}
+
+/* Animación entrada mensaje */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px);}
+    to   { opacity: 1; transform: translateY(0);}
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  background-color:#346ea8;
+  border-top: 1px solid #e5e5e5;
+  padding: 50px 0 20px;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.footer-logo img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.footer-logo h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #f9fcfd;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.footer-column {
+  min-width: 160px;
+}
+
+.footer-column h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #eef4fa;
+  margin-bottom: 15px;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 10px;
+}
+
+.footer-column ul li a {
+  color: #f8f8f8;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+  color: #f4f7fa;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e5e5;
+  width: 100%;
+}
+
+.footer-bottom p {
+  font-size: 14px;
+  color: #fffdfd;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .footer-content {
+    flex-direction: column;
+  }
+
+  .footer-links {
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-links {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-links {
+    gap: 20px;
+  }
+}
+/* GENERAL LINK */
+a {
+    color: #2586d0;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+a:hover {
+    color: #e7b23a;
+    text-decoration: underline;
 }
