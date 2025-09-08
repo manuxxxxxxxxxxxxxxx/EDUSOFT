@@ -264,7 +264,7 @@
           </div>
         </div>
       </div>
-      <button class="access-btn notas-btn" onclick="window.location.href='../Registros/loginNotas.php'">
+      <button class="access-btn notas-btn" onclick="window.location.href='../Registros/login_notas.php'">
         <span class="btn-text" data-i18n="acceder_notas">Acceder al Sistema de Notas</span>
         <div class="btn-icon">
           <i class="fas fa-arrow-right"></i>
