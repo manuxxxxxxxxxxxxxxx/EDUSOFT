@@ -28,22 +28,15 @@
         <span class="brand">EDUSOFT</span>
       </div>
       <h2 data-i18n="inicioS">Inicio de Sesion</h2>
-      <form action="../conexiones/loginProfes.php" method="post">
+      <form  method="post">
         <div class="form-group">
             <i class='bx bxs-user'></i>
-            <input data-i18n="nombre_usuario" type="text"  Name="Nombre" placeholder="Nombre Usuario"  >
+            <input data-i18n="nombre_usuario" type="text"  Name="Nombre" placeholder="Nombre Usuario" required >
         </div>
         <div class="form-group">
             <i class='bx bxs-envelope' ></i>
-          <input data-i18n="contraseña"   datype="password" name="Pass" placeholder="Contraseña"  >
+          <input data-i18n="contraseña"   datype="password" name="contraseña" placeholder="Contraseña" required >
         </div>
-        <div class="form-group">
-            <i class='bx bxs-envelope' ></i>
-          <input data-i18n="confirmar" type="password" name="Pass_Confi" placeholder="Confirmar Contraseña" >
-        </div>
-
-
-
 
         <div class="form-actions">
           <button type="submit" class="btn-submit">

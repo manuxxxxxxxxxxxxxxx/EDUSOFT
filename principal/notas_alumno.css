@@ -1,0 +1,259 @@
+:root {
+  --edusoft-blue: #67b6fa;
+  --edusoft-purple: #8d72e1;
+  --edusoft-dark: #232a35;
+  --edusoft-bg: #f5f8ff;
+  --edusoft-header: #f9fafc;
+  --edusoft-border: #e2e8f0;
+  --edusoft-accent: #48bb78;
+}
+
+/* Fondo con imagen y blur elegante */
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Inter", Arial, sans-serif;
+  position: relative;
+  /* Fondo oscuro con imagen de fondo y overlay */
+  background: none; /* quitamos el linear-gradient anterior */
+}
+body::before {
+  content: "";
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  background: url('../img/notas.jpg') center center/cover no-repeat;
+  /* Puedes usar tu propia imagen aquí arriba ^^^ */
+  filter: blur(10px) brightness(0.6);
+  /* blur y oscurecimiento */
+  pointer-events: none;
+  transition: background 0.4s;
+}
+
+.table-container {
+  background: #fff;
+  max-width: 1180px;
+  margin: 32px auto 32px auto;
+  border-radius: 20px;
+  box-shadow: 0 4px 36px rgba(80, 80, 160, 0.13), 0 0 0 100vmax rgba(0,0,0,0.10);
+  padding: 26px 18px 38px 18px;
+  border: 1.5px solid var(--edusoft-border);
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  background: transparent;
+  margin: 0 0 8px 0;
+  padding-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+.header h1 {
+  font-size: 2rem;
+  margin-bottom: 2px;
+  font-weight: 800;
+  color: #232a35;
+  letter-spacing: -1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.header .subtitle {
+  color: var(--edusoft-blue);
+  margin: 0;
+  font-size: 1.08rem;
+}
+
+.controls-card {
+  margin-bottom: 22px;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+.controls-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--edusoft-dark);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.controls-form {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 160px;
+}
+.form-label {
+  color: #444;
+  font-weight: 500;
+  font-size: 0.97rem;
+  margin-bottom: 1px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.form-select {
+  padding: 10px 16px;
+  border: 2px solid var(--edusoft-blue);
+  border-radius: 10px;
+  font-size: 1rem;
+  background: linear-gradient(90deg,#e3f1ff 88%,#e6e2f9);
+  color: #2d3748;
+  transition: all 0.23s;
+  cursor: pointer;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 500;
+  box-shadow: 0 1px 8px rgba(103,182,250,0.08);
+  outline: none;
+}
+.form-select:focus {
+  border-color: var(--edusoft-purple);
+  background: linear-gradient(90deg,#e3f1ff 60%,#f4e2ff 100%);
+  box-shadow: 0 0 0 2px #8d72e155;
+}
+.form-select:hover {
+  border-color: var(--edusoft-purple);
+}
+
+.subject-header {
+  background: var(--edusoft-dark);
+  color: #fff;
+  font-size: 1.18rem;
+  padding: 13px 14px 13px 24px;
+  border-radius: 12px 12px 0 0;
+  font-weight: 700;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  letter-spacing: 0.01em;
+  margin-bottom: 0;
+}
+
+.subject-header .subject {
+  font-weight: bold;
+}
+
+.edusoft-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--edusoft-header);
+  border-radius: 0 0 16px 16px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 0 var(--edusoft-border);
+}
+.edusoft-table th,
+.edusoft-table td {
+  padding: 12px 10px;
+  text-align: left;
+  font-size: 1rem;
+}
+.edusoft-table th {
+  background: linear-gradient(90deg, var(--edusoft-blue), var(--edusoft-purple));
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: none;
+}
+.edusoft-table th:first-child {
+  border-radius: 0 0 0 0;
+}
+.edusoft-table th:last-child {
+  border-radius: 0 10px 0 0;
+}
+.edusoft-table tr {
+  background: #fff;
+  border-bottom: 1.5px solid var(--edusoft-border);
+  transition: background 0.16s;
+}
+.edusoft-table tr:last-child {
+  border-bottom: none;
+}
+.edusoft-table td {
+  color: #232a35;
+  vertical-align: top;
+}
+.edusoft-table td.number {
+  width: 28px;
+  color: var(--edusoft-blue);
+  font-weight: 600;
+}
+.edusoft-table td.percentage {
+  width: 80px;
+  color: var(--edusoft-purple);
+  font-weight: 500;
+}
+.edusoft-table td.description {
+  color: #42506a;
+  font-size: .98rem;
+  line-height: 1.5;
+}
+.edusoft-table td.grade {
+  width: 75px;
+}
+.edusoft-grade {
+  display: inline-block;
+  min-width: 45px;
+  text-align: center;
+  background: linear-gradient(90deg, var(--edusoft-blue), var(--edusoft-purple));
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.13rem;
+  border-radius: 10px;
+  box-shadow: 0 1px 8px rgba(118, 75, 162, 0.08);
+  padding: 4px 14px;
+  letter-spacing: 0.02em;
+}
+
+.table-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 16px;
+  gap: 18px;
+  font-size: 1.09rem;
+  background: #f7fafc;
+  border-radius: 0 0 14px 14px;
+  padding: 14px 18px 6px 0;
+  border-top: 1.5px solid #e2e8f0;
+}
+.table-footer .label {
+  color: #232a35;
+  font-weight: 600;
+}
+.table-footer .footer-grade {
+  background: linear-gradient(90deg, var(--edusoft-accent), #38a169);
+  color: #fff;
+  font-weight: 700;
+  padding: 4px 18px;
+  border-radius: 8px;
+  font-size: 1.11rem;
+  margin-left: 8px;
+  box-shadow: 0 1px 8px rgba(72, 187, 120, 0.11);
+}
+
+@media (max-width: 900px) {
+  .table-container {
+    max-width: 99vw;
+    padding: 8px 1vw 20px 1vw;
+  }
+  .subject-header, .controls-card, .notas-card {
+    padding: 7px 2vw;
+  }
+  .edusoft-table th, .edusoft-table td {
+    padding: 8px 2px;
+    font-size: .97rem;
+  }
+  .table-footer { font-size: 1rem; }
+}

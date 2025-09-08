@@ -56,17 +56,54 @@ while ($row = $res->fetch_assoc()) $descripciones[$row['rubro']] = $row['descrip
 <head>
     <meta charset="UTF-8">
     <title>Editar descripciones de rubros</title>
-    <style>
-        body { font-family: Arial, sans-serif;}
-        .desc-box {border:1px solid #bbb; background:#f7f9fb; border-radius:7px; padding:24px; max-width:600px; margin:35px auto;}
-        textarea { width:99%; min-height:36px; border-radius:3px; border:1px solid #ddd; margin-bottom:11px;}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="editar.css">
+            <style>
+    /* Botón de regresar arriba */
+     #btn-back {
+        position: fixed;
+        left: 32px;
+        top: 32px;
+        z-index: 99;
+        background: linear-gradient(90deg, #0a0a0aff, #0f0f0fff);
+        color: #fff;
+        border: none;
+        outline: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        box-shadow: 0 6px 24px #8d72e144;
+        cursor: pointer;
+        font-size: 1.8rem;
+        transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #btn-back:hover {
+        background: linear-gradient(90deg, #8d72e1, #67b6fa);
+        box-shadow: 0 10px 30px #67b6fa55;
+        transform: translateY(-2px) scale(1.06);
+    }
+    @media (max-width:600px){
+        #btn-back {
+            left: 12px;
+            top: 12px;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+        }
+    }
     </style>
 </head>
 <body>
+    <button id="btn-back" title="Volver" onclick="window.history.back();">
+        <i class="fas fa-arrow-left"></i>
+    </button>
 <div class="desc-box">
     <h2>Editar descripciones de rubros</h2>
     <form method="GET">
-        Clase:
+        <span class="filtros-label">Clase:</span>
         <select name="id_clase" onchange="this.form.submit()">
             <?php foreach($clases as $clase): ?>
                 <option value="<?= $clase['id'] ?>" <?= ($id_clase==$clase['id']?'selected':'') ?>>
@@ -74,7 +111,7 @@ while ($row = $res->fetch_assoc()) $descripciones[$row['rubro']] = $row['descrip
                 </option>
             <?php endforeach; ?>
         </select>
-        Periodo:
+        <span class="filtros-label">Periodo:</span>
         <select name="periodo" onchange="this.form.submit()">
             <?php foreach($periodos as $p): ?>
                 <option value="<?= $p ?>" <?= ($periodo==$p?'selected':'') ?>><?= $p ?></option>
@@ -87,8 +124,10 @@ while ($row = $res->fetch_assoc()) $descripciones[$row['rubro']] = $row['descrip
             <label><b><?= $nombre ?></b></label>
             <textarea name="descripciones[<?= $clave ?>]"><?= htmlspecialchars($descripciones[$clave] ?? "") ?></textarea>
         <?php endforeach; ?>
-        <button type="submit" style="padding:10px 30px;">Guardar descripciones</button>
+        <button type="submit">Guardar descripciones</button>
     </form>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+
 </body>
 </html>

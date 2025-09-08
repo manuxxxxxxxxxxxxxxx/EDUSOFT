@@ -115,93 +115,134 @@ if ($id_clase && $materia && $id_alumno) {
 <head>
     <meta charset="UTF-8">
     <title>Sistema de Notas - Profesor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="notas_profe.css">
     <style>
-        body { font-family: Arial, sans-serif; }
-        .alumno-box {
-            border: 1px solid #bbb;
-            margin-bottom: 20px;
-            padding: 18px;
-            border-radius: 6px;
-            background: #f7f9fb;
-            max-width: 550px;
+    /* Botón de regresar arriba */
+     #btn-back {
+        position: fixed;
+        left: 32px;
+        top: 32px;
+        z-index: 99;
+        background: linear-gradient(90deg, #0a0a0aff, #0f0f0fff);
+        color: #fff;
+        border: none;
+        outline: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        box-shadow: 0 6px 24px #8d72e144;
+        cursor: pointer;
+        font-size: 1.8rem;
+        transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #btn-back:hover {
+        background: linear-gradient(90deg, #8d72e1, #67b6fa);
+        box-shadow: 0 10px 30px #67b6fa55;
+        transform: translateY(-2px) scale(1.06);
+    }
+    @media (max-width:600px){
+        #btn-back {
+            left: 12px;
+            top: 12px;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
         }
-        .alumno-nombre {
-            font-weight: bold;
-            color: #1c3c5a;
-            margin-bottom: 10px;
-        }
-        .rubro-group {
-            margin-bottom: 14px;
-            padding-bottom: 8px;
-            border-bottom: 1px dotted #ccd;
-        }
-        label { display: block; font-weight: bold; margin-bottom: 4px; }
-        .descripcion-global {font-size: 0.96em; color: #234;}
-        input[type=number] {
-            width: 80px; font-size: 1em; border-radius: 3px; border: 1px solid #ddd;
-            padding: 4px; margin-bottom: 4px;
-        }
-        .promedio { color: #222; font-size: 1.1em; font-weight: bold; }
-        .rubro-label { font-size: 1em; color: #24487c; }
-        .form-filtros { margin-bottom:25px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
-        .editar-link {margin-left:12px;}
+    }
     </style>
 </head>
 <body>
-    <h2>Sistema de Notas (Profesor)</h2>
-    <form method="GET" class="form-filtros">
-        Clase/Materia:
-        <select name="id_clase" onchange="this.form.submit()">
-            <?php foreach($clases as $clase): ?>
-                <option value="<?= $clase['id'] ?>" <?= ($id_clase==$clase['id']?'selected':'') ?>>
-                    <?= ucfirst($clase['materia']) ?> <?= htmlspecialchars($clase['nombre_clase']) ? '('.htmlspecialchars($clase['nombre_clase']).')' : '' ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-        Periodo:
-        <select name="periodo" onchange="this.form.submit()">
-            <?php foreach($periodos as $p): ?>
-                <option value="<?= $p ?>" <?= ($periodo==$p?'selected':'') ?>><?= $p ?></option>
-            <?php endforeach; ?>
-        </select>
-        Alumno:
-        <select name="id_alumno" onchange="this.form.submit()">
-            <?php foreach($alumnos as $alumno): ?>
-                <option value="<?= $alumno['ID'] ?>" <?= ($id_alumno==$alumno['ID']?'selected':'') ?>>
-                    <?= htmlspecialchars($alumno['nombre']) ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-        <a class="editar-link" href="editar_descripciones_rubros.php?id_clase=<?= $id_clase ?>&periodo=<?= $periodo ?>" style="color: #0a59a8;font-size:1em;">Editar descripciones de rubros</a>
-        <noscript><button type="submit">Ver</button></noscript>
-    </form>
-    <?php if ($id_clase && $materia && $id_alumno): ?>
-    <form method="POST">
-        <div class="alumno-box">
-            <div class="alumno-nombre">
-                <?php
-                    foreach ($alumnos as $a) { if ($a['ID'] == $id_alumno) echo htmlspecialchars($a['nombre']); }
-                ?>
-            </div>
-            <?php foreach($rubros as $campo=>$nombre): ?>
-                <div class="rubro-group">
-                    <span class="rubro-label"><?= $nombre ?></span>
-                    <span class="descripcion-global"><?= isset($descripciones[$campo]) ? htmlspecialchars($descripciones[$campo]) : '<i>No hay descripción</i>' ?></span>
-                    <label for="nota_<?= $id_alumno ?>_<?= $campo ?>">Nota:</label>
-                    <input name="notas[<?= $id_alumno ?>][<?= $campo ?>]" id="nota_<?= $id_alumno ?>_<?= $campo ?>" type="number" step="0.01" min="1" max="10"
-                        value="<?= isset($nota[$campo]) ? htmlspecialchars($nota[$campo]) : '' ?>" />
+     <button id="btn-back" title="Volver" onclick="window.history.back();">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+    <div id="main-container">
+        <h2>
+            <i class="fas fa-chalkboard-teacher"></i>
+            Sistema de Notas (Profesor)
+        </h2>
+        <form method="GET" class="form-filtros">
+            <span><i class="fas fa-book"></i> Clase/Materia:</span>
+            <select name="id_clase" onchange="this.form.submit()">
+                <?php foreach($clases as $clase): ?>
+                    <option value="<?= $clase['id'] ?>" <?= ($id_clase==$clase['id']?'selected':'') ?>>
+                        <?= ucfirst($clase['materia']) ?> <?= htmlspecialchars($clase['nombre_clase']) ? '('.htmlspecialchars($clase['nombre_clase']).')' : '' ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <span><i class="fas fa-calendar-alt"></i> Periodo:</span>
+            <select name="periodo" onchange="this.form.submit()">
+                <?php foreach($periodos as $p): ?>
+                    <option value="<?= $p ?>" <?= ($periodo==$p?'selected':'') ?>><?= $p ?></option>
+                <?php endforeach; ?>
+            </select>
+            <span><i class="fas fa-user-graduate"></i> Alumno:</span>
+            <select name="id_alumno" onchange="this.form.submit()">
+                <?php foreach($alumnos as $alumno): ?>
+                    <option value="<?= $alumno['ID'] ?>" <?= ($id_alumno==$alumno['ID']?'selected':'') ?>>
+                        <?= htmlspecialchars($alumno['nombre']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <a class="editar-link" href="editar_descripciones_rubros.php?id_clase=<?= $id_clase ?>&periodo=<?= $periodo ?>">
+                <i class="fas fa-edit"></i> Editar descripciones de rubros
+            </a>
+            <noscript><button type="submit">Ver</button></noscript>
+        </form>
+        <?php if ($id_clase && $materia && $id_alumno): ?>
+        <form method="POST">
+            <div class="alumno-box">
+                <div class="alumno-nombre">
+                    <?php
+                        foreach ($alumnos as $a) { if ($a['ID'] == $id_alumno) echo htmlspecialchars($a['nombre']); }
+                    ?>
                 </div>
-            <?php endforeach; ?>
-            <div class="promedio">
-                Promedio: <?= isset($nota['promedio_final']) ? number_format($nota['promedio_final'],2) : '-' ?>
+                <?php foreach($rubros as $campo=>$nombre): ?>
+                    <div class="rubro-group">
+                        <span class="rubro-label"><?= $nombre ?></span>
+                        <span class="descripcion-global"><?= isset($descripciones[$campo]) ? htmlspecialchars($descripciones[$campo]) : '<i>No hay descripción</i>' ?></span>
+                        <label for="nota_<?= $id_alumno ?>_<?= $campo ?>">Nota:</label>
+                        <input name="notas[<?= $id_alumno ?>][<?= $campo ?>]" id="nota_<?= $id_alumno ?>_<?= $campo ?>" type="number" step="0.01" min="1" max="10"
+                            value="<?= isset($nota[$campo]) ? htmlspecialchars($nota[$campo]) : '' ?>" />
+                    </div>
+                <?php endforeach; ?>
+                <div class="promedio">
+                    Promedio: <?= isset($nota['promedio_final']) ? number_format($nota['promedio_final'],2) : '-' ?>
+                </div>
             </div>
-        </div>
-        <button type="submit" style="font-size:1.1em;padding:10px 30px;">Guardar Notas</button>
-    </form>
-    <?php elseif ($id_clase && $materia): ?>
-        <div style="color:#800">No hay alumnos en esta clase.</div>
-    <?php else: ?>
-        <div style="color:#800">Selecciona una clase/materia.</div>
-    <?php endif; ?>
+            <button type="submit">
+                <i class="fas fa-save"></i> Guardar Notas
+            </button>
+        </form>
+        <?php elseif ($id_clase && $materia): ?>
+            <div style="color:#800">No hay alumnos en esta clase.</div>
+        <?php else: ?>
+            <div style="color:#800">Selecciona una clase/materia.</div>
+        <?php endif; ?>
+    </div>
+    <!-- Botón scroll top -->
+
+    <!-- FontAwesome CDN, solo si no lo tienes ya en el proyecto -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+
+    <script>
+        // Mostrar el botón al hacer scroll
+        window.onscroll = function() {scrollFunction()};
+        function scrollFunction() {
+            let btn = document.getElementById("btn-top");
+            if (document.body.scrollTop > 160 || document.documentElement.scrollTop > 160) {
+                btn.style.display = "flex";
+            } else {
+                btn.style.display = "none";
+            }
+        }
+        // Scroll suave hacia arriba
+        document.getElementById('btn-top').onclick = function() {
+            window.scrollTo({top:0, behavior:'smooth'});
+        };
+    </script>
 </body>
 </html>

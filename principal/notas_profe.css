@@ -1,0 +1,241 @@
+:root {
+  --edusoft-blue: #67b6fa;
+  --edusoft-purple: #8d72e1;
+  --edusoft-dark: #232a35;
+  --edusoft-bg: #f5f8ff;
+  --edusoft-header: #f9fafc;
+  --edusoft-border: #e2e8f0;
+  --edusoft-accent: #48bb78;
+}
+
+/* Fondo con imagen y blur elegante */
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Inter", Arial, sans-serif;
+  position: relative;
+  background: none;
+}
+body::before {
+  content: "";
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  background: url('../img/notas.jpg') center center/cover no-repeat;
+  filter: blur(10px) brightness(0.6);
+  pointer-events: none;
+  transition: background 0.4s;
+}
+
+/* Container dimensiones similares a imagen 5 */
+#main-container {
+  max-width: 980px;
+  min-width: 340px;
+  margin: 32px auto 32px auto;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 36px rgba(80, 80, 160, 0.13), 0 0 0 100vmax rgba(0,0,0,0.10);
+  padding: 22px 12px 28px 12px;
+  border: 1.5px solid var(--edusoft-border);
+  position: relative;
+  z-index: 1;
+}
+
+/* Título principal */
+h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--edusoft-dark);
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+h2 i {
+  color: var(--edusoft-purple);
+}
+
+/* Formulario de filtros tipo barra */
+.form-filtros {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  border: none;
+}
+.form-filtros span {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--edusoft-dark);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+.form-filtros select {
+  padding: 10px 18px;
+  border: 2px solid var(--edusoft-blue);
+  border-radius: 8px;
+  font-size: 1.05rem;
+  background: #f8fbff;
+  color: #232a35;
+  transition: all 0.23s;
+  cursor: pointer;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 500;
+  box-shadow: 0 1px 6px rgba(103,182,250,0.06);
+  outline: none;
+  min-width: 210px;
+}
+.form-filtros select:focus, .form-filtros select:hover {
+  border-color: var(--edusoft-purple);
+  background: #f3f0fc;
+}
+.form-filtros .editar-link {
+  margin-left:12px;
+  color: var(--edusoft-purple);
+  font-weight: 600;
+  font-size:1em;
+  text-decoration: none;
+  padding: 7px 15px;
+  border-radius: 7px;
+  background: linear-gradient(90deg,#e5eaff 70%,#f6e6ff 100%);
+  transition: background 0.2s, color 0.2s;
+  border: 1.5px solid #eaeaff;
+  box-shadow: 0 1px 4px #8d72e133;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.form-filtros .editar-link:hover {
+  background: linear-gradient(90deg,#d0dfff 60%,#e5cfff 100%);
+  color: var(--edusoft-blue);
+}
+
+/* Box de edición del alumno */
+.alumno-box {
+  border: 1.5px solid var(--edusoft-border);
+  margin-bottom: 20px;
+  padding: 22px 22px 16px 22px;
+  border-radius: 12px;
+  background: #f8fcff;
+  max-width: 99%;
+  box-shadow: 0 2px 14px #67b6fa13;
+  position: relative;
+  z-index: 1;
+}
+.alumno-nombre {
+  font-weight: bold;
+  color: var(--edusoft-blue);
+  margin-bottom: 16px;
+  font-size: 1.22rem;
+  background: #e9f5ff;
+  padding: 7px 14px 7px 14px;
+  border-radius: 8px;
+  display: inline-block;
+  box-shadow: 0 1px 4px #67b6fa11;
+  letter-spacing: 0.01em;
+}
+.rubro-group {
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed #c6e0f7;
+}
+.rubro-label {
+  font-size: 1.07em;
+  color: var(--edusoft-purple);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+.descripcion-global {
+  font-size: 0.99em;
+  color: #42506a;
+  margin-bottom: 4px;
+  display: block;
+}
+
+/* Input de nota */
+input[type=number] {
+  width: 100px;
+  font-size: 1.11em;
+  border-radius: 7px;
+  border: 2px solid #c4e4ff;
+  padding: 7px 12px;
+  margin-bottom: 4px;
+  color: #232a35;
+  background: #f0f6ff;
+  transition: border 0.18s, box-shadow 0.18s;
+  box-shadow: 0 1px 3px #67b6fa16;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 600;
+}
+input[type=number]:focus {
+  border-color: var(--edusoft-purple);
+  background: #f5edff;
+  outline: none;
+}
+
+/* Etiqueta para input */
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 3px;
+  color: var(--edusoft-blue);
+  letter-spacing: 0.01em;
+  font-size: 1.03em;
+  margin-top: 8px;
+}
+
+/* Promedio final */
+.promedio {
+  color: #fff;
+  font-size: 1.14em;
+  font-weight: bold;
+  background: linear-gradient(90deg, var(--edusoft-accent), #38a169 90%);
+  padding: 12px 28px;
+  border-radius: 11px;
+  margin-top: 18px;
+  text-align: right;
+  box-shadow: 0 2px 10px #38a16933;
+}
+
+/* Botón guardar */
+button[type=submit] {
+  font-size: 1.1em;
+  padding: 12px 38px;
+  border: none;
+  border-radius: 9px;
+  background: linear-gradient(90deg, var(--edusoft-blue), var(--edusoft-purple));
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 2px 12px #8d72e122;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+button[type=submit]:hover {
+  background: linear-gradient(90deg, var(--edusoft-purple), var(--edusoft-blue));
+  box-shadow: 0 4px 20px #8d72e144;
+  transform: translateY(-2px) scale(1.02);
+}
+
+@media (max-width: 1100px) {
+  #main-container {
+    max-width: 99vw;
+    padding: 8px 1vw 20px 1vw;
+  }
+}
+@media (max-width: 700px) {
+  .form-filtros { flex-direction: column; gap: 8px;}
+  .alumno-box { padding: 10px 2vw 10px 2vw; }
+}
