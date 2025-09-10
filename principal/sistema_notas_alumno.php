@@ -97,7 +97,7 @@ while ($row = $res->fetch_assoc()) $descripciones[$row['rubro']] = $row['descrip
     </style>
 </head>
 <body>
-     <button id="btn-back" title="Volver" onclick="window.history.back();">
+    <button id="btn-back" title="Volver" onclick="window.location.href='../registrosCards/inicio.php';">
         <i class="fas fa-arrow-left"></i>
     </button>
 

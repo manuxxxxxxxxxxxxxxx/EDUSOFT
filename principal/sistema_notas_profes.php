@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['notas']) && $id_clase 
         $sql_insert = "INSERT INTO notas_periodos (id_alumno, id_clase, materia, periodo, aula, integradora, prueba_objetiva, examen_trimestral, nota_formativa, promedio_final) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt2 = $conn->prepare($sql_insert);
         $stmt2->bind_param(
-            "iisiddddddd",
+            "iisidddddd",
             $id_alumno, $id_clase, $materia, $periodo,
             $vals['aula'], $vals['integradora'], $vals['prueba_objetiva'], $vals['examen_trimestral'], $vals['nota_formativa'], $prom
         );
@@ -156,7 +156,7 @@ if ($id_clase && $materia && $id_alumno) {
     </style>
 </head>
 <body>
-     <button id="btn-back" title="Volver" onclick="window.history.back();">
+    <button id="btn-back" title="Volver" onclick="window.location.href='../registrosCards/inicio.php';">
         <i class="fas fa-arrow-left"></i>
     </button>
     <div id="main-container">

@@ -166,19 +166,7 @@ while($row = $resultado_alumnos->fetch_assoc()) {
     $lista_alumnos[] = $row;
 }
 
-// Obtener avisos de la clase
-$avisos = [];
-if (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor' && isset($id_clase)) {
 
-    $sql_avisos = "SELECT * FROM avisos WHERE id_clase = ? ORDER BY fecha_subida DESC";
-    $stmt_avisos = $conn->prepare($sql_avisos);
-    $stmt_avisos->bind_param("i", $id_clase);
-    $stmt_avisos->execute();
-    $resultado_avisos = $stmt_avisos->get_result();
-    while ($aviso = $resultado_avisos->fetch_assoc()) {
-        $avisos[] = $aviso;
-    }
-}
 // RESPUESTAS MÚLTIPLES EN COMENTARIOS (ALUMNO O PROFESOR)
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['id_comentario_resp'], $_POST['texto_respuesta'])) {
     $id_comentario_resp = intval($_POST['id_comentario_resp']);

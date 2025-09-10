@@ -242,7 +242,7 @@ $total_alumnos_unicos = count($alumno_ids);
             <a href="#"><i class="fas fa-bullhorn"></i>Avisos</a>
             <a href="#"><i class="fas fa-envelope"></i>Mensajes <span class="badge">2</span></a>
             <a href="#"><i class="fas fa-user"></i>Perfil</a>
-            <a href="../loginProfes.php"><i class="fas fa-sign-out-alt"></i>Salir</a>
+            <a href="../conexiones/logout.php"><i class="fas fa-sign-out-alt"></i>Salir</a>
         </nav>
     </div>
     <div class="main-content">
@@ -996,6 +996,8 @@ document.getElementById('cerrarModalEliminarAviso').onclick = cerrarModalElimina
                 </script>
             </div>
         </div>
+
+
 
     </div>
     <script src="../nosotros/cursos.js"></script>

@@ -34,7 +34,7 @@
         </div>
         <div class="form-group">
             <i class='bx bxs-envelope' ></i>
-          <input data-i18n="contraseña"   datype="password" name="Pass" placeholder="Contraseña"  >
+          <input data-i18n="contraseña"   type="password" name="Pass" placeholder="Contraseña"  >
         </div>
 
 

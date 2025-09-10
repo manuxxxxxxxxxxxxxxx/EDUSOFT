@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <div class="form-group">
             <i class='bx bxs-envelope' ></i>
-          <input data-i18n="contraseña"   datype="password" name="contraseña" placeholder="Contraseña" required >
+          <input data-i18n="contraseña"   type="password" name="contraseña" placeholder="Contraseña" required >
         </div>
 
         <div class="form-actions">
