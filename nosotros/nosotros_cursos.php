@@ -9,132 +9,56 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<style>
-    body {
-      
-      min-height: 100vh;
-      font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-    }
-    .back-arrow {
-    position: absolute;
-    top: 12px;
-    left: 32px;
-    width: 56px;
-    height: 56px;
-    background: #222;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
-    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-    text-decoration: none;
-    z-index: 100;
-}
-.back-arrow i {
-    color: #fff;
-    font-size: 2rem;
-    transition: color 0.2s;
-}
-.back-arrow:hover {
-    background: #007bff;
-    transform: scale(1.08);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-}
-.back-arrow:active {
-    transform: scale(0.95);
-}
-    
-    .fc-toolbar-title,
-    .navbar-brand,
-    .text-pastel {
-      color: #1976d2 !important;
-    }
-    .fc-event {
-      background-color: #90caf9 !important; /* Azul pastel */
-      color: #1976d2 !important;
-      border: none !important;
-      border-radius: 8px !important;
-      font-size: 1rem;
-      box-shadow: 0 2px 6px rgba(144,202,249,0.12);
-      padding: 4px 8px;
-      font-weight: 500;
-    }
-    .fc-daygrid-day:hover {
-      background-color: #e3f2fd;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .custom-btn {
-      background: #90caf9;
-      color: #1976d2;
-      border: none;
-      border-radius: 8px;
-      padding: 8px 18px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      margin-bottom: 18px;
-      transition: background 0.2s;
-      box-shadow: 0 2px 8px rgba(144,202,249,0.08);
-    }
-    .custom-btn:hover {
-      background: #64b5f6;
-      color: #fff;
-    }
-    .navbar-brand {
-      font-size: 1.4rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      color: #1976d2;
-      padding-left: 30px;
-    }
-    .modal-header {
-      background: #90caf9;
-      color: #1976d2;
-    }
-    .modal-title {
-      font-weight: 700;
-      font-size: 1.2rem;
-    }
-    .form-label {
-      font-weight: 500;
-      color: #1976d2;
-    }
-    .btn-pastel {
-      background: #90caf9;
-      color: #1976d2;
-      border: none;
-      font-weight: 500;
-    }
-    .btn-pastel:hover {
-      background: #1976d2;
-      color: #fff;
-    }
-    .btn-outline-pastel {
-      border-color: #90caf9;
-      color: #1976d2;
-    }
-    .btn-outline-pastel:hover {
-      background: #90caf9;
-      color: #1976d2;
-    }
-    .alert-pastel {
-      background: #e3f2fd;
-      color: #1976d2;
-      border: 1px solid #90caf9;
-      box-shadow: 0 2px 8px rgba(144,202,249,0.08);
-    }
-  </style>
 <body>
-  <nav class="navbar navbar-expand-lg bg-white shadow-sm mb-4">
-    <div class="container">
-       <a href="javascript:history.back()" class="back-arrow" title="Volver atrás">
-  <i class="fa-solid fa-arrow-left"></i>
-</a>
-      <a class="navbar-brand" href="#"><img src="../img/ELEFANTE.png" alt="Logo" style="width: 60px; height: 60px;"> EduSoft Nosotros</a>
-    </div>
-  </nav>
+  
+      <!-- Navbar mejorado -->
+        <header class="navbar">
+            <nav class="nav-container">
+                <!-- Logo y marca -->
+                <div class="nav-brand">
+                    <a href="#" class="brand-link">
+                        <img src="../img/EDUSOFT2.png" alt="EDUSOFT Logo" class="brand-logo">
+                    </a>
+                </div>
+
+                <!-- Enlaces de navegación -->
+                <div class="nav-links" id="navLinks">
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a href="http://127.0.0.1:5000/" class="nav-link">
+                                <i class="fas fa-robot"></i>
+                                <span data-i18n="AteneaV">Atenea</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="../cursos.php" class="nav-link">
+                                <i class="fas fa-envelope"></i>
+                                <span data-i18n="contactV">Cursos</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+
   <div class="layout"> 
+
+<div class="language-dropdown">
+  <button class="lang-dropdown-btn" id="langDropdownBtn">
+    <img id="currentLangFlag" src="/img/mexico.png" alt="Idioma actual" width="18">
+    <span id="currentLangText">Español</span>
+    <i class="fas fa-chevron-down"></i>
+  </button>
+  <div class="lang-dropdown-list" id="langDropdownList">
+    <button class="lang-option" data-lang="es">
+      <img src="/img/mexico.png" alt="Español" width="18"> Español
+    </button>
+    <button class="lang-option" data-lang="en">
+      <img src="/img/estados.png" alt="English" width="18"> English
+    </button>
+  </div>
+</div>
+
                 <!-- Botón hamburguesa para móvil -->
                 <button class="nav-toggle" id="navToggle">
                     <span class="hamburger-line"></span>
@@ -146,6 +70,15 @@
     <!-- Contenido Principal -->
     <main class="main-content">
       <header class="top-header">
+        <button id="sidebar-toggle" class="sidebar-toggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="user-info">
+          <span>Bienvenido</span>
+          <a href="#" class="user-link">
+            <i class="fas fa-user-circle"></i>
+          </a>
+        </div>
       </header>
       
       <!-- Hero section -->

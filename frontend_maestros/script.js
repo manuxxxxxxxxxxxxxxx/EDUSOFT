@@ -6,31 +6,29 @@ function toggleSidebar() {
 
 // Navegación entre secciones
 document.addEventListener('DOMContentLoaded', function() {
-    const links = document.querySelectorAll('.sidebar nav a');
-    links.forEach(function(link, idx) {
-        link.onclick = function(e) {
-            // Permitir enlaces externos normalmente
-            if (this.classList.contains('enlace-externo')) return;
-            e.preventDefault();
-            links.forEach(a => a.classList.remove('active'));
-            this.classList.add('active');
-            document.querySelectorAll('.seccion-panel').forEach(sec => sec.style.display = 'none');
-            switch(idx) {
-                case 0: document.getElementById('seccion-inicio').style.display = 'block'; break;
-                case 1: document.getElementById('seccion-cursos').style.display = 'block'; break;
-                case 2: document.getElementById('seccion-alumnos').style.display = 'block'; break;
-                case 3: document.getElementById('seccion-tareas').style.display = 'block'; break;
-                case 4: document.getElementById('seccion-materiales').style.display = 'block'; break;
-                case 5: document.getElementById('seccion-avisos').style.display = 'block'; break;
-                case 6: document.getElementById('seccion-mensajes').style.display = 'block'; break;
-                case 7: document.getElementById('seccion-perfil').style.display = 'block'; break;
-                case 8: 
-                    window.location.href = link.href; // Esto sí ejecuta el logout real
-                    break;
-            }
-            if(window.innerWidth <= 800) document.querySelector('.sidebar').classList.remove('active');
+ const links = document.querySelectorAll('.sidebar nav a');
+links.forEach(function(link, idx) {
+    link.onclick = function(e) {
+        // Si es enlace externo, dejar que navegue normal
+        if(this.classList.contains('enlace-externo')) return;
+        e.preventDefault();
+        links.forEach(a => a.classList.remove('active'));
+        this.classList.add('active');
+        document.querySelectorAll('.seccion-panel').forEach(sec => sec.style.display = 'none');
+        switch(idx) {
+            case 0: document.getElementById('seccion-inicio').style.display = 'block'; break;
+            case 1: document.getElementById('seccion-cursos').style.display = 'block'; break;
+            case 2: document.getElementById('seccion-alumnos').style.display = 'block'; break;
+            case 3: document.getElementById('seccion-tareas').style.display = 'block'; break;
+            case 4: document.getElementById('seccion-materiales').style.display = 'block'; break;
+            case 5: document.getElementById('seccion-avisos').style.display = 'block'; break;
+            case 6: document.getElementById('seccion-mensajes').style.display = 'block'; break;
+            case 7: document.getElementById('seccion-perfil').style.display = 'block'; break;
+            case 8: window.location.reload(); break; // "Salir" recarga la página
         }
-    });
+        if(window.innerWidth <= 800) document.querySelector('.sidebar').classList.remove('active');
+    }
+});
 });
 // Buscador de alumnos
 function searchStudent() {

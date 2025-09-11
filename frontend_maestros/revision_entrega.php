@@ -151,6 +151,7 @@ $sugerido = calcularCalificacionRubrica($criterios, array_map(function($v, $i) {
     .rubrica-table th {background:#f9f9f9;}
     .criterio-input {width:60px;}
     </style>
+    <link rel="stylesheet" href="revision.css">
     <script>
     // JS para recalcular la calificación sugerida en tiempo real
     function recalcularCalificacion() {
