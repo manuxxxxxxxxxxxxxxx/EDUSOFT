@@ -104,13 +104,15 @@ while ($fila = $result_tareas->fetch_assoc()) {
 $entregas_alumno = [];
 if (isset($_SESSION['id_estudiante'])) {
     $id_estudiante = $_SESSION['id_estudiante'];
-    $sql = "SELECT * FROM tareas WHERE id_estudiante = ? AND materia = ? AND id_clase = ?";
+    // NO filtres por materia, solo por id_estudiante e id_clase
+    $sql = "SELECT * FROM tareas WHERE id_estudiante = ? AND id_clase = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("isi", $id_estudiante, $materia, $id_clase);
+    $stmt->bind_param("ii", $id_estudiante, $id_clase);
     $stmt->execute();
     $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()) {
-        $entregas_alumno[$row['id_tarea_profesor']] = $row; // index by tarea_profesor id
+        // Indexar por id_tarea_profesor para encontrar la entrega por cada tarea asignada
+        $entregas_alumno[$row['id_tarea_profesor']] = $row;
     }
 }
 
@@ -396,133 +398,145 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                 </div>
             </section>
 <section id="tareas" class="seccion" style="display: none;">
-                <div class="section-card">
-                    <h2 data-i18n="tareas">Tareas</h2>
-                    <div class="tareas-container">
-                        <?php if (!empty($tareas_profesor)): ?>
-                            <?php foreach ($tareas_profesor as $tarea): ?>
-                                <div class="tarea">
-                                    <i class="fas fa-book"></i>
-                                    <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
-                                    <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
-                                    <small>
-                                    Fecha límite: <?php echo htmlspecialchars($tarea['fecha_limite'] ?? ''); ?> | 
-                                    Puntos: <?php echo $tarea['puntos']; ?>
-                                    </small>
-                                    <?php if (!empty($tarea['archivo_adjunto'])): ?>
-                                        <br><a href="<?php echo htmlspecialchars($tarea['archivo_adjunto']); ?>" target="_blank">📎 Ver archivo adjunto del profesor</a>
-                                    <?php endif; ?>
-                                    <!-- Mostrar la rúbrica de la tarea en la sección de tareas -->
-                                    <?php
-                                    $sql_rubrica = "SELECT * FROM rubricas WHERE id_tarea = ?";
-                                    $stmt_rubrica = $conn->prepare($sql_rubrica);
-                                    $stmt_rubrica->bind_param("i", $tarea['id']);
-                                    $stmt_rubrica->execute();
-                                    $res_rubrica = $stmt_rubrica->get_result();
-                                    $rubrica = $res_rubrica->fetch_assoc();
-                                    $stmt_rubrica->close();
-                                    ?>
-                                    <?php if ($rubrica): ?>
-                                    <div class="rubrica-tarea">
-                                        <details class="rubrica-details">
-                                            <summary style="font-weight:bold;cursor:pointer;">
-                                                <i class="fas fa-clipboard-list"></i>
-                                                Rúbrica de evaluación: <?= htmlspecialchars($rubrica['titulo']) ?>
-                                                <span style="font-size:0.9em;color:#888;margin-left:8px;">(ver criterios)</span>
-                                            </summary>
-                                            <div style="margin-top:10px;">
-                                                <?php if (!empty($rubrica['descripcion'])): ?>
-                                                    <div style="margin-bottom:8px;color:#555;"><?= htmlspecialchars($rubrica['descripcion']) ?></div>
-                                                <?php endif; ?>
-                                                <?php
-                                                    $criterios = json_decode($rubrica['criterios_json'], true);
-                                                    if (is_array($criterios) && count($criterios) > 0):
-                                                ?>
-                                                    <table style="width:98%;border-collapse:collapse;margin-bottom:8px;">
-                                                        <thead>
-                                                            <tr style="background:#f3f7ff;">
-                                                                <th style="padding:6px 10px;text-align:left;border:1px solid #dbeafe;">Criterio</th>
-                                                                <th style="padding:6px 10px;text-align:left;border:1px solid #dbeafe;">Porcentaje</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <?php foreach ($criterios as $cr): ?>
-                                                            <tr>
-                                                                <td style="padding:6px 10px;border:1px solid #e3eafc;"><?= htmlspecialchars($cr['nombre']) ?></td>
-                                                                <td style="padding:6px 10px;border:1px solid #e3eafc;"><?= $cr['porcentaje'] ?>%</td>
-                                                            </tr>
-                                                        <?php endforeach; ?>
-                                                        </tbody>
-                                                    </table>
-                                                <?php else: ?>
-                                                    <div>No hay criterios definidos.</div>
-                                                <?php endif; ?>
-                                            </div>
-                                        </details>
-                                    </div>
+    <div class="section-card">
+        <h2 data-i18n="tareas">Tareas</h2>
+        <div class="tareas-container">
+            <?php foreach ($tareas_profesor as $tarea): ?>
+                <div class="tarea">
+                    <i class="fas fa-book"></i>
+                    <h4><?php echo htmlspecialchars($tarea['titulo']); ?></h4>
+                    <p><?php echo htmlspecialchars($tarea['descripcion']); ?></p>
+                    <small>
+                        Fecha límite: <?php echo htmlspecialchars($tarea['fecha_limite'] ?? ''); ?> | 
+                    </small>
+                    <!-- Mostrar nota recibida por el alumno -->
+                    <?php if (isset($_SESSION['id_estudiante'])): ?>
+                        <?php
+                        $entrega = $entregas_alumno[$tarea['id']] ?? null;
+                        ?>
+                        <div class="nota-tarea-alumno" style="margin:10px 0 5px 0;">
+                            <?php if ($entrega): ?>
+                                <strong>Nota recibida:</strong>
+                                <?php
+                                if ($entrega['calificacion'] !== null) {
+                                    echo htmlspecialchars($entrega['calificacion']);
+                                    if (!empty($entrega['retroalimentacion'])) {
+                                        echo '<br><small><b>Retroalimentación:</b> ' . htmlspecialchars($entrega['retroalimentacion']) . '</small>';
+                                    }
+                                } else {
+                                    echo "<span style='color: #888;'>Sin calificar aún</span>";
+                                }
+                                ?>
+                            <?php else: ?>
+                                <span style="color:#888;">No has entregado esta tarea.</span>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (!empty($tarea['archivo_adjunto'])): ?>
+                        <br><a href="<?php echo htmlspecialchars($tarea['archivo_adjunto']); ?>" target="_blank">📎 Ver archivo adjunto del profesor</a>
+                    <?php endif; ?>
+
+                    <?php
+                    // Mostrar la rúbrica de la tarea en la sección de tareas
+                    $sql_rubrica = "SELECT * FROM rubricas WHERE id_tarea = ?";
+                    $stmt_rubrica = $conn->prepare($sql_rubrica);
+                    $stmt_rubrica->bind_param("i", $tarea['id']);
+                    $stmt_rubrica->execute();
+                    $res_rubrica = $stmt_rubrica->get_result();
+                    $rubrica = $res_rubrica->fetch_assoc();
+                    $stmt_rubrica->close();
+                    ?>
+                    <?php if ($rubrica): ?>
+                    <div class="rubrica-tarea">
+                        <details class="rubrica-details">
+                            <summary style="font-weight:bold;cursor:pointer;">
+                                <i class="fas fa-clipboard-list"></i>
+                                Rúbrica de evaluación: <?= htmlspecialchars($rubrica['titulo']) ?>
+                                <span style="font-size:0.9em;color:#888;margin-left:8px;">(ver criterios)</span>
+                            </summary>
+                            <div style="margin-top:10px;">
+                                <?php if (!empty($rubrica['descripcion'])): ?>
+                                    <div style="margin-bottom:8px;color:#555;"><?= htmlspecialchars($rubrica['descripcion']) ?></div>
                                 <?php endif; ?>
-                                    <?php if (isset($_SESSION['id_estudiante'])): ?>
-                                        <div class="entrega-alumno">
-                                            <?php
-                                            $entrega = $entregas_alumno[$tarea['id']] ?? null;
-                                            $archivos = [];
-                                            if ($entrega) {
-                                                $sql_archivos = "SELECT * FROM tareas_archivos WHERE id_tarea = ?";
-                                                $stmt_archivos = $conn->prepare($sql_archivos);
-                                                $stmt_archivos->bind_param("i", $entrega['id']);
-                                                $stmt_archivos->execute();
-                                                $result_archivos = $stmt_archivos->get_result();
-                                                while ($fila = $result_archivos->fetch_assoc()) {
-                                                    $archivos[] = $fila;
-                                                }
-                                            }
-                                            ?>
-                                            <?php if ($entrega && count($archivos) > 0): ?>
-                                                <div>
-                                                    <h5>Archivos subidos:</h5>
-                                                    <?php foreach ($archivos as $file): ?>
-                                                        <a href="<?php echo htmlspecialchars($file['ruta_archivo']); ?>" target="_blank">
-                                                            <?php echo htmlspecialchars($file['nombre_archivo']); ?>
-                                                        </a>
-                                                        <small>(<?php echo htmlspecialchars($file['fecha_subida']); ?>)</small>
-                                                        <button onclick="eliminarArchivo(<?php echo $file['id']; ?>)">❌ Eliminar archivo</button>
-                                                        <br>
-                                                    <?php endforeach; ?>
-                                                </div>
-                                            <?php endif; ?>
-                                            <!-- MOSTRAR NOTA Y RETROALIMENTACIÓN DEL PROFESOR -->
-                                            <?php if ($entrega && isset($entrega['calificacion'])): ?>
-                                                <div class="nota-alumno">
-                                                    <strong>Nota del profesor:</strong> 
-                                                    <?php echo ($entrega['calificacion'] !== null) ? htmlspecialchars($entrega['calificacion']) : 'Sin calificar aún'; ?>
-                                                    <?php if (!empty($entrega['retroalimentacion'])): ?>
-                                                        <br><small><b>Retroalimentación:</b> <?php echo htmlspecialchars($entrega['retroalimentacion']); ?></small>
-                                                    <?php endif; ?>
-                                                </div>
-                                            <?php endif; ?>
-                                            <form class="formSubirTarea" action="subir_tarea_ajax.php" method="POST" enctype="multipart/form-data">
-                                                <input type="hidden" name="id_tarea_profesor" value="<?php echo $tarea['id']; ?>">
-                                                <input type="hidden" name="materia" value="matematica">
-                                                <input type="hidden" name="id_clase" value="<?php echo $id_clase; ?>">
-                                                <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>">
-                                                <?php if ($entrega): ?>
-                                                    <input type="hidden" name="id_entrega" value="<?php echo $entrega['id']; ?>">
-                                                <?php endif; ?>
-                                                <label for="archivo_<?php echo $tarea['id']; ?>" data-i18n="archivo2">Archivo(s):</label>
-                                                <input type="file" name="archivo[]" id="archivo_<?php echo $tarea['id']; ?>" multiple required><br>
-                                                <button type="submit" data-i18n="subir">Subir archivo(s)</button>
-                                            </form>
-                                            <div id="mensajeSubida_<?php echo $tarea['id']; ?>"></div>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <p>No se han asignado tareas aún.</p>
-                        <?php endif; ?>
+                                <?php
+                                    $criterios = json_decode($rubrica['criterios_json'], true);
+                                    if (is_array($criterios) && count($criterios) > 0):
+                                ?>
+                                    <table style="width:98%;border-collapse:collapse;margin-bottom:8px;">
+                                        <thead>
+                                            <tr style="background:#f3f7ff;">
+                                                <th style="padding:6px 10px;text-align:left;border:1px solid #dbeafe;">Criterio</th>
+                                                <th style="padding:6px 10px;text-align:left;border:1px solid #dbeafe;">Porcentaje</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php foreach ($criterios as $cr): ?>
+                                            <tr>
+                                                <td style="padding:6px 10px;border:1px solid #e3eafc;"><?= htmlspecialchars($cr['nombre']) ?></td>
+                                                <td style="padding:6px 10px;border:1px solid #e3eafc;"><?= $cr['porcentaje'] ?>%</td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                <?php else: ?>
+                                    <div>No hay criterios definidos.</div>
+                                <?php endif; ?>
+                            </div>
+                        </details>
                     </div>
+                    <?php endif; ?>
+
+                    <?php if (isset($_SESSION['id_estudiante'])): ?>
+                        <div class="entrega-alumno">
+                            <?php
+                            // Se usa el mismo $entrega definido arriba
+                            $archivos = [];
+                            if ($entrega) {
+                                $sql_archivos = "SELECT * FROM tareas_archivos WHERE id_tarea = ?";
+                                $stmt_archivos = $conn->prepare($sql_archivos);
+                                $stmt_archivos->bind_param("i", $entrega['id']);
+                                $stmt_archivos->execute();
+                                $result_archivos = $stmt_archivos->get_result();
+                                while ($fila = $result_archivos->fetch_assoc()) {
+                                    $archivos[] = $fila;
+                                }
+                            }
+                            ?>
+                            <?php if ($entrega && count($archivos) > 0): ?>
+                                <div>
+                                    <h5>Archivos subidos:</h5>
+                                    <?php foreach ($archivos as $file): ?>
+                                        <a href="<?php echo htmlspecialchars($file['ruta_archivo']); ?>" target="_blank">
+                                            <?php echo htmlspecialchars($file['nombre_archivo']); ?>
+                                        </a>
+                                        <small>(<?php echo htmlspecialchars($file['fecha_subida']); ?>)</small>
+                                        <button onclick="eliminarArchivo(<?php echo $file['id']; ?>)">❌ Eliminar archivo</button>
+                                        <br>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+
+                            <form class="formSubirTarea" action="subir_tarea_ajax.php" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="id_tarea_profesor" value="<?php echo $tarea['id']; ?>">
+                                <input type="hidden" name="materia" value="matematica">
+                                <input type="hidden" name="id_clase" value="<?php echo $id_clase; ?>">
+                                <input type="hidden" name="id_estudiante" value="<?php echo $_SESSION['id_estudiante']; ?>">
+                                <?php if ($entrega): ?>
+                                    <input type="hidden" name="id_entrega" value="<?php echo $entrega['id']; ?>">
+                                <?php endif; ?>
+                                <label for="archivo_<?php echo $tarea['id']; ?>" data-i18n="archivo2">Archivo(s):</label>
+                                <input type="file" name="archivo[]" id="archivo_<?php echo $tarea['id']; ?>" multiple required><br>
+                                <button type="submit" data-i18n="subir">Subir archivo(s)</button>
+                            </form>
+                            <div id="mensajeSubida_<?php echo $tarea['id']; ?>"></div>
+                        </div>
+                    <?php endif; ?>
                 </div>
-        </section>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
 <section id="comentarios" class="seccion">
     <h2>Comentarios y dudas 
         <?php
