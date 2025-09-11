@@ -887,59 +887,82 @@ function cerrarModalEliminarAviso() {
 }
 document.getElementById('cerrarModalEliminarAviso').onclick = cerrarModalEliminarAviso;
 </script>
-        <!-- MENSAJES / COMENTARIOS MULTIHILO -->
-        <div id="seccion-mensajes" class="seccion-panel">
-            <div class="section">
-                <h3>Comentarios/dudas de alumnos 
-                    <?php if ($pendientes > 0): ?>
-                        <span class="badge" style="background:#e65100;color:white;padding:2px 9px;border-radius:11px;">
-                            <?= $pendientes ?> pendientes
-                        </span>
-                    <?php endif; ?>
-                </h3>
-                <ul style="list-style:none;padding-left:0;">
-                    <?php foreach ($comentarios as $c): ?>
-                        <li id="comentario-<?= $c['id'] ?>" style="margin-bottom:15px;border-bottom:1px solid #93a3ddff;padding-bottom:8px;">
-                            <b>
-                                <?= htmlspecialchars(($c['nombre_alumno'] ?? '') ?: '') ?>
-                                <?php if (!$id_clase): ?>
-                                    <span style="color:#888;">(<?= htmlspecialchars(($c['nombre_clase'] ?? '') ?: '') ?> - <?= htmlspecialchars(($c['materia'] ?? '') ?: '') ?>)</span>
-                                <?php endif; ?>
-                            </b>
-                            <br>
-                            <?= htmlspecialchars(($c['comentario'] ?? '') ?: '') ?>
-                            <small style="color:#888;">(<?= isset($c['fecha']) ? date("d/m/Y H:i", strtotime($c['fecha'])) : '' ?>)</small>
-                            <?php
-                            $respuestas = [];
-                            $stmt_resp = $conn->prepare("SELECT * FROM respuestas_comentario WHERE id_comentario = ? ORDER BY fecha ASC");
-                            $stmt_resp->bind_param("i", $c['id']);
-                            $stmt_resp->execute();
-                            $result_resp = $stmt_resp->get_result();
-                            while ($row_resp = $result_resp->fetch_assoc()) {
-                                $respuestas[] = $row_resp;
-                            }
-                            $stmt_resp->close();
-                            ?>
-                            <?php foreach ($respuestas as $r): ?>
-                                <div class="respuesta-hilo <?= ($r['tipo_usuario'] ?? '') == 'profesor' ? 'resp-prof' : 'resp-alum' ?>">
-                                    <b><?= (($r['tipo_usuario'] ?? '') == 'profesor') ? 'Profesor' : 'Alumno' ?>:</b>
-                                    <?= htmlspecialchars(($r['respuesta'] ?? '') ?: '') ?>
-                                    <small style="color:#888;"><?= isset($r['fecha']) ? date("d/m/Y H:i", strtotime($r['fecha'])) : '' ?></small>
-                                </div>
-                            <?php endforeach; ?>
-                            <form method="POST" class="form-resp-comentario" action="index.php?id_clase=<?= htmlspecialchars($id_clase ?? '') ?>">
-                                <input type="hidden" name="id_comentario_resp" value="<?= $c['id'] ?>">
-                                <textarea name="texto_respuesta" rows="2" class="textarea-respuesta" placeholder="Responder al comentario..." required></textarea>
-                                <button type="submit" class="btn-respuesta">Responder</button>
-                            </form>
-                        </li>
+<!-- MENSAJES / COMENTARIOS MULTIHILO -->
+<div id="seccion-mensajes" class="seccion-panel">
+    <div class="section">
+        <h3>Comentarios/dudas de alumnos 
+            <?php if ($pendientes > 0): ?>
+                <span class="badge" style="background:#e65100;color:white;padding:2px 9px;border-radius:11px;">
+                    <?= $pendientes ?> pendientes
+                </span>
+            <?php endif; ?>
+        </h3>
+        <ul style="list-style:none;padding-left:0;">
+            <?php foreach ($comentarios as $c): ?>
+                <li id="comentario-<?= $c['id'] ?>" style="margin-bottom:15px;border-bottom:1px solid #93a3ddff;padding-bottom:8px;">
+                    <b>
+                        <?= htmlspecialchars(($c['nombre_alumno'] ?? '') ?: '') ?>
+                        <?php if (!$id_clase): ?>
+                            <span style="color:#888;">(<?= htmlspecialchars(($c['nombre_clase'] ?? '') ?: '') ?> - <?= htmlspecialchars(($c['materia'] ?? '') ?: '') ?>)</span>
+                        <?php endif; ?>
+                    </b>
+                    <br>
+                    <?= htmlspecialchars(($c['comentario'] ?? '') ?: '') ?>
+                    <small style="color:#888;">(<?= isset($c['fecha']) ? date("d/m/Y H:i", strtotime($c['fecha'])) : '' ?>)</small>
+                    <?php
+                    $respuestas = [];
+                    $stmt_resp = $conn->prepare("SELECT * FROM respuestas_comentario WHERE id_comentario = ? ORDER BY fecha ASC");
+                    $stmt_resp->bind_param("i", $c['id']);
+                    $stmt_resp->execute();
+                    $result_resp = $stmt_resp->get_result();
+                    while ($row_resp = $result_resp->fetch_assoc()) {
+                        $respuestas[] = $row_resp;
+                    }
+                    $stmt_resp->close();
+                    ?>
+                    <?php foreach ($respuestas as $r): ?>
+                        <?php
+                        // Obtener el nombre real según el tipo de usuario de la respuesta
+                        $nombre_usuario = '';
+                        if (($r['tipo_usuario'] ?? '') == 'profesor') {
+                            $stmt_nombre = $conn->prepare("SELECT nombre FROM profesores WHERE id = ?");
+                            $stmt_nombre->bind_param("i", $r['id_usuario']);
+                            $stmt_nombre->execute();
+                            $stmt_nombre->bind_result($nombre_profesor_resp);
+                            $stmt_nombre->fetch();
+                            $stmt_nombre->close();
+                            $nombre_usuario = $nombre_profesor_resp ?: 'Profesor';
+                        } elseif (($r['tipo_usuario'] ?? '') == 'alumno') {
+                            $stmt_nombre = $conn->prepare("SELECT nombre FROM estudiantes WHERE ID = ?");
+                            $stmt_nombre->bind_param("i", $r['id_usuario']);
+                            $stmt_nombre->execute();
+                            $stmt_nombre->bind_result($nombre_alumno_resp);
+                            $stmt_nombre->fetch();
+                            $stmt_nombre->close();
+                            $nombre_usuario = $nombre_alumno_resp ?: 'Alumno';
+                        } else {
+                            $nombre_usuario = 'Usuario';
+                        }
+                        ?>
+                        <div class="respuesta-hilo <?= ($r['tipo_usuario'] ?? '') == 'profesor' ? 'resp-prof' : 'resp-alum' ?>">
+                            <b><?= htmlspecialchars($nombre_usuario) ?>:</b>
+                            <?= htmlspecialchars(($r['respuesta'] ?? '') ?: '') ?>
+                            <small style="color:#888;"><?= isset($r['fecha']) ? date("d/m/Y H:i", strtotime($r['fecha'])) : '' ?></small>
+                        </div>
                     <?php endforeach; ?>
-                    <?php if (empty($comentarios)): ?>
-                        <li>No hay comentarios/dudas aún.</li>
-                    <?php endif; ?>
-                </ul>
-            </div>
-        </div>
+                    <form method="POST" class="form-resp-comentario" action="index.php?id_clase=<?= htmlspecialchars($id_clase ?? '') ?>">
+                        <input type="hidden" name="id_comentario_resp" value="<?= $c['id'] ?>">
+                        <textarea name="texto_respuesta" rows="2" class="textarea-respuesta" placeholder="Responder al comentario..." required></textarea>
+                        <button type="submit" class="btn-respuesta">Responder</button>
+                    </form>
+                </li>
+            <?php endforeach; ?>
+            <?php if (empty($comentarios)): ?>
+                <li>No hay comentarios/dudas aún.</li>
+            <?php endif; ?>
+        </ul>
+    </div>
+</div>
         <!-- PERFIL -->
         <div id="seccion-perfil" class="seccion-panel">
             <div class="section">

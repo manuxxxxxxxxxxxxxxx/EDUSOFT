@@ -549,10 +549,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
     </h2>
     <?php if (isset($_SESSION['id_estudiante']) || (isset($_SESSION['id']) && $_SESSION['rol'] === 'profesor')): ?>
     <form method="POST" class="form-nuevo-comentario">
-    <label for="nuevo_comentario">Enviar nuevo comentario:</label>
-    <textarea name="nuevo_comentario" id="nuevo_comentario" class="textarea-nuevo-comentario" rows="3" placeholder="Escribe tu duda o comentario..." required></textarea>
-    <button type="submit" class="btn-nuevo-comentario">Enviar comentario</button>
-</form>
+        <label for="nuevo_comentario">Enviar nuevo comentario:</label>
+        <textarea name="nuevo_comentario" id="nuevo_comentario" class="textarea-nuevo-comentario" rows="3" placeholder="Escribe tu duda o comentario..." required></textarea>
+        <button type="submit" class="btn-nuevo-comentario">Enviar comentario</button>
+    </form>
     <?php endif; ?>
     <ul style="list-style:none;padding-left:0;">
         <?php foreach ($comentarios as $c): ?>
@@ -573,8 +573,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                 $stmt_resp->close();
                 ?>
                 <?php foreach ($respuestas as $r): ?>
+                    <?php
+                    // Obtener el nombre real del profesor o alumno que responde
+                    $nombre_usuario = '';
+                    if ($r['tipo_usuario'] == 'profesor') {
+                        $stmt_nombre = $conn->prepare("SELECT nombre FROM profesores WHERE id = ?");
+                        $stmt_nombre->bind_param("i", $r['id_usuario']);
+                        $stmt_nombre->execute();
+                        $stmt_nombre->bind_result($nombre_profesor_resp);
+                        $stmt_nombre->fetch();
+                        $stmt_nombre->close();
+                        $nombre_usuario = $nombre_profesor_resp ?: 'Profesor';
+                    } else {
+                        $stmt_nombre = $conn->prepare("SELECT nombre FROM estudiantes WHERE ID = ?");
+                        $stmt_nombre->bind_param("i", $r['id_usuario']);
+                        $stmt_nombre->execute();
+                        $stmt_nombre->bind_result($nombre_alumno_resp);
+                        $stmt_nombre->fetch();
+                        $stmt_nombre->close();
+                        $nombre_usuario = $nombre_alumno_resp ?: 'Alumno';
+                    }
+                    ?>
                     <div class="respuesta-hilo <?= $r['tipo_usuario'] == 'profesor' ? 'resp-prof' : 'resp-alum' ?>">
-                        <b><?= $r['tipo_usuario'] == 'profesor' ? 'Profesor' : 'Alumno' ?>:</b>
+                        <b><?= htmlspecialchars($nombre_usuario) ?>:</b>
                         <?= htmlspecialchars($r['respuesta']) ?>
                         <small style="color:#888;"><?= date("d/m/Y H:i", strtotime($r['fecha'])) ?></small>
                     </div>
