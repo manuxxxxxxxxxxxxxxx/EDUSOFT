@@ -139,46 +139,7 @@ if (isset($_GET['bienvenido'])) {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
   /* --- MEJOR BOTONERA EN LAS CARDS DE MATERIAS --- */
-  .card .card-actions {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 18px;
-  }
-  .card .card-actions .btn, 
-  .card .card-actions .btn-danger {
-    padding: 10px 26px;
-    font-size: 15px;
-    font-weight: 500;
-    border-radius: 8px;
-    border: none;
-    outline: none;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    box-shadow: 0 2px 12px rgba(74,144,226,0.10);
-    transition: background 0.25s, color 0.2s, transform 0.15s, box-shadow 0.2s;
-  }
-  .card .card-actions .btn {
-    background: linear-gradient(90deg, #9fc7e8 60%, #7db3e0 100%);
-    color: #1a3a54;
-  }
-  .card .card-actions .btn:hover {
-    background: linear-gradient(90deg, #7db3e0 70%, #4a90e2 100%);
-    color: #fff;
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 4px 24px rgba(74,144,226,0.15);
-  }
-  .card .card-actions .btn-danger {
-    background: linear-gradient(90deg, #e53935 60%, #d81b60 100%);
-    color: #fff;
-  }
-  .card .card-actions .btn-danger:hover {
-    background: linear-gradient(90deg, #b71c1c 70%, #ad1457 100%);
-    color: #fff;
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 4px 24px rgba(229,57,53,0.14);
-  }
+
   @media (max-width: 600px) {
     .card .card-actions {
       flex-direction: column;
@@ -225,8 +186,8 @@ if (isset($_GET['bienvenido'])) {
             <span data-i18n="calendario">Calendario</span>
           </a>
         </li>
-        <li class="sidebar-item has-submenu">
-          <a href="../nosotros/nosotros.php" class="sidebar-link" title="Comunidad">
+        <li class="sidebar-item">
+          <a href="../nosotros/nosotros_cursos.php" class="sidebar-link" title="Comunidad">
             <i class="fas fa-users"></i>
             <span data-i18n="comunidN">Nosotros</span>
           </a>
