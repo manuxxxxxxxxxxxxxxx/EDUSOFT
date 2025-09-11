@@ -124,7 +124,7 @@
               <p data-i18n="somosP2">Combinamos nuestros conocimientos técnicos con una visión fresca de la educación para crear soluciones innovadoras que faciliten el acceso al conocimiento. Creemos que la tecnología debe ser un puente, no una barrera, para el aprendizaje efectivo.</p>
             </div>
             <div class="about-image">
-              <img src="/placeholder.svg?height=300&width=400" alt="Equipo de estudiantes trabajando">
+              <img src="../img/docentes.jpg" alt="Equipo de estudiantes trabajando">
             </div>
           </div>
         </section>
