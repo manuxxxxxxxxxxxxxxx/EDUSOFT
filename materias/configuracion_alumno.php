@@ -37,14 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Si viene URL
     elseif (isset($_POST['url_imagen']) && filter_var($_POST['url_imagen'], FILTER_VALIDATE_URL)) {
         $url = trim($_POST['url_imagen']);
-        $ext = strtolower(pathinfo(parse_url($url, PHP_URL_PATH), PATHINFO_EXTENSION));
-        if (in_array($ext, ["jpg", "jpeg", "png", "gif", "webp"])) {
-            $ruta_guardar = $url; // Guardamos la URL directamente en BD
+        $path = parse_url($url, PHP_URL_PATH);
+        if (preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $path)) {
+            $ruta_guardar = $url;
         } else {
             $error = "La URL debe terminar en jpg, png, gif o webp";
         }
-    } else {
-        $error = "No se seleccionó archivo ni se ingresó URL válida";
     }
 
     if ($ruta_guardar && !$error) {

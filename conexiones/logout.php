@@ -11,7 +11,7 @@ if (ini_get('session.use_cookies')) {
 }
 
 session_destroy();
-header("Location: ../principal/index.php"); // o ../login.php según tu estructura
+header("Location: ../principal/index.php"); // según estructura
 exit;
 ?>
 

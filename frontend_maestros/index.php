@@ -246,14 +246,10 @@ $total_alumnos_unicos = count($alumno_ids);
             <a href="#"><i class="fas fa-bullhorn"></i>Avisos</a>
             <a href="#"><i class="fas fa-envelope"></i>Mensajes <span class="badge">2</span></a>
             <a href="#"><i class="fas fa-user"></i>Perfil</a>
-
+            <a href="../diariopedagogico/formulario_profesor.php" class="enlace-externo" target="_blank" rel="noopener">
+            <i class="fa-solid fa-book-open-reader"></i>Diario pedagógico
+            </a>
             <a href="../conexiones/logout.php"><i class="fas fa-sign-out-alt"></i> Salir</a>
-
-<a href="../diariopedagogico/formulario_profesor.php" class="enlace-externo" target="_blank" rel="noopener">
-  <i class="fa-solid fa-book-open-reader"></i>Diario pedagógico
-</a>
-
-            <a href="../conexiones/logout.php"><i class="fas fa-sign-out-alt"></i>Salir</a>
 
         </nav>
     </div>

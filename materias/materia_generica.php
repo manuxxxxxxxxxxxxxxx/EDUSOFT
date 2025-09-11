@@ -434,7 +434,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                     <?php endif; ?>
 
                     <?php if (!empty($tarea['archivo_adjunto'])): ?>
-                        <br><a href="<?php echo htmlspecialchars($tarea['archivo_adjunto']); ?>" target="_blank">📎 Ver archivo adjunto del profesor</a>
+                        <br><a href="<?php echo htmlspecialchars($tarea['archivo_adjunto']); ?>" target="_blank">📎 Descargar archivo adjunto del profesor</a>
                     <?php endif; ?>
 
                     <?php
