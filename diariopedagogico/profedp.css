@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+body {
+    background: #0e223a;
+    min-height: 100vh;
+    font-family: 'Poppins', Arial, sans-serif;
+    color: #070707;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    /* Fondo con imagen, capa oscura encima */
+    background: 
+        linear-gradient(rgba(17,34,64,0.68), rgba(36,52,86,0.80)),
+        url('../img/XD.png') center/cover no-repeat fixed;
+}
+
+/* Elimina circulos, deja solo icono decorativo si quieres */
+.diario-bg-art {
+    position: fixed;
+    left: 0; top: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+}
+.diario-bg-art .book-icon {
+    position: absolute;
+    left: 50%;
+    top: 8vw;
+    transform: translateX(-50%);
+    font-size: 6.5rem;
+    color: #050505cc;
+    opacity: 0.09;
+    z-index: 2;
+    filter: blur(1.3px);
+}
+
+h2 {
+    margin-top: 44px;
+    margin-bottom: 18px;
+    font-weight: 800;
+    font-size: 2.4em;
+    color: #f7faff;
+    letter-spacing: 1.3px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    z-index: 2;
+    position: relative;
+    text-shadow: 0 2px 16px #233a5d60;
+}
+h2 .fa-book-open-reader {
+    color: #5c9ceb;
+    font-size: 1.1em;
+    vertical-align: middle;
+}
+
+.form-diario-edusoft {
+    background: rgba(255,255,255,0.99);
+    border-radius: 28px;
+    box-shadow: 0 10px 48px rgba(60, 98, 190, 0.11), 0 2.5px 10px 0 rgba(34,66,110,0.10);
+    padding: 56px 54px 38px 54px;
+    min-width: 340px;
+    max-width: 540px;
+    width: 100%;
+    min-height: 900px;
+    margin-bottom: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    position: relative;
+    justify-content: flex-start;
+    z-index: 2;
+    border: 1.5px solid #e0ebff;
+    animation: entrada-form 1.2s cubic-bezier(.51,.91,.37,1.12);
+}
+@keyframes entrada-form {
+    from { opacity: 0; transform: translateY(40px) scale(0.97);}
+    to   { opacity: 1; transform: translateY(0) scale(1);}
+}
+
+.form-diario-edusoft > div {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    flex: 1 0 auto;
+}
+
+label {
+    font-weight: 700;
+    color: #2468ba;
+    margin-bottom: 7px;
+    display: block;
+    letter-spacing: 0.01em;
+}
+
+select, textarea, input[type="text"] {
+    font-family: 'Poppins', Arial, sans-serif;
+    font-size: 1em;
+    border-radius: 10px;
+    border: 2.3px solid #bdd3f6;
+    background: #f7fbfe;
+    color: #0d0d0e;
+    padding: 13px 17px;
+    width: 100%;
+    margin-bottom: 2px;
+    min-height: 51px;
+    box-sizing: border-box;
+    box-shadow: 0 1.5px 8px #e2e6f055;
+    transition: border 0.23s, box-shadow 0.17s;
+}
+
+select:focus, textarea:focus, input[type="text"]:focus {
+    border-color: #4a90e2;
+    background: #eef6ff;
+    box-shadow: 0 4px 22px #4a90e21c;
+    outline: none;
+}
+
+textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+button[type="submit"] {
+    background: linear-gradient(90deg, #4a90e2 60%, #236ad5 100%);
+    color: #fff;
+    font-weight: 800;
+    font-family: 'Poppins', Arial, sans-serif;
+    font-size: 1.19em;
+    border: none;
+    border-radius: 13px;
+    padding: 19px 0;
+    cursor: pointer;
+    margin-top: 18px;
+    box-shadow: 0 2px 18px rgba(34,96,180,0.16);
+    transition: background 0.18s, transform 0.14s, box-shadow 0.13s;
+    letter-spacing: 0.19px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+button[type="submit"]:hover, button[type="submit"]:focus {
+    background: linear-gradient(90deg, #236ad5 80%, #4a90e2 100%);
+    transform: scale(1.038);
+    box-shadow: 0 8px 28px #2260b418;
+}
+button[type="submit"]::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 18px; top: 17px;
+    width: 38px; height: 38px;
+    background: url('https://cdn-icons-png.flaticon.com/512/3135/3135715.png') no-repeat center/contain;
+    opacity: 0.17;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(0.5px);
+}
+
+.form-diario-edusoft::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 50%; top: -60px;
+    transform: translateX(-50%);
+    width: 68px; height: 68px;
+    background: url('https://cdn-icons-png.flaticon.com/512/2991/2991108.png') no-repeat center/contain;
+    opacity: 0.22;
+    z-index: 2;
+    filter: drop-shadow(0 3px 8px #236ad511);
+}
+
+select option[disabled], select option[value=""] {
+    color: #b5b5b5;
+}
+
+::-webkit-input-placeholder { color: #b5b5b5; }
+::-moz-placeholder { color: #b5b5b5; }
+:-ms-input-placeholder { color: #b5b5b5; }
+::placeholder { color: #b5b5b5; }
+
+@media (max-width: 600px) {
+    .form-diario-edusoft {
+        padding: 20px 3vw 14px 3vw;
+        min-width: 0;
+        max-width: 99vw;
+        min-height: 490px;
+        gap: 19px;
+    }
+    h2 {
+        font-size: 1.2em;
+        margin-top: 18px;
+    }
+    .diario-bg-art .book-icon {
+        font-size: 3.8rem;
+        top: 15vw;
+    }
+}

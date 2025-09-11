@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const links = document.querySelectorAll('.sidebar nav a');
     links.forEach(function(link, idx) {
         link.onclick = function(e) {
+            // Permitir enlaces externos normalmente
+            if (this.classList.contains('enlace-externo')) return;
             e.preventDefault();
             links.forEach(a => a.classList.remove('active'));
             this.classList.add('active');

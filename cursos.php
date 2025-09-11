@@ -204,6 +204,13 @@ if (isset($_GET['bienvenido'])) {
                 <span data-i18n="AteneaV">Atenea</span>
             </a>
         </li>
+            <li class="sidebar-item">
+      <a href="../diariopedagogico/historial_estudiante.php" class="sidebar-link" title="Diario Pedagógico">
+        <i class="fa-solid fa-book-open-reader"></i>
+        <span>Diario pedagógico</span>
+      </a>
+    </li>
+       
       </ul>
       <div class="sidebar-footer">
         <a href="../conexiones/logout.php" class="sidebar-link" title="Cerrar sesión">
