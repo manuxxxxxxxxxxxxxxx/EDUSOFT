@@ -22,7 +22,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 case 5: document.getElementById('seccion-avisos').style.display = 'block'; break;
                 case 6: document.getElementById('seccion-mensajes').style.display = 'block'; break;
                 case 7: document.getElementById('seccion-perfil').style.display = 'block'; break;
-                case 8: window.location.reload(); break; // "Salir" recarga la página
+                case 8: 
+                    window.location.href = link.href; // Esto sí ejecuta el logout real
+                    break;
             }
             if(window.innerWidth <= 800) document.querySelector('.sidebar').classList.remove('active');
         }

@@ -6,6 +6,10 @@ if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "profesor") {
     header("Location: ../loginProfes.php");
     exit;
 }
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 $profesor_id = $_SESSION['id'];
 $nombre = $_SESSION['nombre'];
 
@@ -54,7 +58,7 @@ $stmtFoto->close();
 $_SESSION['foto'] = $foto_url ?: 'https://ui-avatars.com/api/?name=Maestro+Ejemplo';
 
 // Consulta para traer las clases del profesor para los select
-$sql = "SELECT id, nombre_clase, materia, codigo_clase FROM clases WHERE profesor_id = ?";
+$sql = "SELECT id, nombre_clase, materia, codigo_clase, imagen_materia FROM clases WHERE profesor_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $profesor_id);
 $stmt->execute();
@@ -242,7 +246,7 @@ $total_alumnos_unicos = count($alumno_ids);
             <a href="#"><i class="fas fa-bullhorn"></i>Avisos</a>
             <a href="#"><i class="fas fa-envelope"></i>Mensajes <span class="badge">2</span></a>
             <a href="#"><i class="fas fa-user"></i>Perfil</a>
-            <a href="../conexiones/logout.php"><i class="fas fa-sign-out-alt"></i>Salir</a>
+            <a href="../conexiones/logout.php"><i class="fas fa-sign-out-alt"></i> Salir</a>
         </nav>
     </div>
     <div class="main-content">
@@ -376,6 +380,16 @@ $total_alumnos_unicos = count($alumno_ids);
                                         <br>
                                         <button type="submit" class="btn btn-primary">Actualizar imagen</button>
                                     </form>
+
+                                    <?php if (!empty($clase['imagen_materia'])): ?>
+                                    <form action="eliminar_imagen_materia.php" method="POST" style="display:inline;">
+                                        <input type="hidden" name="id_clase" value="<?= $clase['id'] ?>">
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de eliminar la imagen de la materia?')">
+                                            Eliminar imagen
+                                        </button>
+                                    </form>
+                                    <?php endif; ?>
+
                                 </div>
                             </li>
                         <?php endforeach; ?>

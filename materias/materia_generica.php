@@ -364,7 +364,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                                             $ruta = htmlspecialchars($material["ruta_archivo"]);
                                             $fecha = date("d/m/Y", strtotime($material["fecha_subida"]));
                                             echo "Archivo: $archivo | ";
-                                            echo "<a href='$ruta' target='_blank'>📎 Descargar</a> | Subido el $fecha";
+                                            echo "<a href='$ruta' target='_blank'>📎 Visualizar</a> | Subido el $fecha";
                                             ?>
                                         </div>
                                     </div>
@@ -534,6 +534,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>
+            <?php if (empty($tarea)): ?>
+            <li><i class="fas fa-tasks"></i> No hay tareas publicadas ahora.</li>
+        <?php endif; ?>
         </div>
     </div>
 </section>
@@ -643,7 +646,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_comentario']) &
                             if ($descripcion) {
                                 echo "<p>$descripcion</p>";
                             }
-                            echo "<a href='$ruta' target='_blank'>📎 Descargar archivo: $archivo</a><br>";
+                            echo "<a href='$ruta' target='_blank'>📎 visualizar archivo: $archivo</a><br>";
                             echo "<small>Subido el $fecha</small>";
                             echo "</div>";
                         }

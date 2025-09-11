@@ -216,7 +216,7 @@ if (isset($_GET['bienvenido'])) {
           <a href="#" class="sidebar-link" title="Cursos">
             <i class="fas fa-graduation-cap"></i>
             <span data-i18n="cursosN">Cursos</span>
-            <i class="fas fa-chevron-down arrow"></i>
+            <!--<i class="fas fa-chevron-down arrow"></i>-->
           </a>
         </li>
         <li class="sidebar-item">
