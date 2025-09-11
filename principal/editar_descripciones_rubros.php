@@ -97,9 +97,10 @@ while ($row = $res->fetch_assoc()) $descripciones[$row['rubro']] = $row['descrip
     </style>
 </head>
 <body>
-    <button id="btn-back" title="Volver" onclick="window.history.back();">
-        <i class="fas fa-arrow-left"></i>
-    </button>
+   <button id="btn-back" title="Volver" onclick="window.location.href='../principal/sistema_notas_profes.php'">
+    <i class="fas fa-arrow-left"></i>
+   </button>
+
 <div class="desc-box">
     <h2>Editar descripciones de rubros</h2>
     <form method="GET">

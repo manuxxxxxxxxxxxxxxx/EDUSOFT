@@ -579,10 +579,27 @@ body {
 
 .card-texto a {
   text-decoration: none;
-  color: #ffff00;
-  font-weight: bold;
+  color: #1976d2; /* Azul principal Edusoft/Google */
+  background: linear-gradient(90deg, #9fc7e8 40%, #7db3e0 100%);
+  font-weight: 700;
   font-size: 16px;
+  padding: 8px 22px;
+  border-radius: 30px;
+  transition: background 0.25s, color 0.2s, box-shadow 0.2s, transform 0.13s;
+  box-shadow: 0 2px 8px rgba(74,144,226,0.07);
+  display: inline-block;
+  letter-spacing: 0.5px;
+  border: none;
 }
+
+.card-texto a:hover {
+  background: linear-gradient(90deg, #7db3e0 70%, #1976d2 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(74,144,226,0.15);
+  transform: translateY(-2px) scale(1.04);
+  text-decoration: none;
+}
+
 
 .card.grande {
   flex: 2;

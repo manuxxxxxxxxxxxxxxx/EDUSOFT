@@ -27,9 +27,9 @@
       <div class="header-content">
         <div class="logo-section">
           <div class="logo-container">
-  <a href="javascript:history.back()" class="logo-back" title="Volver atrás">
-    <img src="../img/ELEFANTE.png" alt="" class="logo">
-  </a>
+    <a href="../principal/index.php" class="logo-back" title="Volver al inicio">
+  <img src="../img/ELEFANTE.png" alt="Logo" class="logo">
+</a>
   <div class="logo-pulse"></div>
 </div>
           <div class="logo-text">

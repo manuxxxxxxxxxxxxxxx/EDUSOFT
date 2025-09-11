@@ -137,6 +137,61 @@ if (isset($_GET['bienvenido'])) {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Bootstrap CSS solo si no está ya incluido arriba -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+  /* --- MEJOR BOTONERA EN LAS CARDS DE MATERIAS --- */
+  .card .card-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .card .card-actions .btn, 
+  .card .card-actions .btn-danger {
+    padding: 10px 26px;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    box-shadow: 0 2px 12px rgba(74,144,226,0.10);
+    transition: background 0.25s, color 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  .card .card-actions .btn {
+    background: linear-gradient(90deg, #9fc7e8 60%, #7db3e0 100%);
+    color: #1a3a54;
+  }
+  .card .card-actions .btn:hover {
+    background: linear-gradient(90deg, #7db3e0 70%, #4a90e2 100%);
+    color: #fff;
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 4px 24px rgba(74,144,226,0.15);
+  }
+  .card .card-actions .btn-danger {
+    background: linear-gradient(90deg, #e53935 60%, #d81b60 100%);
+    color: #fff;
+  }
+  .card .card-actions .btn-danger:hover {
+    background: linear-gradient(90deg, #b71c1c 70%, #ad1457 100%);
+    color: #fff;
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 4px 24px rgba(229,57,53,0.14);
+  }
+  @media (max-width: 600px) {
+    .card .card-actions {
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    .card .card-actions .btn,
+    .card .card-actions .btn-danger {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  </style>
 </head>
 <body>
   <div class="layout">
@@ -157,53 +212,25 @@ if (isset($_GET['bienvenido'])) {
             <span data-i18n="inicioN">Inicio</span>
           </a>
         </li>
-        
-        <li class="sidebar-item has-submenu">
-          <a href="#" class="sidebar-link" title="Programas Académicos">
-            <i class="fas fa-book"></i>
-            <span data-i18n="ProgramasN">Programas Académicos</span>
-            <i class="fas fa-chevron-down arrow"></i>
-          </a>
-          <ul class="submenu">
-            <li><a href="extracurriculares.php" data-i18n="ActividadesN">Actividades extrarriculares</a></li>
-            <li><a href="#" data-i18n="Primaria">Primaria</a></li>
-            <li><a href="#" data-i18n="secundaria">Secundaria</a></li>
-            <li><a href="#" data-i18n="bachillerato">Bachillerato</a></li>
-          </ul>
-        </li>
-        
         <li class="sidebar-item has-submenu">
           <a href="#" class="sidebar-link" title="Cursos">
             <i class="fas fa-graduation-cap"></i>
             <span data-i18n="cursosN">Cursos</span>
             <i class="fas fa-chevron-down arrow"></i>
           </a>
-          
         </li>
-        
         <li class="sidebar-item">
           <a href="../calendario/calendario.php" class="sidebar-link" title="Calendario">
             <i class="fas fa-calendar-alt"></i>
             <span data-i18n="calendario">Calendario</span>
           </a>
         </li>
-        
-        
         <li class="sidebar-item has-submenu">
-          <a href="#" class="sidebar-link" title="Comunidad">
+          <a href="../nosotros/nosotros.php" class="sidebar-link" title="Comunidad">
             <i class="fas fa-users"></i>
-            <span data-i18n="comunidadN">Comunidad</span>
-            <!-- <i class="fas fa-chevron-down arrow"></i> -->
+            <span data-i18n="comunidN">Nosotros</span>
           </a>
         </li>
-        
-        <li class="sidebar-item">
-          <a href="#" class="sidebar-link" title="Noticias">
-            <i class="fas fa-newspaper"></i>
-            <span data-i18n="noticiasN">Noticias</span>
-          </a>
-        </li>
-        
         <li class="sidebar-item">
           <a href="../contactanos/contactanos.php" class="sidebar-link" title="Contacto">
             <i class="fas fa-envelope"></i>
@@ -217,7 +244,6 @@ if (isset($_GET['bienvenido'])) {
             </a>
         </li>
       </ul>
-      
       <div class="sidebar-footer">
         <a href="../conexiones/logout.php" class="sidebar-link" title="Cerrar sesión">
           <i class="fas fa-sign-in-alt"></i>
@@ -235,7 +261,6 @@ if (isset($_GET['bienvenido'])) {
             <span data-i18n="bienvenido">Bienvenido</span>
             <span><?= isset($_SESSION['nombre']) ? htmlspecialchars($_SESSION['nombre']) :'estudiante'; ?></span>
             <img src="<?= $imagenAlumno ?>" alt="Foto perfil" class="user-img" style="width:65px; height:65px; border-radius:50%; object-fit:cover; margin-left:10px; box-shadow:0 1px 6px rgba(0,0,0,0.10); border:2px solid #e8eaf6;">
-
         </div>
       </header>
 
@@ -274,7 +299,6 @@ if (isset($_GET['bienvenido'])) {
   <div class="motivational-phrase">
     <span>¡Aprender juntos es mejor! Descubre nuevas clases cada día.</span>
   </div>
-
 </div>
         <!-- Mensaje si no hay clases -->
         <?php
@@ -304,7 +328,7 @@ if (isset($_GET['bienvenido'])) {
       <!-- NUEVO: Contenedor solo para tarjetas -->
       <div class="container-cards">
         <?php
-                    $slug_archivo = [
+          $slug_archivo = [
             'lenguaje'   => 'lenguaje',
             'matemática' => 'matematica',
             'matematica' => 'matematica',
@@ -361,16 +385,23 @@ if (isset($_GET['bienvenido'])) {
               <?php
                 $materia_slug = $slug_archivo[strtolower($clases['materia'])] ?? strtolower($clases['materia']);
               ?>
-                <a href="../materias/materia_generica.php?id_clase=<?= $clases['id_clase']; ?>" class="btn">Más información</a>
-
+              <!-- BOTONES MODERNOS -->
+              <div class="card-actions">
+                <a href="../materias/materia_generica.php?id_clase=<?= $clases['id_clase']; ?>" class="btn">
+                  <i class="fa-solid fa-circle-info"></i>
+                  Más información
+                </a>
                 <form method="POST" action="salir_clase.php" style="display:inline;">
                   <input type="hidden" name="id_clase" value="<?php echo $clases['id_clase']; ?>">
-                  <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro que quieres salir de esta clase?');">Salir de la clase</button>
+                  <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro que quieres salir de esta clase?');">
+                    <i class="fa-solid fa-sign-out-alt"></i>
+                    Salir de la clase
+                  </button>
                 </form>
+              </div>
             </div>
           </div>
         <?php endforeach; ?>
-
       </div>
     </main>
   </div>
